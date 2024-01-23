@@ -4,23 +4,19 @@
   }
   
 
-  .books-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: baseline;
-    gap:3rem;
-    margin-top: 4rem;
-    margin-bottom: 15rem;
-  }
-
-.page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+.books-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  gap:3rem;
+  margin-top: 4rem;
+  margin-bottom: 15rem;
 }
 
+
+
 .footer-container {
-margin-top: auto;
+  margin-top: auto;
 }
   
