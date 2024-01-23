@@ -1,0 +1,28 @@
+
+  .books-grid-overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem 1.5rem;
+    justify-items: center;
+  }
+
+  .book-card {
+    width:10rem;
+    height: 15rem;
+  }
+
+  .book-card img {
+    height: 100%;
+    width: 100%;
+  }
+
+  .card-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .books-list-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }

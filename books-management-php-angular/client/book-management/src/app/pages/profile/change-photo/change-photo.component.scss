@@ -1,0 +1,15 @@
+
+.change-btn {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 11px 20px;
+    border: none;
+    transition: box-shadow 0.2s ease 0s, transform 0.1s ease 0s;     
+    color: black;
+    background-color: #F3F3F3;
+}
