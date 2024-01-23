@@ -29,21 +29,21 @@ export class AppComponent implements OnInit {
   }
 
 
-  constructor (private zone: NgZone, private router: Router) {
-    this.router.events.subscribe((event: any) => {
-      if (event instanceof NavigationEnd) {
-        if (event.url === '/register') {
-          this.showHeaderFooter= false;
-        } 
-      }
-    });
+  // constructor (private zone: NgZone, private router: Router) {
+  //   this.router.events.subscribe((event: any) => {
+  //     if (event instanceof NavigationEnd) {
+  //       if (event.url === '/register') {
+  //         this.showHeaderFooter= false;
+  //       } 
+  //     }
+  //   });
 
-     this.router.events.subscribe((event: any) => {
-      if (event instanceof NavigationEnd) {
-        if (event.url === '/login') {
-          this.showHeaderFooter= false;
-        } 
-      }
-    });
-  }
+  //    this.router.events.subscribe((event: any) => {
+  //     if (event instanceof NavigationEnd) {
+  //       if (event.url === '/login') {
+  //         this.showHeaderFooter= false;
+  //       } 
+  //     }
+  //   });
+  // }
 }
