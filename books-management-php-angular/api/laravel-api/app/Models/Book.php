@@ -9,6 +9,14 @@ class Book extends Model
 {
     use HasFactory;
 
+      protected $fillable = [
+        "name",
+        "status",
+        "author",
+        "published_date",
+        "added_date",
+    ];
+
      public function customer() 
     {
         return $this->belongsTo(Customer::class);

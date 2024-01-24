@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBookRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreBookRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,19 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" =>["required"],
+            "status" =>["required", Rule::in(["loaned out", "in stock"])],
+            "author" =>["required"],
+            "publishedDate" =>["required"],
+            "addedDate" =>["required"],
         ];
+    }
+
+     protected function prepareForValidation()
+    {
+        $this->merge([
+            "published_date" => $this->publishedDate,
+            "added_date" => $this->addedDate,
+        ]);
     }
 }

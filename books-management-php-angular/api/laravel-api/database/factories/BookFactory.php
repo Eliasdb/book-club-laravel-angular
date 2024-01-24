@@ -20,7 +20,9 @@ class BookFactory extends Factory
         $status = $this->faker->randomElement(['loaned out', 'in stock']);
 
         return [
-            "customer_id" => Customer::factory(),
+            // "customer_id" => Customer::factory(),
+                        "customer_id" => NULL,
+
             "name" => $this->faker->name(),
             "author" => $this->faker->name(),
             "status" => $status,

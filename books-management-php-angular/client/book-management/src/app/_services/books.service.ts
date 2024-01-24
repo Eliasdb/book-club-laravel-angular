@@ -1,32 +1,26 @@
-import { Injectable, inject } from '@angular/core';
-import { environment } from 'src/environments/environment.development';
-import { Book } from '../_models/book';
 import { HttpClient } from '@angular/common/http';
-import { map, of } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { queryOptions } from '@ngneat/query';
+import { map } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
 import { RawApiDataBooks } from '../_models/rawapi';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BooksService {
-  baseURL = environment.apiUrl;
-  books: Book[] = [];
-
   private http = inject(HttpClient);
 
-    getBooks() {
-    if (this.books.length > 0) return of(this.books);
-    return this.http.get<RawApiDataBooks>(`${this.baseURL}/books`).pipe(
-      // projects what we are getting back from API
-      map((data) => {
-        this.books = data.data; 
-        console.log();
-               
-        return this.books; 
-      })
-    );
+  queryBooks() {
+    return queryOptions({
+      queryFn: () => {
+        return this.http
+          .get<RawApiDataBooks>(`${environment.apiUrl}/books`)
+          .pipe(
+            // projects what we are getting back from API
+            map((data) => data.data)
+          );
+      },
+    });
   }
-
-
-  constructor() { }
 }
