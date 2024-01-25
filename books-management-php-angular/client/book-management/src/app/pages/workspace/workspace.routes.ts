@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { BooksCollectionContainerComponent } from '../books/books-collection/books-collection.container';
+import { CheckoutComponent } from '../checkout/checkout.component';
 import { CustomersCollectionContainerComponent } from '../customers/customers-collection-container/customers-collection.container';
 import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile-container/profile.container';
@@ -23,6 +24,7 @@ export const WorkspaceRoutes: Routes = [
         component: SingleBookComponent,
       },
       { path: 'customers', component: CustomersCollectionContainerComponent },
+      { path: 'checkout', component: CheckoutComponent },
     ],
   },
 ];

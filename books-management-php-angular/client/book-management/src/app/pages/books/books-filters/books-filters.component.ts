@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
       <input type="text" placeholder="Search" class="search-input" />
 
       <div class="categories">
-        <h4 class="category-title">Category</h4>
+        <h4 class="category-title">Genre</h4>
         <button class="category active">All</button>
         <button class="category">category 1</button>
         <button class="category">category 2</button>

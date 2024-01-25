@@ -1,45 +1,82 @@
 .action-bar-items {
-    display: flex;
-    align-items: center;
-    gap:50rem;
-    margin-bottom: 3rem;
-    position: relative;
+  display: flex;
+  align-items: center;
+  gap: 50rem;
+  margin-bottom: 3rem;
+  position: relative;
 }
 
 .logo {
-    width: 3rem;
-    border-radius: 10%;
+  width: 3rem;
+  border-radius: 10%;
 }
 
 .launcher-icon {
-    width: 25px;
-    height: 25px;
+  width: 25px;
+  height: 25px;
 }
 
 .amount {
-    position: absolute;
-    top: 5px;
-    right: -11px;
-    background: #24262b;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    padding: 2px;
-    color: antiquewhite;
+  position: absolute;
+  top: 5px;
+  right: -11px;
+  background: #24262b;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  padding: 2px;
+  color: antiquewhite;
 }
 
 @media (max-width: 1024px) {
   .action-bar-items {
-   gap:30rem;
+    gap: 30rem;
   }
 }
 
 @media (max-width: 425px) {
   .action-bar-items {
-   gap: 12rem;
+    gap: 12rem;
   }
+}
+
+.cart-container {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+button {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  border-radius: 2px;
+  padding: 15px 34px;
+  border: none;
+  transition: box-shadow 0.2s ease 0s, transform 0.1s ease 0s;
+  background-color: lightgreen;
+  color: black;
+  margin-top: 1rem;
+}
+.remove-item-btn {
+  background-color: indianred;
+  color: white;
+  padding: 12px 22px;
+}
+
+.checkout-btn {
+  background-color: lightgreen;
+  color: black;
+  padding: 12px 34px;
+}
+
+.btn-container {
+  display: flex;
+  gap: 0.5rem;
 }

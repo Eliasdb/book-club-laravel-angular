@@ -27,7 +27,8 @@ class BookController extends Controller
         //     $books = Book::all()->filter()->paginate();
         //     return new BookCollection($books);
         // }
-            $books = Book::filter()->paginate();
+            $pageSize = $request->page_size ?? 15;
+            $books = Book::filter()->paginate($pageSize);
             return new BookCollection($books);
 
     }

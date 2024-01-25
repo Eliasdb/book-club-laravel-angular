@@ -16,6 +16,7 @@ class Book extends Model
         'status',
         "genre",
         "author",
+        "like",
         "published_date"
     ];
 

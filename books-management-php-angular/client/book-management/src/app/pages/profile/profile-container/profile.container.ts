@@ -26,6 +26,6 @@ import { ProfileSettingsFormComponent } from '../profile-settings-form/profile-s
       </div>
     </div>
   `,
-  styleUrls: ['./profile.component.scss'],
+  styleUrls: ['./profile.container.scss'],
 })
 export class ProfileComponent {}

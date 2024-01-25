@@ -1,7 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { UseQuery, filterSuccess } from '@ngneat/query';
-import { map, of, switchMap } from 'rxjs';
+import {
+  Observable,
+  catchError,
+  map,
+  merge,
+  of,
+  startWith,
+  switchMap,
+} from 'rxjs';
+import { Book } from '../../../_models/book';
+import { RawApiDataBooks } from '../../../_models/rawapi';
 import { BookParamService } from '../../../_services/book-param-service/book-param.service';
 import { BooksService } from '../../../_services/books-service/books.service';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
@@ -19,6 +31,7 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
     BooksFiltersComponent,
     SortBarComponent,
     LoadingStateComponent,
+    MatPaginatorModule,
   ],
   selector: 'app-books',
   template: `
@@ -30,14 +43,22 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
 
           <ng-container *ngIf="(isLoading$ | async) === false; else loading">
             <app-books-collection-grid-overview
-              [books]="(books$ | async) || []"
+              [books]="data || []"
               *ngIf="!showList"
             />
             <app-books-collection-list-overview
               *ngIf="showList"
-              [books]="(books$ | async) || []"
+              [books]="data || []"
             />
           </ng-container>
+
+          <div class="paginator">
+            <mat-paginator
+              [length]="resultsLength"
+              [pageSize]="15"
+              aria-label="Select page of GitHub search results"
+            ></mat-paginator>
+          </div>
         </section>
       </section>
     </section>
@@ -80,5 +101,54 @@ export class BooksCollectionContainerComponent implements OnInit {
     this.author$.subscribe((res) => {
       console.log('author', res);
     });
+  }
+
+  realDatabase: BookDatabase | null | undefined;
+
+  data: Book[] = [];
+
+  resultsLength = 0;
+  isLoadingResults = true;
+  isRateLimitReached = false;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
+  constructor(private _httpClient: HttpClient) {}
+
+  ngAfterViewInit() {
+    this.realDatabase = new BookDatabase(this._httpClient);
+
+    merge(this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          return this.realDatabase!.getBooks(this.paginator.pageIndex).pipe(
+            catchError(() => of(null))
+          );
+        }),
+        map((data) => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          this.isRateLimitReached = data === null;
+
+          if (data === null) {
+            return [];
+          }
+          this.resultsLength = data.meta.total;
+          return data.data;
+        })
+      )
+      .subscribe((data) => (this.data = data));
+  }
+}
+
+export class BookDatabase {
+  constructor(private _httpClient: HttpClient) {}
+
+  getBooks(page: number): Observable<RawApiDataBooks> {
+    const href = 'http://localhost:8000/api/v1/books';
+    const requestUrl = `${href}?page=${page + 1}`;
+
+    return this._httpClient.get<RawApiDataBooks>(requestUrl);
   }
 }

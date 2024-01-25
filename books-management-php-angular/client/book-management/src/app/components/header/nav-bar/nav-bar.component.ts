@@ -9,41 +9,26 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   template: `
     <section class="nav-container">
       <ul class="nav-items">
-        <li>  
-          <a
-            class="nav-link"
-            routerLink="/"
-            routerLinkActive="active">
+        <li>
+          <a class="nav-link" routerLink="/" routerLinkActive="active">
             Home
           </a>
         </li>
-         <li>  
-          <a
-            class="nav-link"
-            routerLink="/profile"
-            routerLinkActive="active">
+        <li>
+          <a class="nav-link" routerLink="/profile" routerLinkActive="active">
             Profile
           </a>
         </li>
-        <li>  
-          <a
-            class="nav-link"
-            routerLink="/books"
-            routerLinkActive="active">
+        <li>
+          <a class="nav-link" routerLink="/books" routerLinkActive="active">
             Books
           </a>
         </li>
-        <li> <a
-            class="nav-link"
-            routerLink="/customers">
-            Customers
-          </a>
-          </li>
+        <li><a class="nav-link" routerLink="/customers"> Customers </a></li>
+        <li><a class="nav-link" routerLink="/checkout"> Checkout </a></li>
       </ul>
     </section>
   `,
-  styleUrls: ['./nav-bar.component.scss']
+  styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent {
-
-}
+export class NavBarComponent {}

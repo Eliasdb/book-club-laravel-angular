@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { RouterLink } from '@angular/router';
+import { CartItemComponent } from '../../../cart-item/cart-item.component';
 
 @Component({
   standalone: true,
@@ -35,29 +37,29 @@ export class ActionBarComponent {
 
 @Component({
   selector: 'dialog-content-example-dialog',
-  template: `<h2 mat-dialog-title>Install Angular</h2>
+  template: `<h2 mat-dialog-title>Cart</h2>
     <mat-dialog-content class="mat-typography">
-      <h3>Develop across all platforms</h3>
-      <p>
-        Learn one way to build applications with Angular and reuse your code and
-        abilities to build apps for any deployment target. For web, mobile web,
-        native mobile and native desktop.
-      </p>
-
-      <p>
-        An app's components typically define many views, arranged
-        hierarchically. Angular provides the Router service to help you define
-        navigation paths among views. The router provides sophisticated
-        in-browser navigational capabilities.
-      </p>
+      <h3>Here's what you have selected so far:</h3>
+      <div class="cart-container">
+        <app-cart-item />
+        <app-cart-item />
+      </div>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
-        Install
-      </button>
-    </mat-dialog-actions>`,
+      <div class="btn-container">
+        <button class="remove-item-btn">Remove</button>
+        <button
+          class="checkout-btn"
+          routerLink="/checkout"
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+        >
+          Checkout
+        </button>
+      </div>
+    </mat-dialog-actions> `,
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [MatDialogModule, MatButtonModule, CartItemComponent, RouterLink],
+  styleUrls: ['./action-bar.component.scss'],
 })
 export class DialogContentExampleDialog {}
