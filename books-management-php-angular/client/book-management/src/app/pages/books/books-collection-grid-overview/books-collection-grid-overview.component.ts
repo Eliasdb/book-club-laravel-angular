@@ -6,36 +6,17 @@ import {
   OnInit,
 } from '@angular/core';
 import { Book } from 'src/app/_models/book';
+import { BookCardComponent } from '../book-card/book-card.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, BookCardComponent],
   selector: 'app-books-collection-grid-overview',
   template: `
     <section class="books-grid-overview">
-      <section class="book-card">
-        <img
-          src="https://edit.org/images/cat/book-covers-big-2019101610.jpg"
-          alt="book"
-        />
-        <div class="card-text">
-          <p>Available</p>
-        </div>
-      </section>
-      <section class="book-card">
-        <img
-          src="https://edit.org/images/cat/book-covers-big-2019101610.jpg"
-          alt="book"
-        />
-        <p>Available</p>
-      </section>
-      <section class="book-card">
-        <img
-          src="https://edit.org/images/cat/book-covers-big-2019101610.jpg"
-          alt="book"
-        />
-        <p>Loaned out</p>
-      </section>
+      <div *ngFor="let book of books" class="col-2">
+        <app-book-card [book]="book" />
+      </div>
     </section>
   `,
   styleUrls: ['./books-collection-grid-overview.component.scss'],
@@ -45,7 +26,5 @@ export class BooksCollectionGridOverviewComponent implements OnInit {
   @Input() books?: Book[];
 
   ngOnInit(): void {}
-  ngOnChanges() {
-    console.log(this.books);
-  }
+  ngOnChanges() {}
 }

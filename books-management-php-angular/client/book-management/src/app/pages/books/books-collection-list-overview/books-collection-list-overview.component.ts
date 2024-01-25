@@ -1,29 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Book } from '../../../_models/book';
+import { BookCardComponent } from '../book-card/book-card.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, BookCardComponent],
   selector: 'app-books-collection-list-overview',
   template: `
-   <section class="books-list-overview">
-    <section class="book-card">
-        <img src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book">
-        <div class="card-text">
-        <p>Available</p>
-        </div>
+    <section class="books-list-overview">
+      <div *ngFor="let book of books" class="col-2">
+        <app-book-card [book]="book" />
+      </div>
     </section>
-    <section class="book-card">
-        <img src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book">
-         <p>Available</p>
-    </section>
-    <section class="book-card">
-        <img src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="book">
-        <p>Loaned out</p>
-    </section>
-</section>
-`,
-  styleUrls: ['./books-collection-list-overview.component.scss']
+  `,
+  styleUrls: ['./books-collection-list-overview.component.scss'],
 })
 export class BooksCollectionListOverviewComponent {
+  @Input() books?: Book[];
 }

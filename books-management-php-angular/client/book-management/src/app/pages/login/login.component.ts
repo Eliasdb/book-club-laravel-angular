@@ -2,17 +2,21 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AccountService } from '../../_services/account.service';
+import { AccountService } from '../../_services/account-service/account.service';
 
 @Component({
-  standalone:true,
+  standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   selector: 'app-login',
-   template: `
-  <section class="login-page">
-    <form #registerForm="ngForm" (ngSubmit)="login()" autocomplete="off" class="form">
-     <div class="img-container">
-        <img src="./assets/registerlogo.png" alt="company logo" class="logo">
+  template: ` <section class="login-page">
+    <form
+      #registerForm="ngForm"
+      (ngSubmit)="login()"
+      autocomplete="off"
+      class="form"
+    >
+      <div class="img-container">
+        <img src="./assets/registerlogo.png" alt="company logo" class="logo" />
       </div>
       <h2 class="login-title">Login</h2>
       <hr />
@@ -35,18 +39,16 @@ import { AccountService } from '../../_services/account.service';
         />
       </div>
       <div class="buttons">
-        <button class="login-btn" type="submit">
-          Login
-        </button>
-        <p>Don't have an account?   
-          <a
-            routerLink="/register" class="click-here">
-            Click here
-          </a> to sign up.</p>
+        <button class="login-btn" type="submit">Login</button>
+        <p>
+          Don't have an account?
+          <a routerLink="/register" class="click-here"> Click here </a> to sign
+          up.
+        </p>
       </div>
     </form>
   </section>`,
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   private accountService = inject(AccountService);
@@ -55,7 +57,7 @@ export class LoginComponent {
   protected currentUser$ = this.accountService.currentUser$;
   model: any = {};
 
-   login() {
+  login() {
     this.accountService.login(this.model).subscribe({
       next: () => this.router.navigateByUrl('/'),
     });

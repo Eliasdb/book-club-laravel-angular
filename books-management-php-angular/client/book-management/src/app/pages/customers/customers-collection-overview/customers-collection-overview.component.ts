@@ -1,15 +1,15 @@
-import {HttpClient} from '@angular/common/http';
-import {Component, ViewChild, AfterViewInit, ChangeDetectorRef, inject} from '@angular/core';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatSort, MatSortModule, SortDirection} from '@angular/material/sort';
-import {merge, Observable, of as observableOf} from 'rxjs';
-import {catchError, map, startWith, switchMap} from 'rxjs/operators';
-import {MatTableModule} from '@angular/material/table';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {DatePipe} from '@angular/common';
-import { CustomersService } from 'src/app/_services/customers.service';
+import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { Observable, merge, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Customer } from '../../../_models/customer';
 import { RawApiDataCustomer } from '../../../_models/rawapi';
+import { CustomersService } from '../../../_services/customers-service/customers.service';
 
 /**
  * @title Table with selection
@@ -18,76 +18,96 @@ import { RawApiDataCustomer } from '../../../_models/rawapi';
   selector: 'customers-collection-overview',
   styleUrls: ['customers-collection-overview.component.scss'],
   standalone: true,
-  imports: [MatProgressSpinnerModule, MatTableModule, MatSortModule, MatPaginatorModule, DatePipe],
+  imports: [
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    DatePipe,
+  ],
   template: `
     <section class="collection-title">
-        <h3>Customers</h3>
+      <h3>Customers</h3>
     </section>
-<div class="example-container mat-elevation-z8">
- 
-    <!-- <div *ngIf="isLoadingResults" class="example-loading-shade"> -->
-    
-        <!-- <mat-spinner></mat-spinner> -->
+    <div class="example-container mat-elevation-z8">
+      <!-- <div *ngIf="isLoadingResults" class="example-loading-shade"> -->
+
+      <!-- <mat-spinner></mat-spinner> -->
       <!-- @if (isRateLimitReached) {
         <div class="example-rate-limit-reached">
           GitHub's API rate limit has been reached. It will be reset in one minute.
         </div>
       } -->
-    <!-- </div> -->
+      <!-- </div> -->
 
-  
-
-  <div class="example-table-container">
-
-    <table mat-table [dataSource]="data" class="mat-elevation-z8" matSort matSortActive="number" matSortDisableClear matSortDirection="desc">
-
-        <ng-container matColumnDef="number" sticky>
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-          #
-        </th>
-        <td mat-cell *matCellDef="let row">{{row.id }}</td>
-      </ng-container>
+      <div class="example-table-container">
+        <table
+          mat-table
+          [dataSource]="data"
+          class="mat-elevation-z8"
+          matSort
+          matSortActive="number"
+          matSortDisableClear
+          matSortDirection="desc"
+        >
+          <ng-container matColumnDef="number" sticky>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+              #
+            </th>
+            <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+          </ng-container>
 
           <!-- State Column -->
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef>Type</th>
-        <td mat-cell *matCellDef="let row">{{row.type}}</td>
-      </ng-container>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let row">{{ row.type }}</td>
+          </ng-container>
 
-      <!-- Title Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let row">{{row.name}}</td>
-      </ng-container>
+          <!-- Title Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
 
           <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let row">{{row.email}}</td>
-      </ng-container>
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+          </ng-container>
 
-       <ng-container matColumnDef="postalCode">
-        <th mat-header-cell *matHeaderCellDef>Postal code</th>
-        <td mat-cell *matCellDef="let row">{{row.postalCode}}</td>
-      </ng-container>
+          <ng-container matColumnDef="postalCode">
+            <th mat-header-cell *matHeaderCellDef>Postal code</th>
+            <td mat-cell *matCellDef="let row">{{ row.postalCode }}</td>
+          </ng-container>
 
-        <ng-container matColumnDef="city">
-        <th mat-header-cell *matHeaderCellDef>City</th>
-        <td mat-cell *matCellDef="let row">{{row.city}}</td>
-      </ng-container>
+          <ng-container matColumnDef="city">
+            <th mat-header-cell *matHeaderCellDef>City</th>
+            <td mat-cell *matCellDef="let row">{{ row.city }}</td>
+          </ng-container>
 
-      <!-- Created Column -->
-    
-      <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
+          <!-- Created Column -->
 
-  <mat-paginator [length]="resultsLength" [pageSize]="15" aria-label="Select page of GitHub search results"></mat-paginator>
-</div>
-`,
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <mat-paginator
+        [length]="resultsLength"
+        [pageSize]="15"
+        aria-label="Select page of GitHub search results"
+      ></mat-paginator>
+    </div>
+  `,
 })
 export class CustomersCollectionOverviewComponent implements AfterViewInit {
-  displayedColumns: string[] = ['number', 'type', 'name', "email", "postalCode", "city"];
+  displayedColumns: string[] = [
+    'number',
+    'type',
+    'name',
+    'email',
+    'postalCode',
+    'city',
+  ];
 
   realDatabase: CustomerDatabase | null | undefined;
 
@@ -106,8 +126,6 @@ export class CustomersCollectionOverviewComponent implements AfterViewInit {
   constructor(private _httpClient: HttpClient) {}
 
   ngAfterViewInit() {
-   
-    
     this.realDatabase = new CustomerDatabase(this._httpClient);
 
     // If the user changes the sort order, reset back to the first page.
@@ -121,10 +139,10 @@ export class CustomersCollectionOverviewComponent implements AfterViewInit {
           return this.realDatabase!.getCustomers(
             this.sort.active,
             this.sort.direction,
-            this.paginator.pageIndex,
+            this.paginator.pageIndex
           ).pipe(catchError(() => observableOf(null)));
         }),
-        map(data => {
+        map((data) => {
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.isRateLimitReached = data === null;
@@ -138,16 +156,20 @@ export class CustomersCollectionOverviewComponent implements AfterViewInit {
           // would prevent users from re-triggering requests.
           this.resultsLength = data.meta.total;
           return data.data;
-        }),
+        })
       )
-      .subscribe(data => (this.data = data));
+      .subscribe((data) => (this.data = data));
   }
 }
 
 export class CustomerDatabase {
   constructor(private _httpClient: HttpClient) {}
 
-  getCustomers(sort: string, order: SortDirection, page: number): Observable<RawApiDataCustomer> {
+  getCustomers(
+    sort: string,
+    order: SortDirection,
+    page: number
+  ): Observable<RawApiDataCustomer> {
     const href = 'http://localhost:8000/api/v1/customers';
     const requestUrl = `${href}?page=${page + 1}`;
 

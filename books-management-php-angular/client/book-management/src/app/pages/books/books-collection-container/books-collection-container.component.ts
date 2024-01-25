@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { UseQuery, filterSuccess } from '@ngneat/query';
-import { map } from 'rxjs';
-import { BooksService } from '../../../_services/books.service';
-import { FooterComponent } from '../../../components/footer/footer.component';
-import { HeaderComponent } from '../../../components/header/header/header.component';
+import { map, of, switchMap } from 'rxjs';
+import { BookParamService } from '../../../_services/book-param-service/book-param.service';
+import { BooksService } from '../../../_services/books-service/books.service';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
 import { BookFiltersComponent } from '../book-filters/book-filters.component';
 import { BooksCollectionGridOverviewComponent } from '../books-collection-grid-overview/books-collection-grid-overview.component';
@@ -14,8 +13,6 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
 @Component({
   standalone: true,
   imports: [
-    FooterComponent,
-    HeaderComponent,
     CommonModule,
     BooksCollectionGridOverviewComponent,
     BooksCollectionListOverviewComponent,
@@ -26,7 +23,6 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
   selector: 'app-books',
   template: `
     <section class="page">
-      <app-header />
       <section class="books-container">
         <app-filters />
         <section class="books">
@@ -37,11 +33,13 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
               [books]="(books$ | async) || []"
               *ngIf="!showList"
             />
-            <app-books-collection-list-overview *ngIf="showList" />
+            <app-books-collection-list-overview
+              *ngIf="showList"
+              [books]="(books$ | async) || []"
+            />
           </ng-container>
         </section>
       </section>
-      <app-footer />
     </section>
 
     <ng-template #loading>
@@ -52,12 +50,23 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
 })
 export class BooksCollectionContainerComponent implements OnInit {
   private booksService = inject(BooksService);
+  private bookParamService = inject(BookParamService);
   private useQuery = inject(UseQuery);
 
   showList: boolean = false;
 
-  booksResults$ = this.useQuery(this.booksService.queryBooks()).result$;
-  protected isLoading$ = this.booksResults$.pipe(map((res) => res.isFetching));
+  private author$ = this.bookParamService.author$;
+
+  private booksResults$ = this.author$.pipe(
+    switchMap(
+      (author) =>
+        this.useQuery(this.booksService.queryBooks({ author })).result$
+    )
+  );
+
+  // protected isLoading$ = this.booksResults$.pipe(map((res) => res.isFetching));
+  protected isLoading$ = of(false);
+
   books$ = this.booksResults$.pipe(
     filterSuccess(),
     map((res) => res.data)
@@ -67,5 +76,9 @@ export class BooksCollectionContainerComponent implements OnInit {
     this.showList = !this.showList;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.author$.subscribe((res) => {
+      console.log('author', res);
+    });
+  }
 }

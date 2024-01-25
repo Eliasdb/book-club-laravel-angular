@@ -1,5 +1,5 @@
-import { Book } from "./book";
-import { Customer } from "./customer";
+import { Book } from './book';
+import { Customer } from './customer';
 
 export interface RawApiDataCustomer {
   data: Customer[];
@@ -13,3 +13,8 @@ export interface RawApiDataBooks {
   meta: any;
 }
 
+export interface RawApiDataBook {
+  data: Book;
+  links: string[];
+  meta: any;
+}

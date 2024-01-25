@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './_modules/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { WorkspaceModule } from './pages/workspace/workspace.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +17,7 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     SharedModule,
     FormsModule,
+    WorkspaceModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
