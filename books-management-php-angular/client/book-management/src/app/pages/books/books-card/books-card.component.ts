@@ -17,8 +17,8 @@ import { Book } from '../../../_models/book';
       </div>
     </section>
   `,
-  styleUrls: ['./book-card.component.scss'],
+  styleUrls: ['./books-card.component.scss'],
 })
-export class BookCardComponent {
+export class BooksCardComponent {
   @Input() book?: Book;
 }

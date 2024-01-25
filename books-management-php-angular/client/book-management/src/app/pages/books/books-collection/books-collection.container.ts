@@ -5,9 +5,9 @@ import { map, of, switchMap } from 'rxjs';
 import { BookParamService } from '../../../_services/book-param-service/book-param.service';
 import { BooksService } from '../../../_services/books-service/books.service';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
-import { BookFiltersComponent } from '../book-filters/book-filters.component';
 import { BooksCollectionGridOverviewComponent } from '../books-collection-grid-overview/books-collection-grid-overview.component';
 import { BooksCollectionListOverviewComponent } from '../books-collection-list-overview/books-collection-list-overview.component';
+import { BooksFiltersComponent } from '../books-filters/books-filters.component';
 import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
 
 @Component({
@@ -16,7 +16,7 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
     CommonModule,
     BooksCollectionGridOverviewComponent,
     BooksCollectionListOverviewComponent,
-    BookFiltersComponent,
+    BooksFiltersComponent,
     SortBarComponent,
     LoadingStateComponent,
   ],
@@ -46,7 +46,7 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
       <books-loading-state></books-loading-state>
     </ng-template>
   `,
-  styleUrls: ['./books-collection-container.component.scss'],
+  styleUrls: ['./books-collection.container.scss'],
 })
 export class BooksCollectionContainerComponent implements OnInit {
   private booksService = inject(BooksService);

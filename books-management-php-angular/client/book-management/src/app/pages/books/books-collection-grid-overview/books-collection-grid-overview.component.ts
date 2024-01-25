@@ -6,11 +6,11 @@ import {
   OnInit,
 } from '@angular/core';
 import { Book } from 'src/app/_models/book';
-import { BookCardComponent } from '../book-card/book-card.component';
+import { BooksCardComponent } from '../books-card/books-card.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, BookCardComponent],
+  imports: [CommonModule, BooksCardComponent],
   selector: 'app-books-collection-grid-overview',
   template: `
     <section class="books-grid-overview">

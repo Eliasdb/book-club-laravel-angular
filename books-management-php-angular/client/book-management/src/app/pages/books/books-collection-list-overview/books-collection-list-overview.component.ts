@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Book } from '../../../_models/book';
-import { BookCardComponent } from '../book-card/book-card.component';
+import { BooksCardComponent } from '../books-card/books-card.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterLink, BookCardComponent],
+  imports: [CommonModule, RouterLink, BooksCardComponent],
   selector: 'app-books-collection-list-overview',
   template: `
     <section class="books-list-overview">

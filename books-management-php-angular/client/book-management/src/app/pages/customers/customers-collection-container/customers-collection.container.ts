@@ -12,6 +12,6 @@ import { CustomersCollectionOverviewComponent } from '../customers-collection-ov
     <section class="footer-container"></section>
   `,
   imports: [CustomersCollectionOverviewComponent],
-  styleUrls: ['./customers-collection-container.component.scss'],
+  styleUrls: ['./customers-collection.container.scss'],
 })
 export class CustomersCollectionContainerComponent {}
