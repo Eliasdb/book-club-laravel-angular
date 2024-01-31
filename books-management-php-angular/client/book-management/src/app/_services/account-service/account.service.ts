@@ -8,7 +8,21 @@ import { User } from '../../_models/user';
   providedIn: 'root',
 })
 export class AccountService {
-  baseURL = environment.apiUrl;
+  private baseURL = environment.apiUrl;
+  private userId = localStorage.getItem('id');
+  userDetails: any = {
+    id: 0,
+    email: '',
+    name: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    address: '',
+    postalCode: '',
+    city: '',
+  };
+
   // User | null is a union type
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
@@ -21,9 +35,11 @@ export class AccountService {
       map((response: User) => {
         const user = response;
         console.log(user);
+
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user.name));
-          localStorage.setItem('token', JSON.stringify(user.token));
+          localStorage.setItem('user', JSON.stringify(user.userName));
+          localStorage.setItem('id', JSON.stringify(user.id));
+          localStorage.setItem('token', JSON.stringify(user.accessToken));
           this.currentUserSource.next(user);
         }
       })
@@ -34,9 +50,22 @@ export class AccountService {
     return this.http.post<User>(this.baseURL + '/register', model).pipe(
       map((user: User) => {
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user.name));
+          localStorage.setItem('user', JSON.stringify(user.userName));
           this.currentUserSource.next(user);
         }
+      })
+    );
+  }
+
+  updateUser(user: User) {
+    return this.http.patch<User>(this.baseURL + `/users/${this.userId}`, user);
+  }
+
+  getUserDetails() {
+    return this.http.get<any>(`${this.baseURL}/users/${this.userId}`).pipe(
+      map((details) => {
+        this.userDetails = details;
+        return details;
       })
     );
   }

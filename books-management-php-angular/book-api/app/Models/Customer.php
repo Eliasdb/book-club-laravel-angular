@@ -18,9 +18,4 @@ class Customer extends Model
         "postal_code",
         "city"
     ];
-
-    public function books() 
-    {
-        return $this->hasMany(Book::class);
-    }
 }

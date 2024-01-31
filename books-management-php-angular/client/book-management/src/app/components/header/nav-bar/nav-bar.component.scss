@@ -1,24 +1,24 @@
 .nav-container {
-    width:59rem;
+  width: 54.5rem;
 }
 
 .nav-items {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
-    font-weight: bold;
-    margin-bottom: 2rem;
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  font-weight: bold;
+  margin-bottom: 2rem;
 }
 
 @media (max-width: 1024px) {
   .nav-container {
-   width: 39rem;
+    width: 39rem;
   }
 }
 
 @media (max-width: 425px) {
   .nav-container {
-   width: 21rem;
+    width: 21rem;
   }
 }
 

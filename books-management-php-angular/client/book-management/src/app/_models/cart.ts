@@ -1,8 +1,7 @@
-export interface Book {
+export interface CartItem {
   id: number;
   photoUrl: string;
   customerId: number;
-  genre: string;
   title: string;
   author: string;
   status: string;

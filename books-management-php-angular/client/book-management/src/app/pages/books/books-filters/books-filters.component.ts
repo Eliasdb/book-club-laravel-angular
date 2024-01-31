@@ -8,7 +8,11 @@ import { Component } from '@angular/core';
   template: `
     <section class="filters">
       <input type="text" placeholder="Search" class="search-input" />
-
+      <img
+        src="./assets/search-icon.svg"
+        alt="search-icon"
+        class="search-icon"
+      />
       <div class="categories">
         <h4 class="category-title">Genre</h4>
         <button class="category active">All</button>

@@ -26,7 +26,7 @@ class UpdateBookRequest extends FormRequest
         if ($method == "PUT") 
         {
             return [
-                    "customerId" =>["required"],
+                    "userId" =>["required"],
                     "photoUrl" =>["required"],
                     "title" =>["required"],
                     "author" =>["required"],
@@ -39,7 +39,7 @@ class UpdateBookRequest extends FormRequest
         if ($method == "PATCH") 
         {
              return [
-                    "customerId" =>["sometimes", "required"],
+                    "userId" =>["sometimes", "required"],
                     "photoUrl" =>["sometimes", "required"],
                     "title" =>["sometimes", "required"],
                     "author" =>["sometimes", "required"],
@@ -55,10 +55,10 @@ class UpdateBookRequest extends FormRequest
     protected function prepareForValidation()
     {
 
-        if ($this->customerId)
+        if ($this->userId)
         {
             $this->merge([
-                "customer_id" => $this->customerId
+                "user_id" => $this->userId
             ]);
         }
 

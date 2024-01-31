@@ -7,10 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Mehradsadeghi\FilterQueryString\FilterQueryString;
+
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, FilterQueryString;
+
+    protected $filters = [
+      "sort",
+      'name', 
+      "like",
+
+  ];
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +31,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        "first_name",
+        "last_name",
+        "email",
+        "phone_number",
+        "address",
+        "postal_code",
+        "city"
     ];
 
     /**
@@ -43,13 +60,20 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function getJWTIdentifier()
+    public function books() 
     {
-      return $this->getKey();
+        return $this->hasMany(Book::class);
     }
 
-    public function getJWTCustomClaims()
-    {
-      return [];
-    }
+    // public function getJWTIdentifier()
+    // {
+    //   return $this->getKey();
+    // }
+
+    // public function getJWTCustomClaims()
+    // {
+    //   return [];
+    // }
+
+
 }

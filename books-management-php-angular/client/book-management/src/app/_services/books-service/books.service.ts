@@ -40,7 +40,9 @@ export class BooksService {
           .get<RawApiDataBook>(`${environment.apiUrl}/books/${id}`)
           .pipe(
             // projects what we are getting back from API
-            map((data) => data.data)
+            map((data) => {
+              return data.data;
+            })
           );
       },
     });

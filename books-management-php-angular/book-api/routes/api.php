@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\V1\ApiController;
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BookController;
 use App\Http\Controllers\Api\V1\CustomerController;
+use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,20 +26,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //api/v1/
 Route::group(["prefix" => "v1", "namespace" => "App\Http\Controllers\Api\V1"], function()
 {
-    Route::apiResource("customers", CustomerController::class);
     Route::apiResource("books", BookController::class);
-    Route::post("register", [ApiController::class, "register"]);
-    Route::post("login", [ApiController::class, "login"]);
+    Route::apiResource("register", AuthController::class);
+    Route::post("login", [AuthController::class, "login"]);
+    Route::apiResource("users", AuthController::class);
 });
 
 
 
 Route::group([
     "prefix" => "v1",
-    "middleware" => ["auth:api"]
+    "namespace" => "App\Http\Controllers\Api\V1",
+    "middleware" => ["auth:sanctum"]
 ], function(){
-
-    Route::get("profile", [ApiController::class, "profile"]);
-    Route::get("refresh", [ApiController::class, "refreshToken"]);
-    Route::get("logout", [ApiController::class, "logout"]);
+    // Route::get("profile", [ApiController::class, "profile"]);
+    // Route::get("refresh", [ApiController::class, "refreshToken"]);
+    // Route::get("logout", [ApiController::class, "logout"]);
 });

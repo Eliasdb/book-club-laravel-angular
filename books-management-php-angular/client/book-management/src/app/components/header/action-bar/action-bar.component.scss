@@ -19,7 +19,7 @@
 .amount {
   position: absolute;
   top: 5px;
-  right: -11px;
+  right: -6px;
   background: #24262b;
   width: 16px;
   height: 16px;
@@ -28,7 +28,7 @@
   justify-content: center;
   border-radius: 50%;
   font-size: 0.75rem;
-  padding: 2px;
+  padding: 9px;
   color: antiquewhite;
 }
 
@@ -45,10 +45,12 @@
 }
 
 .cart-container {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 3rem;
+  margin-left: 2rem;
 }
+
 button {
   display: inline-block;
   outline: none;
@@ -79,4 +81,8 @@ button {
 .btn-container {
   display: flex;
   gap: 0.5rem;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

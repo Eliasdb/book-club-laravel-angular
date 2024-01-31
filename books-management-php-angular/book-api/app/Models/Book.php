@@ -27,11 +27,11 @@ class Book extends Model
         "genre",
         "author",
         "published_date",
-        "customer_id"
+        "user_id"
     ];
 
-     public function customer() 
+     public function user() 
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(User::class);
     }
 }

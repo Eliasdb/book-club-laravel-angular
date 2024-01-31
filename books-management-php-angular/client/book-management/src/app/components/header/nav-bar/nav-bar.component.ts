@@ -24,8 +24,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             Books
           </a>
         </li>
-        <li><a class="nav-link" routerLink="/customers"> Customers </a></li>
-        <li><a class="nav-link" routerLink="/checkout"> Checkout </a></li>
       </ul>
     </section>
   `,

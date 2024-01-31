@@ -20,12 +20,12 @@ class BookFactory extends Factory
         $genre = $this->faker->randomElement(['non fiction', 'fantasy', 'self help']);
 
         return [
-            "customer_id" => NULL,
-            "photo_url" => $this->faker->url(),
+            "user_id" => NULL,
+            "photo_url" => "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
             "title" => $this->faker->name(),
             "genre" => $genre,
             "author" => $this->faker->name(),
-            "status" => "In stock",
+            "status" => "Available",
             "published_date" => $this->faker->dateTimeThisDecade(),
             "last_loaned_date" => NULL,
         ];

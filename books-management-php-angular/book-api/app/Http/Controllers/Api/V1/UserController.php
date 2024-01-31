@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Customer;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\CustomerResource;
-use App\Http\Resources\V1\CustomerCollection;
+
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateCustomerRequest;
-use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Filters\V1\CustomersFilter;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\V1\UserCollection;
+use App\Http\Resources\V1\UserResource;
+use App\Models\User;
 
-
-class CustomerController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,51 +25,52 @@ class CustomerController extends Controller
 
         $includeBooks = $request->query("includeBooks");
 
-        $customers = Customer::where($filterItems);
+        $customers = User::where($filterItems);
 
         if ($includeBooks) {
             $customers = $customers->with("books");
         }
 
-        return new CustomerCollection($customers->paginate()->appends($request->query()));
+        return new UserCollection($customers->paginate()->appends($request->query()));
 
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCustomerRequest $request)
+    public function store(StoreUserRequest $request)
     {
-        return new CustomerResource(Customer::create($request->all()));
+        
+        return new UserResource(User::create($request->all()));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Customer $customer)
+    public function show(User $customer)
     {
         $includeBooks = request()->query("includeBooks");
 
         if ($includeBooks)
         {
-            return new CustomerResource($customer->loadMissing("books"));
+            return new UserResource($customer->loadMissing("books"));
         }
 
-        return new CustomerResource($customer);
+        return new UserResource($customer);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCustomerRequest $request, Customer $customer)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $customer->update($request->all());
+        $user->update($request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, Customer $customer)
+    public function destroy(UpdateUserRequest $request, User $customer)
     {
         $customer->delete($request->all());
     }
