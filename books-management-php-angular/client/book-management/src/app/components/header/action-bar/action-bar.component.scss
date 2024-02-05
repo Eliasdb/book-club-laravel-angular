@@ -1,9 +1,10 @@
 .action-bar-items {
   display: flex;
   align-items: center;
-  gap: 50rem;
   margin-bottom: 3rem;
   position: relative;
+  justify-content: space-between;
+  min-width: 54rem;
 }
 
 .logo {
@@ -14,6 +15,7 @@
 .launcher-icon {
   width: 25px;
   height: 25px;
+  cursor: pointer;
 }
 
 .amount {
@@ -34,55 +36,44 @@
 
 @media (max-width: 1024px) {
   .action-bar-items {
-    gap: 30rem;
+    min-width: 40rem;
   }
 }
 
 @media (max-width: 425px) {
   .action-bar-items {
-    gap: 12rem;
+    min-width: 20rem;
   }
 }
 
-.cart-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 3rem;
-  margin-left: 2rem;
-}
-
-button {
-  display: inline-block;
-  outline: none;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 600;
-  border-radius: 2px;
-  padding: 15px 34px;
-  border: none;
-  transition: box-shadow 0.2s ease 0s, transform 0.1s ease 0s;
-  background-color: lightgreen;
-  color: black;
-  margin-top: 1rem;
-}
-.remove-item-btn {
-  background-color: indianred;
-  color: white;
-  padding: 12px 22px;
-}
-
-.checkout-btn {
-  background-color: lightgreen;
-  color: black;
-  padding: 12px 34px;
-}
-
-.btn-container {
-  display: flex;
-  gap: 0.5rem;
+@media (max-width: 320px) {
+  .action-bar-items {
+    min-width: 15rem;
+  }
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
+
+.hide {
+  display: none;
+}
+
+.admin {
+  padding: 1rem 2rem;
+  background-color: lightgreen;
+  color: black;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.action-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+// .admin-btn {
+//   height: 6rem;
+// }

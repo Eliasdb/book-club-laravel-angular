@@ -10,7 +10,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     <section class="nav-container">
       <ul class="nav-items">
         <li>
-          <a class="nav-link" routerLink="/" routerLinkActive="active">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">
             Home
           </a>
         </li>
@@ -24,9 +24,28 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             Books
           </a>
         </li>
+        <li *ngIf="userId === '2'">
+          <a
+            class="nav-link"
+            routerLink="/admin/stats"
+            routerLinkActive="active"
+          >
+            Admin
+          </a>
+        </li>
       </ul>
+      <div class="logout-btn">
+        Logout
+        <img
+          src="./assets/logout-btn.svg"
+          alt="Logout button"
+          class="logout-svg"
+        />
+      </div>
     </section>
   `,
   styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent {}
+export class NavBarComponent {
+  public userId = localStorage.getItem('id');
+}

@@ -43,10 +43,10 @@ class AuthController extends Controller
 
         // Response
         return response()->json([
+            "message" => "Registered successfully!",
             "user" => $user,
         ]);
 
-        Book::update();
     }
 
     public function bulkUpdate()
@@ -110,6 +110,7 @@ class AuthController extends Controller
         $userdata = auth()->user();
 
         return response()->json([
+            "message" => "Logged in successfully!",
             "id" => $userdata->id,
             "userName" => $userdata->name,
             "accessToken" => $authToken,

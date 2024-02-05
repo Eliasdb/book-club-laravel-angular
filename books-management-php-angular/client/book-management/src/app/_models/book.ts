@@ -1,12 +1,11 @@
 export interface Book {
-  id: number;
+  id?: number;
   photoUrl: string;
-  customerId: number;
+  userId?: number;
   genre: string;
   title: string;
   author: string;
   status: string;
-  addedDate: Date;
-  publishedDate: Date;
-  lastLoanedDate: Date;
+  publishedDate: string;
+  lastLoanedDate?: Date;
 }

@@ -1,10 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Book } from '../../../_models/book';
 
 @Component({
   selector: 'app-cart-item',
   standalone: true,
   template: `
-    <div class="content-container">
+    <div class="content-container" *ngIf="item">
       <input type="checkbox" class="checkbox" (click)="clickChecked()" />
       <div class="img-container">
         <img
@@ -19,12 +21,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     </div>
   `,
   styleUrls: ['./cart-item.component.scss'],
+  imports: [CommonModule],
 })
 export class CartItemComponent {
-  @Input() item: any | undefined;
-  @Output() clickEvent = new EventEmitter<string>();
+  @Input() item: Book | null = null;
+  @Output() itemSelected = new EventEmitter<Book>();
 
   clickChecked() {
-    this.clickEvent.emit();
+    if (this.item) this.itemSelected.emit(this.item);
   }
 }

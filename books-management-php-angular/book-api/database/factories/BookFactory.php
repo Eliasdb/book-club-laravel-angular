@@ -17,7 +17,9 @@ class BookFactory extends Factory
      */
     public function definition(): array
     {
-        $genre = $this->faker->randomElement(['non fiction', 'fantasy', 'self help']);
+        $genre = $this->faker->randomElement(['non fiction', 'fantasy', 'self help', 'action', 'adventure', 'romance']);
+        $year = $this->faker->randomElement(['2001', '1999', '1927', '1997', '1967', '1985', '1963', '1977']);
+
 
         return [
             "user_id" => NULL,
@@ -26,8 +28,7 @@ class BookFactory extends Factory
             "genre" => $genre,
             "author" => $this->faker->name(),
             "status" => "Available",
-            "published_date" => $this->faker->dateTimeThisDecade(),
-            "last_loaned_date" => NULL,
+            "published_date" => $year,
         ];
     }
 }

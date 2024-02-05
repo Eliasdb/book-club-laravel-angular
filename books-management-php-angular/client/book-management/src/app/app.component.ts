@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.setCurrentUser();
     this.setCart();
+    this.setToken();
   }
 
   setCurrentUser() {
@@ -28,6 +29,13 @@ export class AppComponent implements OnInit {
     if (!userString) return;
     const user: User = JSON.parse(userString);
     this.accountService.setCurrentUser(user);
+  }
+
+  setToken() {
+    const tokenString = localStorage.getItem('token');
+    if (!tokenString) return;
+    const token: string = JSON.parse(tokenString);
+    this.accountService.setCurrentToken(token);
   }
 
   setCart() {

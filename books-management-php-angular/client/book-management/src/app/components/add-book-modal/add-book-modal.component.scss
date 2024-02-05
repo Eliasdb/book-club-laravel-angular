@@ -1,0 +1,39 @@
+button {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  border-radius: 2px;
+  padding: 13px 39px;
+  border: none;
+  transition: box-shadow 0.2s ease 0s, transform 0.1s ease 0s;
+  background-color: lightgreen;
+  color: black;
+  margin-top: 1.5rem;
+}
+
+input:focus {
+  outline: lightgreen;
+  box-shadow: 0 0 0 0.1rem lightgreen;
+}
+
+label {
+  margin: 0.5rem 0;
+}
+
+form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.hidden {
+  display: none;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}

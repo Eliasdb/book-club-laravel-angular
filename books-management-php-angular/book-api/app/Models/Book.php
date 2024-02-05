@@ -17,8 +17,14 @@ class Book extends Model
         "genre",
         "author",
         "like",
-        "published_date"
+        "published_date",
+        "q"
     ];
+
+    public function q($query, $value) {
+        // return $query->orWhere('name', '=', $value);
+       return $query->orWhere('title', 'like', "%$value%");
+    }
 
       protected $fillable = [
         "title",

@@ -25,7 +25,9 @@ export class AccountService {
 
   // User | null is a union type
   private currentUserSource = new BehaviorSubject<User | null>(null);
+  private currentTokenSource = new BehaviorSubject<string | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
+  currentToken$ = this.currentTokenSource.asObservable();
 
   private http = inject(HttpClient);
 
@@ -74,9 +76,14 @@ export class AccountService {
     this.currentUserSource.next(user);
   }
 
+  setCurrentToken(token: string) {
+    this.currentTokenSource.next(token);
+  }
+
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('id');
     this.currentUserSource.next(null);
   }
 }

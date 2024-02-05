@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string("author");
             $table->string("genre");
             $table->string("status");
-            $table->dateTime("published_date");
-            $table->dateTime("last_loaned_date")->nullable();
+            $table->string("published_date");
             $table->timestamps();
         });
     }

@@ -26,12 +26,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //api/v1/
 Route::group(["prefix" => "v1", "namespace" => "App\Http\Controllers\Api\V1"], function()
 {
-    Route::apiResource("books", BookController::class);
     Route::apiResource("register", AuthController::class);
     Route::post("login", [AuthController::class, "login"]);
+      Route::apiResource("books", BookController::class);
     Route::apiResource("users", AuthController::class);
 });
-
 
 
 Route::group([
@@ -39,6 +38,8 @@ Route::group([
     "namespace" => "App\Http\Controllers\Api\V1",
     "middleware" => ["auth:sanctum"]
 ], function(){
+ 
+
     // Route::get("profile", [ApiController::class, "profile"]);
     // Route::get("refresh", [ApiController::class, "refreshToken"]);
     // Route::get("logout", [ApiController::class, "logout"]);
