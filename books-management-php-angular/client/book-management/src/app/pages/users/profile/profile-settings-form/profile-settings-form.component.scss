@@ -20,3 +20,41 @@ label {
     display: block;
   }
 }
+
+form {
+  display: grid;
+  grid-column: repeat();
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+  padding: 4rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 14rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  padding: 0.5rem 0.5rem;
+}
+input:focus {
+  outline: lightgreen;
+}
+
+button {
+  margin-top: 1rem;
+}
+
+h4 {
+  margin: 0;
+}
+.example-tab-icon {
+  margin-right: 8px;
+}

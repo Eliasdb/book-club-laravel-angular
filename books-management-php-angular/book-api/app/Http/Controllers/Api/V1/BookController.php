@@ -21,7 +21,7 @@ class BookController extends Controller
     {
             $pageSize = $request->page_size ?? 15;
             $offset = $request->offset ?? 0;
-            $limit = $request->limit ?? 100;
+            $limit = $request->limit ?? 15;
             // $books = Book::offset($offset)->limit($limit)->filter()->get();
 
             if ($request->status == 'loaned') {

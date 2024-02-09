@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatChipsModule],
   selector: 'app-change-photo',
   template: `
     <div class="row">
-      <div class="col-12 col-sm-auto mb-3">
+      <div class="change-photo-container">
         <div class="mx-auto" style="width: 140px;">
           <div
             class="d-flex justify-content-center align-items-center rounded"
@@ -18,27 +19,25 @@ import { MatButtonModule } from '@angular/material/button';
             >
           </div>
         </div>
-      </div>
-      <div
-        class="col d-flex flex-column flex-sm-row justify-content-between mb-3"
-      >
-        <div class="text-center text-sm-left mb-2 mb-sm-0">
+
+        <div class="change-btn-container">
           <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">Elias De Bock</h4>
-          <div class="mt-2">
-            <button mat-raised-button>
-              <i class="fa fa-fw fa-camera"></i>
-              <span style="margin-left: 5px;">Change Photo</span>
-            </button>
-          </div>
+          <button mat-raised-button>
+            <i class="fa fa-fw fa-camera"></i>
+            <span style="margin-left: 5px;">Change Photo</span>
+          </button>
         </div>
-        <div class="text-center text-sm-right">
-          <span
-            class="badge badge-secondary"
-            style="background-color:lightgreen;color:black;"
-            >member</span
-          >
-          <div class="text-muted"><small>Joined 22 Jan 2024</small></div>
-        </div>
+      </div>
+      <div class="joined">
+        <mat-chip>
+          <img
+            matChipAvatar
+            src="https://material.angular.io/assets/img/examples/shiba1.jpg"
+            alt="Photo of a Shiba Inu"
+          />
+          member
+        </mat-chip>
+        <div class="text-muted"><small>Joined 22 Jan 2024</small></div>
       </div>
     </div>
   `,

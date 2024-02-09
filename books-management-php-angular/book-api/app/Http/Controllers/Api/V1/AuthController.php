@@ -23,6 +23,8 @@ class AuthController extends Controller
         $filterItems = $filter->transform($request); // [['column', 'operator', 'value']]
 
         $includeBooks = $request->query("includeBooks");
+        $includeFavourites = $request->query("includeFavourites");
+
 
         $customers = User::where($filterItems);
 
@@ -30,7 +32,11 @@ class AuthController extends Controller
             $customers = $customers->with("books");
         }
 
-        return new UserCollection($customers->paginate()->appends($request->query()));
+        if ($includeFavourites) {
+            $customers = $customers->with("favourites");
+        }
+
+        return new UserCollection($customers->paginate());
 
     }
 
@@ -123,10 +129,16 @@ class AuthController extends Controller
     public function show(User $user)
     {
         $includeBooks = request()->query("includeBooks");
+        $includeFavourites = request()->query("includeFavourites");
 
         if ($includeBooks)
         {
-            return new UserResource($user->loadMissing("books"));
+            return new UserResource($user->loadMissing("favourites"));
+        }
+
+        if ($includeFavourites)
+        {
+            return new UserResource($user->loadMissing("favourites"));
         }
 
         return new UserResource($user);

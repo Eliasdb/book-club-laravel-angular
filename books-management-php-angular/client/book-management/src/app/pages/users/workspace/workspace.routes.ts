@@ -2,9 +2,10 @@ import { Routes } from '@angular/router';
 import { BooksCollectionContainer } from '../books/books-collection/books-collection.container';
 import { CheckoutComponent } from '../checkout/checkout.component';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
+import { FavouritesContainer } from '../favourites/favourites.container';
 import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile-container/profile.container';
-import { SingleBookComponent } from '../single-book/single-book.component';
+import { SingleBookContainer } from '../single-book/single-book.container';
 import { WorkspaceContainer } from './workspace.container';
 
 export const WorkspaceRoutes: Routes = [
@@ -21,7 +22,11 @@ export const WorkspaceRoutes: Routes = [
       },
       {
         path: 'books/:id',
-        component: SingleBookComponent,
+        component: SingleBookContainer,
+      },
+      {
+        path: 'favourites',
+        component: FavouritesContainer,
       },
       { path: 'checkout', component: CheckoutComponent },
       { path: 'confirmation', component: ConfirmationComponent },

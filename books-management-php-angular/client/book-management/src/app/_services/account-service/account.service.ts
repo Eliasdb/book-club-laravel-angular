@@ -64,12 +64,14 @@ export class AccountService {
   }
 
   getUserDetails() {
-    return this.http.get<any>(`${this.baseURL}/users/${this.userId}`).pipe(
-      map((details) => {
-        this.userDetails = details;
-        return details;
-      })
-    );
+    return this.http
+      .get<any>(`${this.baseURL}/users/${this.userId}?includeFavourites=true`)
+      .pipe(
+        map((details) => {
+          this.userDetails = details;
+          return details;
+        })
+      );
   }
 
   setCurrentUser(user: User) {

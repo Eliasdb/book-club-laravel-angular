@@ -13,6 +13,7 @@ export class CartService {
   private http = inject(HttpClient);
   private userId = localStorage.getItem('id');
   public clicked: boolean = false;
+  public favourited: boolean = false;
 
   toggleClicked() {
     this.clicked = true;
@@ -29,20 +30,6 @@ export class CartService {
     localStorage.setItem('cart', JSON.stringify([...storedItems, book]));
     this.currentCartSource.next([...storedItems, book]);
   }
-
-  // confirmOrder(id: number) {
-  //   return queryOptions({
-  //     queryKey: ['BOOKS', id],
-  //     queryFn: () => {
-  //       return this.http.patch<Book>(`${environment.apiUrl}/books/${id}`).pipe(
-  //         // projects what we are getting back from API
-  //         map((data) => {
-  //           return data.data;
-  //         })
-  //       );
-  //     },
-  //   });
-  // }
 
   confirmOrder(bookIds: number[]) {
     bookIds.forEach((element) => {

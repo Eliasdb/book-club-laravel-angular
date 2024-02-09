@@ -88,22 +88,6 @@ export class BooksService {
     });
   }
 
-  addBook(book: Book) {
-    return queryOptions({
-      queryKey: ['BOOKS', book.title],
-      queryFn: () => {
-        return this.http.post<Book>(`${environment.apiUrl}/books`, book).pipe(
-          // projects what we are getting back from API
-          map((data) => {
-            console.log(data);
-
-            return data;
-          })
-        );
-      },
-    });
-  }
-
   createCreateBookMutation() {
     return this.useMutation((book: Book) =>
       this.http.post<Book>(`${environment.apiUrl}/books`, book)
