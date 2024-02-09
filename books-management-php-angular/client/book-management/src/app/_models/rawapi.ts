@@ -8,7 +8,10 @@ export interface RawApiDataCustomer {
 }
 
 export interface RawApiDataBooks {
-  data: Book[];
+  data: {
+    items: Book[];
+    count: number;
+  };
   links: string[];
   meta: any;
 }

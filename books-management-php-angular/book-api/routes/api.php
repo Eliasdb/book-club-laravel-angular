@@ -1,10 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\V1\ApiController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BookController;
-use App\Http\Controllers\Api\V1\CustomerController;
-use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\FavouriteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,10 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //api/v1/
 Route::group(["prefix" => "v1", "namespace" => "App\Http\Controllers\Api\V1"], function()
 {
+    Route::apiResource("favourites", FavouriteController::class);
     Route::apiResource("register", AuthController::class);
     Route::post("login", [AuthController::class, "login"]);
-      Route::apiResource("books", BookController::class);
+    Route::apiResource("books", BookController::class);
     Route::apiResource("users", AuthController::class);
+
 });
 
 

@@ -53,6 +53,7 @@ import { HeaderComponent } from '../../../components/header/header/header.compon
 })
 export class AdminSpaceContainer {
   headerBackgroundColour: string = 'dark';
+  visitedState: string = ' active';
   headerTextColour: string = ' text-light';
   hideLauncher: boolean = true;
   logoTheme: string = 'dark';

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UseQuery, filterSuccess } from '@ngneat/query';
 import { distinctUntilChanged, filter, map, switchMap, take } from 'rxjs';
@@ -8,7 +9,7 @@ import { CartService } from '../../../_services/cart-service/cart.service';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
 @Component({
   standalone: true,
-  imports: [RouterLink, CommonModule, LoadingStateComponent],
+  imports: [RouterLink, CommonModule, LoadingStateComponent, MatButtonModule],
   selector: 'app-single-book',
   template: `
     <section
@@ -49,7 +50,8 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
         </p>
         <hr />
         <button
-          class="add-btn"
+          mat-raised-button
+          color="accent"
           (click)="addToCart(); clicked = true"
           [disabled]="clicked"
         >

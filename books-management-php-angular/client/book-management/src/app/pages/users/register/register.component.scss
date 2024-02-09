@@ -4,6 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url("https://img.freepik.com/free-vector/tea-books-cozy-pattern_1191-505.jpg");
+  background-repeat: repeat;
 }
 
 .form {
@@ -84,6 +86,7 @@ button {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  margin-top: 2rem;
 }
 
 .horizontal-line {

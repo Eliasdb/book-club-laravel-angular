@@ -2,6 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -28,11 +29,16 @@ import { AddBookDialog } from '../../../../components/add-book-modal/add-book-mo
     MatCheckboxModule,
     MatPaginatorModule,
     DatePipe,
+    MatButtonModule,
   ],
   template: `
     <section class="collection-title">
       <h3>Books</h3>
-      <div><button (click)="openDialog()">+</button></div>
+      <div>
+        <button mat-raised-button (click)="openDialog()" color="accent">
+          +
+        </button>
+      </div>
     </section>
     <div class="example-container mat-elevation-z8">
       <!-- <div *ngIf="isLoadingResults" class="example-loading-shade"> -->
@@ -110,7 +116,7 @@ import { AddBookDialog } from '../../../../components/add-book-modal/add-book-mo
 
       <mat-paginator
         [length]="resultsLength"
-        [pageSize]="15"
+        [pageSize]="10"
         aria-label="Select page of GitHub search results"
       ></mat-paginator>
     </div>
@@ -182,8 +188,8 @@ export class AdminBooksCollectionOverviewComponent implements AfterViewInit {
           // Only refresh the result length if there is new data. In case of rate
           // limit errors, we do not want to reset the paginator to zero, as that
           // would prevent users from re-triggering requests.
-          this.resultsLength = data.meta.total;
-          return data.data;
+          this.resultsLength = data.data.count;
+          return data.data.items;
         })
       )
       .subscribe((data) => {
@@ -230,8 +236,10 @@ export class BookDatabase {
     page: number
   ): Observable<RawApiDataBooks> {
     const href = 'http://localhost:8000/api/v1/books';
-    const requestUrl = `${href}?page=${page + 1}&sort=id,desc`;
+    const requestUrl = `${href}?sort=id,desc`;
 
-    return this._httpClient.get<RawApiDataBooks>(requestUrl);
+    return this._httpClient
+      .get<RawApiDataBooks>(requestUrl)
+      .pipe(map((response) => response));
   }
 }

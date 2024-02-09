@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->hasMany(Book::class);
     }
 
+    public function favourites() 
+    {
+        return $this->hasMany(Favourite::class);
+    }
+
     // public function getJWTIdentifier()
     // {
     //   return $this->getKey();

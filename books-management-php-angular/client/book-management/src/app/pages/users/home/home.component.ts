@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 import { AccountService } from '../../../_services/account-service/account.service';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, MatButtonModule, MatBottomSheetModule],
   selector: 'app-home',
   template: ` <section class="body">
     <section class="intro-text">
@@ -13,9 +15,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
       <p class="welcome">
         Welcome to the club! Feel free to have a look around.
       </p>
-      <button class="browse-btn" routerLink="/books" routerLinkActive="active">
-        Browse
-      </button>
+      <button mat-raised-button routerLink="/books">Browse</button>
     </section>
     <section class="footer-container"></section>
   </section>`,

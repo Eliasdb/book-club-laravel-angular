@@ -14,13 +14,13 @@ import { NavBarComponent } from '../nav-bar/nav-bar.component';
     CommonModule,
   ],
   template: `
-    <section
-      [ngClass]="[headerBackgroundColour + headerTextColour]"
-      class="header-container"
-    >
+    <section [ngClass]="[headerBackgroundColour]" class="header-container">
       <header class="header">
         <app-action-bar [hideLauncher]="hideLauncher" />
-        <app-nav-bar />
+        <app-nav-bar
+          [ngClass]="headerTextColour"
+          [hideLauncher]="hideLauncher"
+        />
       </header>
     </section>
   `,
@@ -30,7 +30,7 @@ export class HeaderComponent {
   @Input()
   headerBackgroundColour!: string;
   @Input()
-  headerTextColour: string = '';
+  headerTextColour!: string;
   @Input()
   hideLauncher!: boolean;
   @Input()

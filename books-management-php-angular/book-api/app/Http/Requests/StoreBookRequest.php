@@ -25,6 +25,7 @@ class StoreBookRequest extends FormRequest
         return [
             "title" =>["required"],
             "photoUrl" =>["required"],
+            "description" =>["required"],
             // "status" =>["required", Rule::in(["loaned out", "in stock"])],
             "author" =>["required"],
             "status" =>["required"],

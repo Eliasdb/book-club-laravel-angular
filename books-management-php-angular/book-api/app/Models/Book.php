@@ -11,20 +11,28 @@ class Book extends Model
     use HasFactory, FilterQueryString;
 
     protected $filters = [
+        "in",
+        "status",
         "sort",
-        'title', 
-        'status',
+        "title", 
         "genre",
         "author",
         "like",
         "published_date",
-        "q"
+        "q",
     ];
 
     public function q($query, $value) {
         // return $query->orWhere('name', '=', $value);
        return $query->orWhere('title', 'like', "%$value%");
     }
+
+    public function author($query, $value) {
+        // return $query->orWhere('name', '=', $value);
+       return $query->orWhere('author', 'like', "%$value%");
+    }
+
+
 
       protected $fillable = [
         "title",

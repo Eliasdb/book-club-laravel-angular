@@ -10,6 +10,7 @@ use App\Http\Resources\V1\BookResource;
 use App\Http\Resources\V1\BookCollection;
 use App\Filters\V1\BooksFilter;
 Use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -18,17 +19,81 @@ class BookController extends Controller
      */
    public function index(Request $request)
     {
-        // $filter = new BooksFilter();
-        // $queryItems = $filter->transform($request); // [['column', 'operator', 'value']]
-
-        // if (count($queryItems) == 0) {
-        //     return new BookCollection(Book::paginate());
-        // } else {
-        //     $books = Book::all()->filter()->paginate();
-        //     return new BookCollection($books);
-        // }
             $pageSize = $request->page_size ?? 15;
-            $books = Book::filter()->paginate($pageSize);
+            $offset = $request->offset ?? 0;
+            $limit = $request->limit ?? 100;
+            // $books = Book::offset($offset)->limit($limit)->filter()->get();
+
+            if ($request->status == 'loaned') {
+                switch ($request->sort) {
+                    case "title,asc":
+                        $sql = DB::select(
+                        "SELECT * FROM books 
+                        WHERE (status = 'loaned' AND genre LIKE '%$request->genre%')
+                        AND (title LIKE '%$request->q%' OR author LIKE '%$request->author%')
+                        ORDER BY title ASC
+                        ");
+                         return new BookCollection($sql);
+                      break;
+                    case "title,desc":
+                        $sql = DB::select(
+                        "SELECT * FROM books 
+                        WHERE (status = 'loaned' AND genre LIKE '%$request->genre%')
+                        AND (title LIKE '%$request->q%' OR author LIKE '%$request->author%')
+                        ORDER BY title DESC
+                        ");
+                         return new BookCollection($sql);
+                      break;
+                    case "author,asc":
+                        $sql = DB::select(
+                        "SELECT * FROM books 
+                        WHERE (status = 'loaned' AND genre LIKE '%$request->genre%')
+                        AND (title LIKE '%$request->q%' OR author LIKE '%$request->author%')
+                        ORDER BY author ASC
+                        ");
+                         return new BookCollection($sql);                      
+                         break;
+                    case "author,desc":
+                        $sql = DB::select(
+                        "SELECT * FROM books 
+                        WHERE (status = 'loaned' AND genre LIKE '%$request->genre%')
+                        AND (title LIKE '%$request->q%' OR author LIKE '%$request->author%')
+                        ORDER BY author DESC
+                        ");
+                        return new BookCollection($sql);                      
+                        break;
+                    case "published_date,asc":
+                        $sql = DB::select(
+                        "SELECT * FROM books 
+                        WHERE (status = 'loaned' AND genre LIKE '%$request->genre%')
+                        AND (title LIKE '%$request->q%' OR author LIKE '%$request->author%')
+                        ORDER BY published_date ASC
+                        ");
+                         return new BookCollection($sql);                  
+                        break;
+                    case "published_date,desc":
+                        $sql = DB::select(
+                        "SELECT * FROM books 
+                        WHERE (status = 'loaned' AND genre LIKE '%$request->genre%')
+                        AND (title LIKE '%$request->q%' OR author LIKE '%$request->author%')
+                        ORDER BY published_date DESC
+                        ");
+                         return new BookCollection($sql);            
+                        break;
+                        default:
+                        $sql = DB::select(
+                            "SELECT * FROM books 
+                            WHERE (status = 'loaned' AND genre LIKE '%$request->genre%')
+                            AND (title LIKE '%$request->q%' OR author LIKE '%$request->author%')
+                            ORDER BY title ASC
+                            ");
+                        return new BookCollection($sql);
+                  }
+
+            }
+            
+            $books = Book::skip($offset)->limit($limit)->filter()->get();
+
             return new BookCollection($books);
 
     }

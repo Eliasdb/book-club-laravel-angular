@@ -1,6 +1,6 @@
 .horizontal-sort {
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
+  grid-template-columns: auto auto 1fr auto auto;
   align-items: center;
   margin-bottom: 2rem;
   column-gap: 2rem;
@@ -46,7 +46,7 @@ p {
     justify-content: center;
     cursor: pointer;
     svg {
-      font-size: 1rem;
+      font-size: 0.7rem;
     }
   }
   .active {
@@ -83,4 +83,14 @@ select {
   .btn-container {
     display: none;
   }
+}
+
+.book-count {
+  width: 7rem;
+  text-align: right;
+}
+
+.sort-container {
+  display: flex;
+  align-items: center;
 }

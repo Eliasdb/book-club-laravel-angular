@@ -53,12 +53,50 @@ import { CustomersService } from '../../../../_services/customers-service/custom
       multiTemplateDataRows
       class="mat-elevation-z8"
     >
-      <ng-container
-        *ngFor="let column of columnsToDisplay; track: column"
-        matColumnDef="{{ column }}"
-      >
-        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-        <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <!-- State Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Username</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef>First Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+      </ng-container>
+      <!-- Title Column -->
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef>Last Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="phoneNumber">
+        <th mat-header-cell *matHeaderCellDef>Phone number</th>
+        <td mat-cell *matCellDef="let element">{{ element.phoneNumber }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef>Address</th>
+        <td mat-cell *matCellDef="let element">{{ element.address }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="postalCode">
+        <th mat-header-cell *matHeaderCellDef>Postal code</th>
+        <td mat-cell *matCellDef="let element">{{ element.postalCode }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef>City</th>
+        <td mat-cell *matCellDef="let element">{{ element.city }}</td>
       </ng-container>
 
       <ng-container matColumnDef="expand">
@@ -134,6 +172,7 @@ export class AdminCustomersCollectionOverviewComponent {
 
   dataSource = this.customersService.getCustomersWithBooks();
   columnsToDisplay = [
+    'number',
     'name',
     'firstName',
     'lastName',

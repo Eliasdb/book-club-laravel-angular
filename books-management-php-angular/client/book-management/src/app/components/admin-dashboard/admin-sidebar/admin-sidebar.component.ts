@@ -1,9 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule,
+} from '@angular/material/bottom-sheet';
 import { RouterLink } from '@angular/router';
+import { BottomSheetComponent } from '../../bottom-sheet/bottom-sheet.component';
 
 @Component({
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, MatBottomSheetModule],
   selector: 'app-admin-sidebar',
   template: `
     <div class="content">
@@ -12,6 +17,7 @@ import { RouterLink } from '@angular/router';
           <li
             routerLink="/admin/stats"
             class="{{ isSidebarOpen ? 'nav-link active' : 'nav-link' }}"
+            (click)="closeBottomSheet()"
           >
             <span class="icon"
               ><img src="./assets/stats.svg" alt="stats-icon" class="icon-img"
@@ -32,6 +38,7 @@ import { RouterLink } from '@angular/router';
           <li
             routerLink="/admin/order-overview"
             class="{{ isSidebarOpen ? 'nav-link active' : 'nav-link' }}"
+            (click)="closeBottomSheet()"
           >
             <span class="icon"
               ><img src="./assets/stats.svg" alt="stats-icon" class="icon-img"
@@ -46,4 +53,9 @@ import { RouterLink } from '@angular/router';
 })
 export class AdminSidebarComponent {
   @Input() isSidebarOpen: boolean | undefined;
+  private _bottomSheet = inject(MatBottomSheet);
+
+  closeBottomSheet(): void {
+    this._bottomSheet.dismiss(BottomSheetComponent);
+  }
 }

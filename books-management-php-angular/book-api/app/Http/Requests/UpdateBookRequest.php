@@ -28,6 +28,7 @@ class UpdateBookRequest extends FormRequest
             return [
                     "userId" =>["required"],
                     "photoUrl" =>["required"],
+                    "description" =>["required"],
                     "title" =>["required"],
                     "author" =>["required"],
                     "genre" =>["required"],
@@ -38,16 +39,17 @@ class UpdateBookRequest extends FormRequest
         }  
         if ($method == "PATCH") 
         {
-             return [
-                    "userId" =>["sometimes", "required"],
-                    "photoUrl" =>["sometimes", "required"],
-                    "title" =>["sometimes", "required"],
-                    "author" =>["sometimes", "required"],
-                    "genre" =>["sometimes", "required"],
-                    "status" =>["sometimes", "required"],
-                    "publishedDate" =>["sometimes", "required"],
-                    "lastLoanedDate" =>["sometimes", "required"],
-                    ];
+            return [
+                "userId" =>["sometimes", "required"],
+                "photoUrl" =>["sometimes", "required"],
+                "description" =>["sometimes", "required"],
+                "title" =>["sometimes", "required"],
+                "author" =>["sometimes", "required"],
+                "genre" =>["sometimes", "required"],
+                "status" =>["sometimes", "required"],
+                "publishedDate" =>["sometimes", "required"],
+                "lastLoanedDate" =>["sometimes", "required"],
+                ];
         }
        
     }

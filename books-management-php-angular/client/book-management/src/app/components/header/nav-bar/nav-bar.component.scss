@@ -1,5 +1,5 @@
 .nav-container {
-  min-width: 54rem;
+  min-width: 59rem;
   display: flex;
   justify-content: space-between;
 }
@@ -43,8 +43,12 @@
   color: lightgreen;
 }
 
+.active-lightgreen {
+  color: lightgreen;
+}
+
 .logout-btn {
-  color: black;
+  color: inherit;
   height: 1rem;
   gap: 0.5rem;
   display: flex;
@@ -59,6 +63,19 @@
 .logout-svg {
   height: 100%;
   width: 100%;
+  /* to black */
+  filter: invert(1);
+  /* or to blue */
+  // filter: invert(0.5) sepia(1) saturate(5) hue-rotate(175deg);
+}
+
+.logout-svg-dark {
+  height: 100%;
+  width: 100%;
+  /* to black */
+  filter: invert(0);
+  /* or to blue */
+  // filter: invert(0.5) sepia(1) saturate(5) hue-rotate(175deg);
 }
 
 .logout-svg:hover {

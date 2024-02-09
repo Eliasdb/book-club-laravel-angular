@@ -48,7 +48,7 @@ export class CartService {
     bookIds.forEach((element) => {
       this.http
         .patch<any>(
-          `${this.baseURL}/books/${element}?userId=${this.userId}&status=Loaned%20out`,
+          `${this.baseURL}/books/${element}?userId=${this.userId}&status=loaned`,
           this.userId
         )
         .subscribe((data) => {

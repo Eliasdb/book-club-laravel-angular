@@ -16,6 +16,9 @@ class CustomerFactory extends Factory
      */
     public function definition(): array
     {
+        $genre = $this->faker->randomElement(['Drama', 'History', 'Adventure', 'Action', 'Non fiction', 'Comedy', 'Crime', 'Fantasy', 'Mystery', 'Horror', 'Thriller']);
+        $year = $this->faker->randomElement(['2001', '1999', '1927', '1997', '1967', '1985', '1963', '1977', '1998', '1989']);
+
         return [
             "first_name" =>  $this->faker->firstName(),
             "last_name" => $this->faker->lastName(),

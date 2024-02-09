@@ -38,11 +38,6 @@ button {
     -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
 }
 
-.browse-btn {
-  background-color: #24262b;
-  color: #f3f3f3;
-}
-
 .nav-link {
   text-decoration: none;
   color: white;
@@ -50,4 +45,9 @@ button {
 
 .welcome {
   text-align: center;
+}
+
+.mat-mdc-raised-button.mat-mdc-button-base {
+  height: 4rem;
+  width: 12rem;
 }

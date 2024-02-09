@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer("user_id")->nullable();
             $table->string("photo_url");
+            $table->string("description");
             $table->string("title");
             $table->string("author");
             $table->string("genre");

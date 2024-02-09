@@ -2,6 +2,9 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins&family=Roboto:wght@700&family=Vollkorn:wght@400;500;600&display=swap");
 
+* {
+  padding: 0;
+}
 body {
   background-color: #f3f3f3;
   margin: 0;
@@ -23,4 +26,86 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// .mat-bottom-sheet-container-large {
+//   min-width: 100%;
+// }
+
+// .mat-bottom-sheet-container-xlarge,
+// .mat-bottom-sheet-container-large,
+// .mat-bottom-sheet-container-medium {
+//   min-width: 100vw !important;
+//   width: 100vw !important;
+// }
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: white !important;
+  // width: 4rem;
+  // height: 5rem;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: black !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  caret-color: lightgreen !important;
+}
+
+.mdc-label {
+  color: black;
+  font-size: 12px !important;
+}
+
+.mat-bottom-sheet-container {
+  background: #24262b !important;
+}
+
+.mat-mdc-card {
+  background: white !important;
+}
+
+.mdc-tab__text-label {
+  color: #24262b !important;
+}
+
+.mat-mdc-tab .mdc-tab-indicator__content--underline {
+  border-color: lightgreen !important;
+}
+
+.mat-mdc-tab-group {
+  --mdc-tab-indicator-active-indicator-color: #7b1fa2;
+  --mat-tab-header-disabled-ripple-color: rgba(255, 255, 255, 0.5);
+  --mat-tab-header-pagination-icon-color: #fff;
+  --mat-tab-header-inactive-label-text-color: rgba(255, 255, 255, 0.6);
+  --mat-tab-header-active-label-text-color: black;
+  --mat-tab-header-active-ripple-color: red !important;
+  --mat-tab-header-inactive-ripple-color: lightgreen !important;
+  --mat-tab-header-inactive-focus-label-text-color: rgba(255, 255, 255, 0.6);
+  --mat-tab-header-inactive-hover-label-text-color: rgba(255, 255, 255, 0.6);
+  --mat-tab-header-active-focus-label-text-color: #7b1fa2;
+  --mat-tab-header-active-hover-label-text-color: #7b1fa2;
+  --mat-tab-header-active-focus-indicator-color: #7b1fa2;
+  --mat-tab-header-active-hover-indicator-color: #7b1fa2;
+}
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+  background-color: lightgreen !important;
+}
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled)
+  .mdc-evolution-chip__text-label {
+  color: black !important;
+}
+
+.mat-mdc-paginator-outer-container {
+  display: flex;
+  margin-top: 14rem;
 }

@@ -1,8 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { sortArray, sortValues } from '../../../../_data/data';
 
 @Component({
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule],
   selector: 'app-sort-bar',
   template: `
     <section class="horizontal-sort">
@@ -47,15 +56,30 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
           </svg>
         </button>
       </div>
-      <p>{{ bookCount }} books found</p>
-      <hr style="width:15rem;" />
-      <form>
+      <p class="book-count">
+        {{ bookCount }} {{ bookCount === 1 ? 'book' : 'books' }} found
+      </p>
+      <hr style="width:11rem;" />
+
+      <div class="sort-container">
         <label for="sort">sort by</label>
-        <select name="sort" id="sort" class="sort-input">
-          <option value="name-a">name (a-z)</option>
-          <option value="name-z">name (z-a)</option>
+
+        <select
+          name="sort"
+          id="sort"
+          class="sort-input"
+          (change)="selectSort($event)"
+        >
+          <option
+            *ngFor="let sort of sortByOrder"
+            [value]="sortByMap[sort].key"
+            class="status-option"
+            [selected]="selectedValue === sortByMap[sort].key"
+          >
+            {{ sortByMap[sort].label }}
+          </option>
         </select>
-      </form>
+      </div>
     </section>
   `,
   styleUrls: ['./books-sort-bar.component.scss'],
@@ -63,9 +87,62 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class SortBarComponent {
   @Input() showList: boolean | undefined;
   @Input() bookCount?: number;
+  @Input() selectedSort = 'author,asc';
+  sortArray: sortValues[] = sortArray;
+  selectedValue: string = '';
+
+  sortByMap: Record<string, { label: string; key: string }> = {
+    ['title-asc']: {
+      label: 'title (a-z)',
+      key: 'title,asc',
+    },
+    ['title-desc']: {
+      label: 'title (z-a)',
+      key: 'title,desc',
+    },
+    ['author-asc']: {
+      label: 'author (a-z)',
+      key: 'author,asc',
+    },
+    ['auth-desc']: {
+      label: 'author (z-a)',
+      key: 'author,desc',
+    },
+    ['published-desc']: {
+      label: 'year (newest)',
+      key: 'published_date,desc',
+    },
+    ['published-asc']: {
+      label: 'year (oldest)',
+      key: 'published_date,asc',
+    },
+  };
+
+  sortByOrder = [
+    'title-asc',
+    'title-desc',
+    'author-asc',
+    'auth-desc',
+    'published-desc',
+    'published-asc',
+  ];
+
   @Output() clickEvent = new EventEmitter<string>();
+  @Output() sort = new EventEmitter<string>();
 
   toggleShow() {
     this.clickEvent.emit();
+  }
+
+  selectSort(event: Event) {
+    this.selectedValue = (event.target as HTMLSelectElement).value;
+
+    this.sort.emit(this.selectedValue);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedSort']) {
+      this.selectedValue = this.selectedSort;
+    }
   }
 }
