@@ -1,9 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { filterSuccessResult } from '@ngneat/query';
 import { combineLatest, map, shareReplay, switchMap } from 'rxjs';
+import { SharedModule } from '../../../../_modules/shared.module';
 import { BookParamService } from '../../../../_services/book-param-service/book-param.service';
 import {
   AUTHORS_QUERY_PARAM,
@@ -14,24 +12,20 @@ import {
 } from '../../../../_services/books-service/book-param.type';
 import { BooksService } from '../../../../_services/books-service/books.service';
 import { LoadingStateComponent } from '../../../../components/loading-state/loading-state.component';
-import { PaginatorComponent } from '../../../../components/paginator/paginator.component';
 import { BooksCollectionGridOverviewComponent } from '../books-collection-grid-overview/books-collection-grid-overview.component';
 import { BooksCollectionListOverviewComponent } from '../books-collection-list-overview/books-collection-list-overview.component';
 import { BooksFiltersComponent } from '../books-filters/books-filters.component';
-import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
+import { BooksSortBarComponent } from '../books-sort-bar/books-sort-bar.component';
 
 @Component({
   standalone: true,
   imports: [
-    CommonModule,
+    SharedModule,
     BooksCollectionGridOverviewComponent,
     BooksCollectionListOverviewComponent,
     BooksFiltersComponent,
-    SortBarComponent,
+    BooksSortBarComponent,
     LoadingStateComponent,
-    MatPaginatorModule,
-    PaginatorComponent,
-    MatBottomSheetModule,
   ],
   selector: 'books-container',
   template: `

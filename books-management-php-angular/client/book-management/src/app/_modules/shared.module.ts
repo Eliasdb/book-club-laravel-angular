@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
-
 
 @NgModule({
   declarations: [],
@@ -10,8 +9,7 @@ import { ToastrModule } from 'ngx-toastr';
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
     }),
- 
   ],
-  exports: [ToastrModule],
+  exports: [ToastrModule, CommonModule],
 })
 export class SharedModule {}

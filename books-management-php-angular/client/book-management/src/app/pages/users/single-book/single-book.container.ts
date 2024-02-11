@@ -5,10 +5,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { filterSuccessResult } from '@ngneat/query';
+import { ToastrService } from 'ngx-toastr';
 import { distinctUntilChanged, filter, map, switchMap, take } from 'rxjs';
 import { BooksService } from '../../../_services/books-service/books.service';
 import { CartService } from '../../../_services/cart-service/cart.service';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
+import { AddButtonComponent } from './add-button/add-button.component';
 @Component({
   standalone: true,
   imports: [
@@ -18,6 +20,7 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    AddButtonComponent,
   ],
   selector: 'single-book',
   template: `
@@ -65,15 +68,13 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
                 {{ (book$ | async)?.status }}
               </p>
               <hr />
+
               <div class="btn-container">
-                <button
-                  mat-raised-button
-                  color="accent"
-                  (click)="addToCart(); clicked = true"
-                  [disabled]="clicked"
-                >
-                  Add to cart
-                </button>
+                <add-button
+                  [isDisabled]="isDisabled"
+                  [book]="(book$ | async) || null"
+                  (add)="addToCart($event)"
+                />
                 <button mat-raised-button (click)="favourite()">
                   <mat-icon
                     *ngIf="this.cartService.favourited == false; else outline"
@@ -100,9 +101,11 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
 export class SingleBookContainer {
   // private useQuery = inject(UseQuery);
   private booksService = inject(BooksService);
+  private toastr = inject(ToastrService);
+
   protected cartService = inject(CartService);
   private activatedRoute = inject(ActivatedRoute);
-  clicked = this.cartService.clicked;
+  isDisabled?: boolean;
 
   favourite() {
     this.cartService.favourited = true;
@@ -123,11 +126,14 @@ export class SingleBookContainer {
     map((res) => res.data)
   );
 
-  // protected isLoading$ = this.bookResults$.pipe(map((res) => res.isLoading));
-
-  addToCart() {
+  addToCart($event: Event) {
     this.book$.pipe(take(1)).subscribe((book) => {
+      console.log('added');
+
       this.cartService.addToCart(book);
+      this.toastr.success(`${book.title} added to cart!`);
     });
   }
+
+  // protected isLoading$ = this.bookResults$.pipe(map((res) => res.isLoading));
 }

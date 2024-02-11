@@ -11,67 +11,64 @@ import { CartItemComponent } from '../header/cart-item/cart-item.component';
 
 @Component({
   selector: 'cart-dialog',
-  template: `<h2 mat-dialog-title>Add book</h2>
+  template: `<h2 mat-dialog-title>
+      Add book
+      <hr style="margin-top: 0.5rem;" />
+    </h2>
+
     <mat-dialog-content class="mat-typography">
       <!-- <h3>Please fill in the following data:</h3> -->
-      <hr />
+
       <form
         #addBookForm="ngForm"
         (ngSubmit)="addBook()"
         autocomplete="off"
         class="form"
       >
-        <div class="form-group">
-          <label for="title">Title</label>
-          <input
-            type="text"
-            class="form-control"
-            name="title"
-            [(ngModel)]="book.title"
-            placeholder="Harry Potter"
-          />
-        </div>
-        <div class="form-group">
-          <label for="genre">Genre</label>
-          <input
-            type="text"
-            class="form-control"
-            name="genre"
-            [(ngModel)]="book.genre"
-            placeholder="e.g. fantasy, action, adventure..."
-          />
+        <div class="inputs">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              name="title"
+              [(ngModel)]="book.title"
+              placeholder="Harry Potter"
+            />
+          </div>
+          <div class="form-group">
+            <label for="genre">Genre</label>
+            <input
+              type="text"
+              class="form-control"
+              name="genre"
+              [(ngModel)]="book.genre"
+              placeholder="e.g. fantasy, action, adventure..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="author">Author</label>
+            <input
+              type="text"
+              class="form-control"
+              name="author"
+              [(ngModel)]="book.author"
+              placeholder="J.R.R. Tolkien"
+            />
+          </div>
+          <div class="form-group">
+            <label for="publishedDate">Published Date</label>
+            <input
+              type="text"
+              class="form-control"
+              name="publishedDate"
+              [(ngModel)]="book.publishedDate"
+              placeholder="2024"
+            />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="author">Author</label>
-          <input
-            type="text"
-            class="form-control"
-            name="author"
-            [(ngModel)]="book.author"
-            placeholder="J.R.R. Tolkien"
-          />
-        </div>
-        <div class="form-group">
-          <label for="publishedDate">Published Date</label>
-          <input
-            type="text"
-            class="form-control"
-            name="publishedDate"
-            [(ngModel)]="book.publishedDate"
-            placeholder="2024"
-          />
-        </div>
-        <div class="form-group">
-          <label for="description">description</label>
-          <input
-            type="text"
-            class="form-control"
-            name="description"
-            [(ngModel)]="book.description"
-            placeholder="description"
-          />
-        </div>
         <div class="form-group">
           <label for="photoUrl">Photo Url</label>
           <input
@@ -81,16 +78,16 @@ import { CartItemComponent } from '../header/cart-item/cart-item.component';
             [(ngModel)]="book.photoUrl"
             placeholder="https://yoururl.com"
           />
-        </div>
-        <input
-          type="hidden"
-          class="form-control hidden"
-          name="status"
-          [(ngModel)]="book.status"
-          value="Available"
-        />
-
-        <mat-dialog-actions align="center">
+          <label for="description">Description</label>
+          <textarea
+            rows="5"
+            type="text"
+            class="form-control"
+            name="description"
+            [(ngModel)]="book.description"
+            placeholder="description"
+          >
+          </textarea>
           <div class="btn-container">
             <button
               type="submit"
@@ -101,7 +98,15 @@ import { CartItemComponent } from '../header/cart-item/cart-item.component';
               <span> Add book </span>
             </button>
           </div>
-        </mat-dialog-actions>
+        </div>
+
+        <input
+          type="hidden"
+          class="form-control hidden"
+          name="status"
+          [(ngModel)]="book.status"
+          value="Available"
+        />
       </form>
     </mat-dialog-content> `,
   standalone: true,

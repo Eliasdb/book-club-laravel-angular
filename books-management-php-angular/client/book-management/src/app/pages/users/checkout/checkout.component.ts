@@ -35,7 +35,6 @@ export class CheckoutComponent implements OnInit {
   private router = inject(Router);
 
   items$ = this.cartService.currentCartSource;
-  clicked = this.cartService.clicked;
 
   getBookIds() {
     const books = this.cartService.getItems();
@@ -45,7 +44,6 @@ export class CheckoutComponent implements OnInit {
 
   confirmOrder(bookIds: number[]) {
     this.cartService.confirmOrder(bookIds);
-    this.clicked = false;
     localStorage.removeItem('cart');
     this.cartService.setCurrentCart(null);
     this.router.navigateByUrl('/confirmation');

@@ -42,6 +42,7 @@ class Book extends Model
       "photo_url",
       "status",
       "genre",
+      "description",
       "author",
       "published_date",
       "user_id"

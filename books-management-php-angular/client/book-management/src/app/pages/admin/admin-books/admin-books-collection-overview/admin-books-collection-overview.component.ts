@@ -36,7 +36,7 @@ import { AddBookDialog } from '../../../../components/add-book-modal/add-book-mo
       <h3>Books</h3>
       <div>
         <button mat-raised-button (click)="openDialog()" color="accent">
-          +
+          Add book
         </button>
       </div>
     </section>

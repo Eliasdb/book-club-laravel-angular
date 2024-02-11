@@ -84,7 +84,7 @@ import { sortArray, sortValues } from '../../../../_data/data';
   `,
   styleUrls: ['./books-sort-bar.component.scss'],
 })
-export class SortBarComponent {
+export class BooksSortBarComponent {
   @Input() showList: boolean | undefined;
   @Input() bookCount?: number;
   @Input() selectedSort = 'author,asc';

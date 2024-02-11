@@ -61,3 +61,9 @@ h3 {
   justify-content: flex-start;
   margin-top: 1.5rem;
 }
+
+.mat-mdc-raised-button[disabled].mat-mdc-button-disabled,
+.mat-mdc-raised-button.mat-mdc-button-disabled.mat-mdc-button-disabled {
+  box-shadow: var(--mdc-protected-button-container-elevation-shadow);
+  background-color: grey !important;
+}
