@@ -4,7 +4,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 @Component({
   standalone: true,
   imports: [MatPaginatorModule],
-  selector: 'app-paginator',
+  selector: 'paginator',
   template: ` <mat-paginator
     [length]="100"
     [pageSize]="10"

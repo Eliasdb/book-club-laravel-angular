@@ -23,7 +23,7 @@ import { Genre, mappedGenres } from '../../../../_data/data';
     MatSlideToggleModule,
     FormsModule,
   ],
-  selector: 'app-filters',
+  selector: 'book-filters',
   template: `
     <section class="filters">
       <div class="search-input-container">

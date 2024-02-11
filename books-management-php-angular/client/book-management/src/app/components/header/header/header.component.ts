@@ -16,11 +16,8 @@ import { NavBarComponent } from '../nav-bar/nav-bar.component';
   template: `
     <section [ngClass]="[headerBackgroundColour]" class="header-container">
       <header class="header">
-        <app-action-bar [hideLauncher]="hideLauncher" />
-        <app-nav-bar
-          [ngClass]="headerTextColour"
-          [hideLauncher]="hideLauncher"
-        />
+        <action-bar [hideLauncher]="hideLauncher" />
+        <nav-bar [ngClass]="headerTextColour" [hideLauncher]="hideLauncher" />
       </header>
     </section>
   `,

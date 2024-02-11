@@ -33,57 +33,51 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
     PaginatorComponent,
     MatBottomSheetModule,
   ],
-  selector: 'app-books',
+  selector: 'books-container',
   template: `
     <section class="page">
-      <section class="books-container">
-        <app-filters
-          [value]="query$ | async"
-          [bookStatus]="status$ | async"
-          (search)="onSearch($event)"
-          (filterGenre)="filterGenre($event)"
-          (filterStatus)="filterStatus($event)"
-          (clearFilters)="clearFilters()"
-          [activeGenre]="genre$ | async"
-        />
-        <section class="books">
-          <app-sort-bar
-            [showList]="showList"
-            (clickEvent)="toggleShowList()"
-            [bookCount]="(totalBooksCount$ | async) || 0"
-            [selectedSort]="(sort$ | async) || 'title,asc'"
-            (sort)="sortBy($event)"
+      <section class="books-wrapper">
+        <section class="books-container">
+          <book-filters
+            [value]="query$ | async"
+            [bookStatus]="status$ | async"
+            (search)="onSearch($event)"
+            (filterGenre)="filterGenre($event)"
+            (filterStatus)="filterStatus($event)"
+            (clearFilters)="clearFilters()"
+            [activeGenre]="genre$ | async"
           />
+          <section class="books">
+            <books-sort-bar
+              [showList]="showList"
+              (clickEvent)="toggleShowList()"
+              [bookCount]="(totalBooksCount$ | async) || 0"
+              [selectedSort]="(sort$ | async) || 'title,asc'"
+              (sort)="sortBy($event)"
+            />
 
-          @if (books.result$ | async; as result) { @if (result.isLoading) {
+            @if (books.result$ | async; as result) { @if (result.isSuccess) {
 
-          <books-loading-state></books-loading-state>
+            <section class="collection-container">
+              <books-collection-grid-overview
+                [books]="(books$ | async) || []"
+                *ngIf="!showList"
+              />
+              <books-collection-list-overview
+                *ngIf="showList"
+                [books]="(books$ | async) || []"
+              />
+            </section>
 
-          } @if (result.isSuccess) {
+            <!-- <div class="pag-container"><paginator /></div> -->
 
-          <app-books-collection-grid-overview
-            [books]="(books$ | async) || []"
-            *ngIf="!showList"
-          />
-          <app-books-collection-list-overview
-            *ngIf="showList"
-            [books]="(books$ | async) || []"
-          />
+            } @if (result.isLoading) {
+            <books-loading-state></books-loading-state>
 
-          } @if (result.isError) {
-          <p>Error</p>
-          } }
-          <!-- <ng-container *ngIf="(isLoading$ | async) === false; else loading">
-          
-          </ng-container> -->
-          <ng-container>
-            <!-- <div *ngIf="todos.result$ as result.data">
-              <p *ngFor="let result of result.data">
-                Title: {{ result.title }}
-              </p>
-            </div> -->
-          </ng-container>
-          <app-paginator />
+            } @if (result.isError) {
+            <p>Error</p>
+            } }
+          </section>
         </section>
       </section>
     </section>
@@ -93,16 +87,15 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
 export class BooksCollectionContainer {
   private booksService = inject(BooksService);
   private bookParamService = inject(BookParamService);
-  // private useQuery = inject(injectQuery);
 
-  public showList: boolean = false;
+  protected books = inject(BooksService).getBooks();
   protected author$ = this.bookParamService.author$;
   protected genre$ = this.bookParamService.genre$;
   protected query$ = this.bookParamService.query$;
   protected status$ = this.bookParamService.status$;
   protected sort$ = this.bookParamService.sort$;
 
-  books = inject(BooksService).getBooks();
+  public showList: boolean = false;
 
   protected booksResults$ = combineLatest([
     this.query$,
@@ -139,9 +132,6 @@ export class BooksCollectionContainer {
   toggleShowList(): void {
     this.showList = !this.showList;
   }
-
-  // protected isLoading$ = this.booksResults$.pipe(map((res) => res.isFetching));
-  // protected isLoading$ = of(false);
 
   protected onSearch(query: string) {
     this.bookParamService.navigate({

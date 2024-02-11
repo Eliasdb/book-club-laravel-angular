@@ -42,7 +42,7 @@ import { HeaderComponent } from '../../../components/header/header/header.compon
       </div>
     </nav>
     <mat-drawer-container class="example-container">
-      <mat-drawer #drawer [mode]="mode.value"><app-admin-sidebar /></mat-drawer>
+      <mat-drawer #drawer [mode]="mode.value"><admin-sidebar /></mat-drawer>
       <mat-select #mode value="side" />
       <mat-drawer-content>
         <div class="content"><router-outlet /></div>

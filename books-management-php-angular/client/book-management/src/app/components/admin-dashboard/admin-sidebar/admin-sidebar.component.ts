@@ -9,7 +9,7 @@ import { BottomSheetComponent } from '../../bottom-sheet/bottom-sheet.component'
 @Component({
   standalone: true,
   imports: [RouterLink, MatBottomSheetModule],
-  selector: 'app-admin-sidebar',
+  selector: 'admin-sidebar',
   template: `
     <div class="content">
       <div class="nav-links">

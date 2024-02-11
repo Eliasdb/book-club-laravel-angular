@@ -2,16 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Book } from '../../../../_models/book';
-import { BooksCardComponent } from '../books-card/books-card.component';
+import { BooksListItemComponent } from '../books-list-item/books-list-item.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterLink, BooksCardComponent],
-  selector: 'app-books-collection-list-overview',
+  imports: [CommonModule, RouterLink, BooksListItemComponent],
+  selector: 'books-collection-list-overview',
   template: `
     <section class="books-list-overview">
       <div *ngFor="let book of books" class="col-2">
-        <app-book-card [book]="book" />
+        <books-list-item [book]="book" />
       </div>
     </section>
   `,

@@ -17,7 +17,7 @@ import { AdminBooksCollectionOverviewComponent } from '../admin-books-collection
     MatButtonModule,
     MatBottomSheetModule,
   ],
-  selector: 'app-admin-books-collection-container',
+  selector: 'admin-books-collection-container',
   template: ` <section class="collection-container">
     <button mat-raised-button (click)="openBottomSheet()">Open thing</button>
 

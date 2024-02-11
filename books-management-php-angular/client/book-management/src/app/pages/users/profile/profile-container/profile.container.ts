@@ -12,7 +12,7 @@ import { ChangePhotoComponent } from '../change-photo/change-photo.component';
 import { ProfileSettingsFormComponent } from '../profile-settings-form/profile-settings-form.component';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'profile',
   standalone: true,
   imports: [
     ChangePhotoComponent,
@@ -29,8 +29,8 @@ import { ProfileSettingsFormComponent } from '../profile-settings-form/profile-s
     <div class="profile-container">
       <mat-card>
         <mat-card-content>
-          <app-change-photo [user]="user" />
-          <app-profile-settings-form [user]="user" />
+          <profile-change-photo [user]="user" />
+          <profile-settings-form [user]="user" />
         </mat-card-content>
       </mat-card>
     </div>

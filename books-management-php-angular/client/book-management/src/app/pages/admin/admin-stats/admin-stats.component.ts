@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   standalone: true,
   imports: [],
-  selector: 'app-admin-stats',
+  selector: 'admin-stats',
   template: ` <section class="stats-container">
     <section class="cards-container">
       <article>

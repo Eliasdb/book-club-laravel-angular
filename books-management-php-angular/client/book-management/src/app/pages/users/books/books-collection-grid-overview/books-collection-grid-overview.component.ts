@@ -6,16 +6,16 @@ import {
   OnInit,
 } from '@angular/core';
 import { Book } from 'src/app/_models/book';
-import { BooksCardComponent } from '../books-card/books-card.component';
+import { BooksGridItemComponent } from '../books-grid-item/books-grid-item.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, BooksCardComponent],
-  selector: 'app-books-collection-grid-overview',
+  imports: [CommonModule, BooksGridItemComponent],
+  selector: 'books-collection-grid-overview',
   template: `
     <section class="books-grid-overview">
       <div *ngFor="let book of books" class="col-2">
-        <app-book-card [book]="book" />
+        <books-grid-item [book]="book" />
       </div>
     </section>
   `,

@@ -7,7 +7,7 @@ import { CartDialog } from '../../cart-modal/cart-modal.component';
 @Component({
   standalone: true,
   imports: [MatButtonModule, MatDialogModule, CommonModule],
-  selector: 'app-action-bar',
+  selector: 'action-bar',
   template: `
     <section class="action-bar-container">
       @if (!hideLauncher) {

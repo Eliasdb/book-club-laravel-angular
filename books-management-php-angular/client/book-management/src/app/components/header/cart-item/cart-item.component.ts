@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Book } from '../../../_models/book';
 
 @Component({
-  selector: 'app-cart-item',
+  selector: 'cart-item',
   standalone: true,
   template: `
     @if (item) {

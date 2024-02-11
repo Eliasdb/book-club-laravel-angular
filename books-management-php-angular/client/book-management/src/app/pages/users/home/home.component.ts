@@ -8,7 +8,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
 @Component({
   standalone: true,
   imports: [CommonModule, RouterLink, MatButtonModule, MatBottomSheetModule],
-  selector: 'app-home',
+  selector: 'home',
   template: ` <section class="body">
     <section class="intro-text">
       <h1 *ngIf="currentUser$ | async as user">Hello {{ user }}!</h1>

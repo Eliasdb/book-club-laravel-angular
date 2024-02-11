@@ -8,13 +8,13 @@ import { OrderItemComponent } from './order-item/order-item.component';
 @Component({
   standalone: true,
   imports: [CommonModule, OrderItemComponent],
-  selector: 'app-checkout',
+  selector: 'checkout',
   template: `
     <div class="page">
       <div *ngIf="items$" class="checkout-container">
         <h3 class="order-confirm-title">Order confirmation</h3>
         <div class="order-items">
-          <app-order-item *ngFor="let item of items$ | async" [item]="item" />
+          <order-item *ngFor="let item of items$ | async" [item]="item" />
           <div class="confirm-order-btn-container">
             <button class="confirm-btn" (click)="confirmOrder(getBookIds())">
               Confirm order

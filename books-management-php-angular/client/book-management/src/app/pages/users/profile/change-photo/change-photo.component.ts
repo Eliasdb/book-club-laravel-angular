@@ -7,7 +7,7 @@ import { RawApiDataUserFav } from '../../../../_models/rawapi';
 @Component({
   standalone: true,
   imports: [MatButtonModule, MatChipsModule, CommonModule],
-  selector: 'app-change-photo',
+  selector: 'profile-change-photo',
   template: `
     <div class="row">
       <div class="change-photo-container">

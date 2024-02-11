@@ -12,7 +12,7 @@ import { sortArray, sortValues } from '../../../../_data/data';
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule],
-  selector: 'app-sort-bar',
+  selector: 'books-sort-bar',
   template: `
     <section class="horizontal-sort">
       <div class="btn-container">
@@ -59,7 +59,7 @@ import { sortArray, sortValues } from '../../../../_data/data';
       <p class="book-count">
         {{ bookCount }} {{ bookCount === 1 ? 'book' : 'books' }} found
       </p>
-      <hr style="width:11rem;" />
+      <hr style="width:13rem;" />
 
       <div class="sort-container">
         <label for="sort">sort by</label>

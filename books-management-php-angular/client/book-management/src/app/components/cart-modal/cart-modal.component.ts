@@ -14,7 +14,7 @@ import { CartItemComponent } from '../header/cart-item/cart-item.component';
     <mat-dialog-content class="mat-typography">
       <h3>Here's what you have selected so far:</h3>
       <div class="cart-container">
-        <app-cart-item
+        <cart-item
           *ngFor="let item of items$ | async"
           [item]="item"
           (itemSelected)="onItemSelected($event)"

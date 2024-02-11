@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   standalone: true,
   imports: [],
-  selector: 'app-order-item',
+  selector: 'order-item',
   template: ` <div class="order-item">
     <div class="img-container">
       <img src="{{ item.photoUrl }}" class="single-book-image" />

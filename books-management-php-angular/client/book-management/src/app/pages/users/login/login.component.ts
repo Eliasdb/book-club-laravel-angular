@@ -8,7 +8,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  selector: 'app-login',
+  selector: 'login',
   template: ` <section class="login-page">
     <form
       #registerForm="ngForm"

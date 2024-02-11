@@ -19,7 +19,7 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
     MatCardModule,
     MatIconModule,
   ],
-  selector: 'app-single-book',
+  selector: 'single-book',
   template: `
     @if (bookResults$ | async; as result) { @if (result.isLoading) {
 
@@ -94,10 +94,6 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
     } @if (result.isError) {
     <p>Error</p>
     } }
-
-    <ng-template #loading>
-      <books-loading-state></books-loading-state>
-    </ng-template>
   `,
   styleUrls: ['./single-book.container.scss'],
 })

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 @Component({
   standalone: true,
   imports: [],
-  selector: 'app-confirmation',
+  selector: 'confirmation',
   template: ` <div class="page">
     <div class="confirm-text">
       <h2>Thanks for your order!</h2>

@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Book } from '../../../../_models/book';
 
 @Component({
-  selector: 'app-book-card',
+  selector: 'books-grid-item',
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
@@ -17,8 +17,8 @@ import { Book } from '../../../../_models/book';
       </div>
     </section>
   `,
-  styleUrls: ['./books-card.component.scss'],
+  styleUrls: ['./books-grid-item.component.scss'],
 })
-export class BooksCardComponent {
+export class BooksGridItemComponent {
   @Input() book?: Book;
 }

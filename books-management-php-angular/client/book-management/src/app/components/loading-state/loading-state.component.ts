@@ -1,12 +1,15 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { LoadingModule } from 'carbon-components-angular';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'books-loading-state',
   standalone: true,
-  imports: [LoadingModule],
+  imports: [MatProgressSpinnerModule],
   template: `
     <div class="books-loader">
-      <cds-loading [isActive]="true" size="normal" [overlay]="false" />
+      <section class="loader-inner">
+        <mat-spinner></mat-spinner>
+        <p class="loader-text">Fetching books from database...</p>
+      </section>
     </div>
   `,
   styleUrls: ['./loading-state.component.scss'],

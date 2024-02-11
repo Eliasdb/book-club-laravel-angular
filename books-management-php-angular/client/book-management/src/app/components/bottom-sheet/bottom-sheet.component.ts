@@ -13,7 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatButtonModule,
     MatButtonToggleModule,
   ],
-  selector: 'app-bottom-sheet',
+  selector: 'bottom-sheet',
   template: `
     <mat-toolbar>
       <div class="selected-books">

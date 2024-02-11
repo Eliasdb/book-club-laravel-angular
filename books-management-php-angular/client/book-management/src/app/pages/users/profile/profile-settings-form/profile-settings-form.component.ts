@@ -18,7 +18,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
     MatIconModule,
     RouterLink,
   ],
-  selector: 'app-profile-settings-form',
+  selector: 'profile-settings-form',
   template: ` <mat-tab-group>
     <mat-tab>
       <ng-template mat-tab-label>
