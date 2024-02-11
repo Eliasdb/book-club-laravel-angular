@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { injectQuery } from '@ngneat/query';
 import { map } from 'rxjs';
-import { RawApiDataBooks } from '../../_models/rawapi';
+import { RawApiDataBook, RawApiDataBooks } from '../../_models/rawapi';
 import {
   AUTHORS_QUERY_PARAM,
   BookQueryParams,
@@ -72,71 +72,21 @@ export class BooksService {
     });
   }
 
-  // queryBooks(parameters?: Partial<BookQueryParams>) {
-  //   return queryOptions({
-  //     queryKey: [
-  //       'BOOKS',
-  //       parameters?.[AUTHORS_QUERY_PARAM],
-  //       parameters?.[GENRE_QUERY_PARAM],
-  //       parameters?.[SEARCH_QUERY_PARAM],
-  //       parameters?.[STATUS_QUERY_PARAM],
-  //       parameters?.[SORT_QUERY_PARAM],
-  //     ],
-  //     queryFn: () => {
-  //       const { status } = {
-  //         ...parameters,
-  //         status:
-  //           parameters && parameters.status ? parameters.status : 'available',
-  //       };
-
-  //       let params = new HttpParams();
-  //       params = params.set('status', status);
-
-  //       if (parameters?.genre && parameters?.genre !== '') {
-  //         params = params.set('genre', parameters.genre);
-  //       }
-
-  //       if (parameters?.search && parameters?.search !== '') {
-  //         params = params.set('q', parameters.search);
-  //       }
-
-  //       if (parameters?.author && parameters?.author !== '') {
-  //         params = params.set('author', parameters.author);
-  //       }
-
-  //       if (parameters?.sort && parameters?.sort !== '') {
-  //         params = params.set('sort', parameters.sort);
-  //       }
-
-  //       if (parameters?.genre && parameters?.genre == 'all') {
-  //         params = params.set('genre', '');
-  //       }
-
-  //       return this.http
-  //         .get<RawApiDataBooks>(`${environment.apiUrl}/books`, { params })
-  //         .pipe(
-  //           // projects what we are getting back from API
-  //           map((response) => response.data)
-  //         );
-  //     },
-  //   });
-  // }
-
-  // queryBooksById(id: number) {
-  //   return queryOptions({
-  //     queryKey: ['BOOKS', id],
-  //     queryFn: () => {
-  //       return this.http
-  //         .get<RawApiDataBook>(`${environment.apiUrl}/books/${id}`)
-  //         .pipe(
-  //           // projects what we are getting back from API
-  //           map((data) => {
-  //             return data.data;
-  //           })
-  //         );
-  //     },
-  //   });
-  // }
+  queryBooksById(id: number) {
+    return this.query({
+      queryKey: ['BOOKS', id],
+      queryFn: () => {
+        return this.http
+          .get<RawApiDataBook>(`http://localhost:8000/api/v1/books/${id}`)
+          .pipe(
+            // projects what we are getting back from API
+            map((response) => {
+              return response.data;
+            })
+          );
+      },
+    });
+  }
 
   // addBook(book: Book) {
   //   return queryOptions({

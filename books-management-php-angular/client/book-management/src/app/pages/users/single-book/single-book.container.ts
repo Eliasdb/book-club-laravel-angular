@@ -4,7 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { distinctUntilChanged, filter, map } from 'rxjs';
+import { filterSuccessResult } from '@ngneat/query';
+import { distinctUntilChanged, filter, map, switchMap, take } from 'rxjs';
 import { BooksService } from '../../../_services/books-service/books.service';
 import { CartService } from '../../../_services/cart-service/cart.service';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
@@ -20,10 +21,13 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
   ],
   selector: 'app-single-book',
   template: `
-    <section
-      *ngIf="(isLoading$ | async) === false; else loading"
-      class="book-container"
-    >
+    @if (bookResults$ | async; as result) { @if (result.isLoading) {
+
+    <books-loading-state></books-loading-state>
+
+    } @if (result.isSuccess) {
+
+    <section class="book-container">
       <mat-card>
         <mat-card-content>
           <section class="card-container">
@@ -86,6 +90,11 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
         </mat-card-content>
       </mat-card>
     </section>
+
+    } @if (result.isError) {
+    <p>Error</p>
+    } }
+
     <ng-template #loading>
       <books-loading-state></books-loading-state>
     </ng-template>
@@ -109,22 +118,20 @@ export class SingleBookContainer {
     map((params) => params['id'])
   );
 
-  // private bookResults$ = this.bookId$.pipe(
-  //   switchMap(
-  //     (id) => this.useQuery(this.booksService.queryBooksById(id)).result$
-  //   )
-  // );
+  protected bookResults$ = this.bookId$.pipe(
+    switchMap((id) => this.booksService.queryBooksById(id).result$)
+  );
 
-  // public book$ = this.bookResults$.pipe(
-  //   filterSuccess(),
-  //   map((res) => res.data)
-  // );
+  public book$ = this.bookResults$.pipe(
+    filterSuccessResult(),
+    map((res) => res.data)
+  );
 
   // protected isLoading$ = this.bookResults$.pipe(map((res) => res.isLoading));
 
-  // addToCart() {
-  //   this.book$.pipe(take(1)).subscribe((book) => {
-  //     this.cartService.addToCart(book);
-  //   });
-  // }
+  addToCart() {
+    this.book$.pipe(take(1)).subscribe((book) => {
+      this.cartService.addToCart(book);
+    });
+  }
 }
