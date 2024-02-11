@@ -10,7 +10,8 @@ import { CartDialog } from '../../cart-modal/cart-modal.component';
   selector: 'app-action-bar',
   template: `
     <section class="action-bar-container">
-      <section *ngIf="!hideLauncher" class="action-bar-items">
+      @if (!hideLauncher) {
+      <section class="action-bar-items">
         <img src="/assets/logo.png" alt="logo" class="logo" />
         <img
           src="/assets/bag.png"
@@ -20,9 +21,11 @@ import { CartDialog } from '../../cart-modal/cart-modal.component';
         />
         <span class="amount">{{ this.cartService.getItems().length }}</span>
       </section>
-      <section *ngIf="hideLauncher" class="action-bar-items">
+      } @if (hideLauncher) {
+      <section class="action-bar-items">
         <img src="/assets/logo-inverted.png" alt="logo" class="logo" />
       </section>
+      }
     </section>
   `,
   styleUrls: ['./action-bar.component.scss'],

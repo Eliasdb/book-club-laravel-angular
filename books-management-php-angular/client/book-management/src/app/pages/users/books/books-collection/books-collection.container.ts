@@ -64,11 +64,11 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
             />
           </ng-container> -->
           <ng-container>
-            <div *ngIf="todos.result$ as result.data">
+            <!-- <div *ngIf="todos.result$ as result.data">
               <p *ngFor="let result of result.data">
                 Title: {{ result.title }}
               </p>
-            </div>
+            </div> -->
           </ng-container>
           <app-paginator />
         </section>
