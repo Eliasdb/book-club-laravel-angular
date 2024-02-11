@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
-    use HasFactory, FilterQueryString;
+    use HasFactory;
+    use FilterQueryString;
 
     protected $filters = [
         "in",
         "status",
         "sort",
-        "title", 
+        "title",
         "genre",
         "author",
         "like",
@@ -22,29 +23,31 @@ class Book extends Model
         "q",
     ];
 
-    public function q($query, $value) {
+    public function q($query, $value)
+    {
         // return $query->orWhere('name', '=', $value);
-       return $query->orWhere('title', 'like', "%$value%");
+        return $query->orWhere('title', 'like', "%$value%");
     }
 
-    public function author($query, $value) {
+    public function author($query, $value)
+    {
         // return $query->orWhere('name', '=', $value);
-       return $query->orWhere('author', 'like', "%$value%");
+        return $query->orWhere('author', 'like', "%$value%");
     }
 
 
 
-      protected $fillable = [
-        "title",
-        "photo_url",
-        "status",
-        "genre",
-        "author",
-        "published_date",
-        "user_id"
+    protected $fillable = [
+      "title",
+      "photo_url",
+      "status",
+      "genre",
+      "author",
+      "published_date",
+      "user_id"
     ];
 
-     public function user() 
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

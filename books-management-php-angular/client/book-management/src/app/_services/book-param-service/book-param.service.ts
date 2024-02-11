@@ -34,6 +34,8 @@ export class BookParamService {
     filter((params) => params[SEARCH_QUERY_PARAM] !== undefined),
     map((params): string => params[SEARCH_QUERY_PARAM]),
     startWith(''),
+    distinctUntilChanged(),
+
     shareReplay({ bufferSize: 1, refCount: false })
   );
 

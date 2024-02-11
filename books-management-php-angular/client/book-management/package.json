@@ -22,7 +22,7 @@
     "@angular/router": "^16.2.0",
     "@carbon/icons": "^11.34.1",
     "@carbon/styles": "^1.48.1",
-    "@ngneat/query": "^1.0.3",
+    "@ngneat/query": "^2.0.0-beta.11",
     "@tanstack/query-core": "^5.17.19",
     "bootstrap": "^5.3.2",
     "carbon-components-angular": "^5.16.1",

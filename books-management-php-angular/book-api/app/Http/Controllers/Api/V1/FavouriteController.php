@@ -7,9 +7,8 @@ use App\Http\Requests\UpdateFavouriteRequest;
 use App\Models\Favourite;
 use App\Http\Resources\V1\FavouriteResource;
 use App\Http\Resources\V1\FavouriteCollection;
-Use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 
 class FavouriteController extends Controller
 {

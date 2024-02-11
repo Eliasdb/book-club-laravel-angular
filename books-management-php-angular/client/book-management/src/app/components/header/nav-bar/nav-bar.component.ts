@@ -19,21 +19,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             Books
           </a>
         </li>
-        <li>
-          <a
-            class="nav-link"
-            routerLink="/favourites"
-            routerLinkActive="active"
-          >
-            Favourites
-          </a>
-        </li>
+
         <li>
           <a class="nav-link" routerLink="/profile" routerLinkActive="active">
             Profile
           </a>
         </li>
-        <li *ngIf="userId === '2'">
+        <li *ngIf="userId === '201'">
           <a
             class="nav-link"
             routerLink="/admin/stats"
@@ -62,15 +54,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             Books
           </a>
         </li>
-        <li>
-          <a
-            class="nav-link"
-            routerLink="/favourites"
-            routerLinkActive="active-lightgreen"
-          >
-            Favourites
-          </a>
-        </li>
+
         <li>
           <a
             class="nav-link"
@@ -80,7 +64,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             Profile
           </a>
         </li>
-        <li *ngIf="userId === '2'">
+        <li *ngIf="userId === '201'">
           <a
             class="nav-link"
             routerLink="/admin/stats"

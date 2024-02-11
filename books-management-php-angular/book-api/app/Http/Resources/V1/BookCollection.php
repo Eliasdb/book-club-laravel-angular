@@ -17,7 +17,7 @@ class BookCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
 
-        $page_total= count(Book::filter()->get());
+        $page_total = count(Book::filter()->get());
 
         if ($request->status == 'loaned') {
             $sql = DB::select("SELECT * FROM books 
@@ -25,25 +25,25 @@ class BookCollection extends ResourceCollection
             AND (title LIKE '%$request->q%' OR author LIKE '%$request->author%')
           
             ");
-        $page_total= count($sql);
+            $page_total = count($sql);
 
         }
 
         // return parent::toArray($request);
         // if ($request->status == 'loaned') {
-  
+
         // }
 
 
-        return [ 
+        return [
             'data' => [
                 'items' => parent::toArray($request),
                 'count' => $page_total
             ],
-       
+
         ];
-           
-    
+
+
     }
 
     //  /**
@@ -55,7 +55,7 @@ class BookCollection extends ResourceCollection
     // public function with($request)
     // {
     //     $total = count(Book::all());
-        
+
 
     //     return [
     //         'count' => $page_total

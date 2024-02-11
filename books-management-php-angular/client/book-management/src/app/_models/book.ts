@@ -3,6 +3,7 @@ export interface Book {
   photoUrl: string;
   userId?: number;
   genre: string;
+  description: string;
   title: string;
   author: string;
   status: string;

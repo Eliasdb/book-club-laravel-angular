@@ -15,9 +15,18 @@ export interface RawApiDataBooks {
   links: string[];
   meta: any;
 }
-
 export interface RawApiDataBook {
   data: Book;
-  links: string[];
-  meta: any;
+}
+
+export interface RawApiDataUserFav {
+  data: Customer;
+  favourites: Book[];
+}
+
+export interface Todo {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
 }

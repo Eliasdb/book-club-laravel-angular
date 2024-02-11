@@ -1,27 +1,33 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
+import { RawApiDataUserFav } from '../../../../_models/rawapi';
 
 @Component({
   standalone: true,
-  imports: [MatButtonModule, MatChipsModule],
+  imports: [MatButtonModule, MatChipsModule, CommonModule],
   selector: 'app-change-photo',
   template: `
     <div class="row">
       <div class="change-photo-container">
         <div class="mx-auto" style="width: 140px;">
           <div
-            class="d-flex justify-content-center align-items-center rounded"
+            class="circle-placeholder"
             style="height: 140px; background-color: rgb(233, 236, 239);"
           >
-            <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;"
-              >140x140</span
-            >
+            <img
+              src="https://material.angular.io/assets/img/examples/shiba1.jpg"
+              alt="profile picture"
+              class="profile-pic"
+            />
           </div>
         </div>
 
         <div class="change-btn-container">
-          <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">Elias De Bock</h4>
+          <h4 *ngIf="user" class="pt-sm-2 pb-1 mb-0 text-nowrap">
+            {{ user.data.firstName }} {{ user.data.lastName }}
+          </h4>
           <button mat-raised-button>
             <i class="fa fa-fw fa-camera"></i>
             <span style="margin-left: 5px;">Change Photo</span>
@@ -37,10 +43,16 @@ import { MatChipsModule } from '@angular/material/chips';
           />
           member
         </mat-chip>
-        <div class="text-muted"><small>Joined 22 Jan 2024</small></div>
+        <div class="text-muted">
+          <small *ngIf="user">
+            Joined {{ user.data.addedDate | date : 'longDate' }}</small
+          >
+        </div>
       </div>
     </div>
   `,
   styleUrls: ['./change-photo.component.scss'],
 })
-export class ChangePhotoComponent {}
+export class ChangePhotoComponent {
+  @Input() user?: RawApiDataUserFav;
+}

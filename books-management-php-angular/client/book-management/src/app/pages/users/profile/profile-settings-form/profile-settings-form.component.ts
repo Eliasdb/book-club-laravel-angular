@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../../../../_services/account-service/account.service';
-import { BooksService } from '../../../../_services/books-service/books.service';
 
 @Component({
   standalone: true,
@@ -16,6 +16,7 @@ import { BooksService } from '../../../../_services/books-service/books.service'
     MatButtonModule,
     MatTabsModule,
     MatIconModule,
+    RouterLink,
   ],
   selector: 'app-profile-settings-form',
   template: ` <mat-tab-group>
@@ -188,11 +189,24 @@ import { BooksService } from '../../../../_services/books-service/books.service'
         <mat-icon class="example-tab-icon">favorite</mat-icon>
         Favourites
       </ng-template>
-      <div class="form-container">
-        <ul>
-          <li>{{ user?.data.favourites[0].author }}</li>
-          <li>book</li>
-        </ul>
+      <div *ngIf="user" class="fav-container">
+        <div class="fav-item" *ngFor="let favourite of user.data.favourites">
+          <div class="img-container">
+            <img
+              src="{{ favourite.photoUrl }}"
+              alt="favorite book"
+              routerLink="/books/{{ favourite.id }}"
+            />
+          </div>
+          <div class="fav-info">
+            <p><span class="text-bold">Title</span>: {{ favourite.title }}</p>
+            <p><span class="text-bold">Genre</span>: {{ favourite.genre }}</p>
+            <p><span class="text-bold">Author</span>: {{ favourite.author }}</p>
+            <p>
+              <span class="text-bold">Year</span>: {{ favourite.publishedDate }}
+            </p>
+          </div>
+        </div>
       </div>
     </mat-tab>
   </mat-tab-group>`,
@@ -200,10 +214,8 @@ import { BooksService } from '../../../../_services/books-service/books.service'
 })
 export class ProfileSettingsFormComponent {
   private accountService = inject(AccountService);
-  private booksService = inject(BooksService);
   private toastr = inject(ToastrService);
-
-  user: any | undefined;
+  @Input() user: any;
   toggleSettingsB: boolean = true;
 
   model: any = {};
@@ -217,12 +229,6 @@ export class ProfileSettingsFormComponent {
         this.toastr.error(error.error);
         console.log(error);
       },
-    });
-  }
-
-  ngOnInit(): void {
-    this.accountService.getUserDetails().subscribe((data) => {
-      this.user = data;
     });
   }
 }

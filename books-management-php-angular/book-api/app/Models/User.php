@@ -10,14 +10,16 @@ use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Mehradsadeghi\FilterQueryString\FilterQueryString;
 
-
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, FilterQueryString;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use FilterQueryString;
 
     protected $filters = [
       "sort",
-      'name', 
+      'name',
       "like",
   ];
 
@@ -59,12 +61,12 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function books() 
+    public function books()
     {
         return $this->hasMany(Book::class);
     }
 
-    public function favourites() 
+    public function favourites()
     {
         return $this->hasMany(Favourite::class);
     }

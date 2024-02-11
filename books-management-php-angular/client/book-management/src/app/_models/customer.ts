@@ -7,4 +7,7 @@ export interface Customer {
   city: string;
   province: string;
   postalCode: string;
+  addedDate?: Date;
+  firstName: string;
+  lastName: string;
 }

@@ -16,7 +16,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-
     public function index(Request $request)
     {
         $filter = new CustomersFilter();
@@ -59,24 +58,24 @@ class AuthController extends Controller
     {
         $vat = 0.20;
         $transactions = Transaction::get();
-        
+
         foreach ($transactions->chunk(5000) as $chunk) {
-           $cases = [];
-           $ids = [];
-           $params = [];
-        
-           foreach ($chunk as $transaction) {
-               $cases[] = "WHEN {$transaction->id} then ?";
-               $params[] = $transaction->profit * $vat;
-               $ids[] = $transaction->id;
-           }
-        
-           $ids = implode(',', $ids);
-           $cases = implode(' ', $cases);
-        
-           if (!empty($ids)) {
-               Book::update("UPDATE transactions SET `price` = CASE `id` {$cases} END WHERE `id` in ({$ids})", $params);
-           }
+            $cases = [];
+            $ids = [];
+            $params = [];
+
+            foreach ($chunk as $transaction) {
+                $cases[] = "WHEN {$transaction->id} then ?";
+                $params[] = $transaction->profit * $vat;
+                $ids[] = $transaction->id;
+            }
+
+            $ids = implode(',', $ids);
+            $cases = implode(' ', $cases);
+
+            if (!empty($ids)) {
+                Book::update("UPDATE transactions SET `price` = CASE `id` {$cases} END WHERE `id` in ({$ids})", $params);
+            }
         }
     }
     /**
@@ -89,7 +88,7 @@ class AuthController extends Controller
     }
 
 
-     // Login API (POST, formdata)
+    // Login API (POST, formdata)
     public function login(Request $request)
     {
         // data validation
@@ -131,20 +130,18 @@ class AuthController extends Controller
         $includeBooks = request()->query("includeBooks");
         $includeFavourites = request()->query("includeFavourites");
 
-        if ($includeBooks)
-        {
+        if ($includeBooks) {
             return new UserResource($user->loadMissing("favourites"));
         }
 
-        if ($includeFavourites)
-        {
+        if ($includeFavourites) {
             return new UserResource($user->loadMissing("favourites"));
         }
 
         return new UserResource($user);
     }
 
- 
+
     /**
      * Remove the specified resource from storage.
      */
@@ -187,5 +184,5 @@ class AuthController extends Controller
             "message" => "User logged out successfully."
         ]);
     }
-    
+
 }

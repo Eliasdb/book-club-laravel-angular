@@ -4,8 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { UseQuery, filterSuccess } from '@ngneat/query';
-import { distinctUntilChanged, filter, map, switchMap, take } from 'rxjs';
+import { distinctUntilChanged, filter, map } from 'rxjs';
 import { BooksService } from '../../../_services/books-service/books.service';
 import { CartService } from '../../../_services/cart-service/cart.service';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
@@ -21,7 +20,7 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
   ],
   selector: 'app-single-book',
   template: `
-    <section
+    <!-- <section
       *ngIf="(isLoading$ | async) === false; else loading"
       class="book-container"
     >
@@ -29,7 +28,7 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
         <mat-card-content>
           <section class="card-container">
             <div class="img">
-              <a class="back-link" routerLink="/books"> &larr; Back</a>
+              <a class="back-link" routerLink="/books"> &larr; Overview</a>
               <div class="img-container">
                 <img
                   src="https://edit.org/images/cat/book-covers-big-2019101610.jpg"
@@ -86,7 +85,7 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
           </section>
         </mat-card-content>
       </mat-card>
-    </section>
+    </section> -->
     <ng-template #loading>
       <books-loading-state></books-loading-state>
     </ng-template>
@@ -94,7 +93,7 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
   styleUrls: ['./single-book.container.scss'],
 })
 export class SingleBookContainer {
-  private useQuery = inject(UseQuery);
+  // private useQuery = inject(UseQuery);
   private booksService = inject(BooksService);
   protected cartService = inject(CartService);
   private activatedRoute = inject(ActivatedRoute);
@@ -110,22 +109,22 @@ export class SingleBookContainer {
     map((params) => params['id'])
   );
 
-  private bookResults$ = this.bookId$.pipe(
-    switchMap(
-      (id) => this.useQuery(this.booksService.queryBooksById(id)).result$
-    )
-  );
+  // private bookResults$ = this.bookId$.pipe(
+  //   switchMap(
+  //     (id) => this.useQuery(this.booksService.queryBooksById(id)).result$
+  //   )
+  // );
 
-  public book$ = this.bookResults$.pipe(
-    filterSuccess(),
-    map((res) => res.data)
-  );
+  // public book$ = this.bookResults$.pipe(
+  //   filterSuccess(),
+  //   map((res) => res.data)
+  // );
 
-  protected isLoading$ = this.bookResults$.pipe(map((res) => res.isLoading));
+  // protected isLoading$ = this.bookResults$.pipe(map((res) => res.isLoading));
 
-  addToCart() {
-    this.book$.pipe(take(1)).subscribe((book) => {
-      this.cartService.addToCart(book);
-    });
-  }
+  // addToCart() {
+  //   this.book$.pipe(take(1)).subscribe((book) => {
+  //     this.cartService.addToCart(book);
+  //   });
+  // }
 }

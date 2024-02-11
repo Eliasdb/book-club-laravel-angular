@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { UseQuery, filterSuccess } from '@ngneat/query';
-import { combineLatest, map, shareReplay, switchMap } from 'rxjs';
 import { BookParamService } from '../../../../_services/book-param-service/book-param.service';
 import {
   AUTHORS_QUERY_PARAM,
@@ -47,15 +45,15 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
           [activeGenre]="genre$ | async"
         />
         <section class="books">
-          <app-sort-bar
+          <!-- <app-sort-bar
             [showList]="showList"
             (clickEvent)="toggleShowList()"
             [bookCount]="(totalBooksCount$ | async) || 0"
             [selectedSort]="(sort$ | async) || 'title,asc'"
             (sort)="sortBy($event)"
-          />
+          /> -->
 
-          <ng-container *ngIf="(isLoading$ | async) === false; else loading">
+          <!-- <ng-container *ngIf="(isLoading$ | async) === false; else loading">
             <app-books-collection-grid-overview
               [books]="(books$ | async) || []"
               *ngIf="!showList"
@@ -64,8 +62,14 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
               *ngIf="showList"
               [books]="(books$ | async) || []"
             />
+          </ng-container> -->
+          <ng-container>
+            <div *ngIf="todos.result$ as result.data">
+              <p *ngFor="let result of result.data">
+                Title: {{ result.title }}
+              </p>
+            </div>
           </ng-container>
-          <!-- <ng-container *ngIf="!books$ | async"> </ng-container> -->
           <app-paginator />
         </section>
       </section>
@@ -80,56 +84,58 @@ import { SortBarComponent } from '../books-sort-bar/books-sort-bar.component';
 export class BooksCollectionContainer {
   private booksService = inject(BooksService);
   private bookParamService = inject(BookParamService);
-  private useQuery = inject(UseQuery);
+  // private useQuery = inject(UseQuery);
 
   public showList: boolean = false;
-  private author$ = this.bookParamService.author$;
+  protected author$ = this.bookParamService.author$;
   protected genre$ = this.bookParamService.genre$;
   protected query$ = this.bookParamService.query$;
   protected status$ = this.bookParamService.status$;
   protected sort$ = this.bookParamService.sort$;
 
-  private booksResults$ = combineLatest([
-    this.query$,
-    this.author$,
-    this.genre$,
-    this.status$,
-    this.sort$,
+  todos = inject(BooksService).getTodos();
 
-    // whenever these change value, it will start a call
-  ]).pipe(
-    switchMap(
-      ([search, author, genre, status, sort]) =>
-        this.useQuery({
-          ...this.booksService.queryBooks({
-            search,
-            author,
-            genre,
-            status,
-            sort,
-          }),
-          refetchOnWindowFocus: false,
-        }).result$
-    ),
-    shareReplay({ bufferSize: 1, refCount: false })
-  );
+  // protected booksResults$ = combineLatest([
+  //   this.query$,
+  //   this.author$,
+  //   this.genre$,
+  //   this.status$,
+  //   this.sort$,
 
-  protected totalBooksCount$ = this.booksResults$.pipe(
-    filterSuccess(),
-    map((res) => res.data.count)
-  );
+  //   // whenever these change value, it will start a call
+  // ]).pipe(
+  //   switchMap(
+  //     ([search, author, genre, status, sort]) =>
+  //       this.useQuery({
+  //         ...this.booksService.queryBooks({
+  //           search,
+  //           author,
+  //           genre,
+  //           status,
+  //           sort,
+  //         }),
+  //         refetchOnWindowFocus: false,
+  //       }).result$
+  //   ),
+  //   shareReplay({ bufferSize: 1, refCount: false })
+  // );
 
-  protected books$ = this.booksResults$.pipe(
-    // don't need to subscribe because async pipe does it
-    filterSuccess(),
-    map((res) => res.data.items)
-  );
+  // protected totalBooksCount$ = this.booksResults$.pipe(
+  //   filterSuccess(),
+  //   map((res) => res.data.count)
+  // );
+
+  // protected books$ = this.booksResults$.pipe(
+  //   // don't need to subscribe because async pipe does it
+  //   filterSuccess(),
+  //   map((res) => res.data.items)
+  // );
 
   toggleShowList(): void {
     this.showList = !this.showList;
   }
 
-  protected isLoading$ = this.booksResults$.pipe(map((res) => res.isFetching));
+  // protected isLoading$ = this.booksResults$.pipe(map((res) => res.isFetching));
   // protected isLoading$ = of(false);
 
   protected onSearch(query: string) {

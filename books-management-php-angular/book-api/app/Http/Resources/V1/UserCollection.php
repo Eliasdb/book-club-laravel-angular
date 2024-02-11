@@ -14,11 +14,11 @@ class UserCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return [ 
+        return [
             'data' => [
                 'users' => parent::toArray($request),
             ],
-       
+
         ];
     }
 }

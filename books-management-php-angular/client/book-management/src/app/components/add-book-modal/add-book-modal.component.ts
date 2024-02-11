@@ -63,6 +63,16 @@ import { CartItemComponent } from '../header/cart-item/cart-item.component';
           />
         </div>
         <div class="form-group">
+          <label for="description">description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            [(ngModel)]="book.description"
+            placeholder="description"
+          />
+        </div>
+        <div class="form-group">
           <label for="photoUrl">Photo Url</label>
           <input
             type="text"
@@ -116,11 +126,12 @@ export class AddBookDialog {
     author: '',
     status: 'Available',
     publishedDate: '',
+    description: '',
   };
 
-  protected createBookMutation = this.bookService.createCreateBookMutation();
+  // protected createBookMutation = this.bookService.createCreateBookMutation();
 
   async addBook() {
-    await this.createBookMutation.mutate(this.book);
+    // await this.createBookMutation.mutate(this.book);
   }
 }

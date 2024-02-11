@@ -63,7 +63,7 @@ export class LoginComponent {
     this.accountService.login(this.model).subscribe({
       next: () => {
         this.toastr.success(`Logged in successfully!`);
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/home');
       },
       error: (error) => {
         // console.log(error.error.errors.name[0]);

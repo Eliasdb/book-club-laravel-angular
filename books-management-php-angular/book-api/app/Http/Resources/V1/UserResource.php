@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             "address" => $this->address,
             "postalCode" => $this->postal_code,
             "city" => $this->city,
+            "addedDate" => $this->created_at,
             "books" => BookResource::collection($this->whenLoaded("books")),
             "favourites" => FavouriteResource::collection($this->whenLoaded("favourites")),
 
