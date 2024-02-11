@@ -20,7 +20,7 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
   ],
   selector: 'app-single-book',
   template: `
-    <!-- <section
+    <section
       *ngIf="(isLoading$ | async) === false; else loading"
       class="book-container"
     >
@@ -85,7 +85,7 @@ import { LoadingStateComponent } from '../../../components/loading-state/loading
           </section>
         </mat-card-content>
       </mat-card>
-    </section> -->
+    </section>
     <ng-template #loading>
       <books-loading-state></books-loading-state>
     </ng-template>

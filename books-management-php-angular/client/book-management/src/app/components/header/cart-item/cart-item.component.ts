@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Book } from '../../../_models/book';
 
@@ -6,7 +5,8 @@ import { Book } from '../../../_models/book';
   selector: 'app-cart-item',
   standalone: true,
   template: `
-    <div class="content-container" *ngIf="item">
+    @if (item) {
+    <div class="content-container">
       <input type="checkbox" class="checkbox" (click)="clickChecked()" />
       <div class="img-container">
         <img
@@ -19,9 +19,10 @@ import { Book } from '../../../_models/book';
         <p>{{ item.author }}</p>
       </div>
     </div>
+    }
   `,
   styleUrls: ['./cart-item.component.scss'],
-  imports: [CommonModule],
+  imports: [],
 })
 export class CartItemComponent {
   @Input() item: Book | null = null;

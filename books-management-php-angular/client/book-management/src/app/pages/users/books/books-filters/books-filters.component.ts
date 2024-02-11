@@ -126,7 +126,7 @@ export class BooksFiltersComponent implements OnInit {
     this.searchControl.valueChanges
       .pipe(
         filter((s): s is string => s !== null),
-        debounceTime(200),
+        debounceTime(300),
         distinctUntilChanged()
       )
       .subscribe((value) => {

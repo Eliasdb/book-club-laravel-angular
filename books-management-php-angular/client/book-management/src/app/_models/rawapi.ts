@@ -12,8 +12,6 @@ export interface RawApiDataBooks {
     items: Book[];
     count: number;
   };
-  links: string[];
-  meta: any;
 }
 export interface RawApiDataBook {
   data: Book;
