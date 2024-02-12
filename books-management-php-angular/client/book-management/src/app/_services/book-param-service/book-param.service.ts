@@ -98,7 +98,7 @@ export class BookParamService {
       queryParams: {
         [AUTHORS_QUERY_PARAM]: '',
         [SEARCH_QUERY_PARAM]: '',
-        [STATUS_QUERY_PARAM]: '',
+        [STATUS_QUERY_PARAM]: 'available',
         [SORT_QUERY_PARAM]: '',
         [GENRE_QUERY_PARAM]: '',
       },

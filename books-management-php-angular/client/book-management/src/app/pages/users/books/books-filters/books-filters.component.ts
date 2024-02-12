@@ -67,7 +67,11 @@ import { Genre, mappedGenres } from '../../../../_data/data';
       </div>
 
       <div class="clear-filters-btn-container">
-        <button mat-raised-button color="accent" (click)="clearFilters.emit()">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="clearFilters.emit(); isChecked = true"
+        >
           Clear filters
         </button>
       </div>

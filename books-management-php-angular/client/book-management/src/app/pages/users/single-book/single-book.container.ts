@@ -11,6 +11,7 @@ import { BooksService } from '../../../_services/books-service/books.service';
 import { CartService } from '../../../_services/cart-service/cart.service';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
 import { AddButtonComponent } from './add-button/add-button.component';
+import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
 @Component({
   standalone: true,
   imports: [
@@ -21,6 +22,7 @@ import { AddButtonComponent } from './add-button/add-button.component';
     MatCardModule,
     MatIconModule,
     AddButtonComponent,
+    FavouriteButtonComponent,
   ],
   selector: 'single-book',
   template: `
@@ -75,16 +77,7 @@ import { AddButtonComponent } from './add-button/add-button.component';
                   [book]="(book$ | async) || null"
                   (add)="addToCart($event)"
                 />
-                <button mat-raised-button (click)="favourite()">
-                  <mat-icon
-                    *ngIf="this.cartService.favourited == false; else outline"
-                    >favorite_border</mat-icon
-                  >
-                  <ng-template #outline>
-                    <mat-icon>favorite</mat-icon>
-                  </ng-template>
-                  Favourite
-                </button>
+                <favourite-button />
               </div>
             </div>
           </section>
@@ -100,16 +93,12 @@ import { AddButtonComponent } from './add-button/add-button.component';
 })
 export class SingleBookContainer {
   // private useQuery = inject(UseQuery);
-  private booksService = inject(BooksService);
+  protected booksService = inject(BooksService);
   private toastr = inject(ToastrService);
 
   protected cartService = inject(CartService);
   private activatedRoute = inject(ActivatedRoute);
   isDisabled?: boolean;
-
-  favourite() {
-    this.cartService.favourited = true;
-  }
 
   public bookId$ = this.activatedRoute.params.pipe(
     distinctUntilChanged(),

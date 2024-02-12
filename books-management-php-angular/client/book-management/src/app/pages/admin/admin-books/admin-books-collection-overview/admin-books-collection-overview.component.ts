@@ -1,18 +1,14 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Observable, merge, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Book } from '../../../../_models/book';
-import { RawApiDataBooks } from '../../../../_models/rawapi';
 import { AddBookDialog } from '../../../../components/add-book-modal/add-book-modal.component';
 
 /**
@@ -52,7 +48,12 @@ import { AddBookDialog } from '../../../../components/add-book-modal/add-book-mo
       <!-- </div> -->
 
       <div class="example-table-container">
-        <table mat-table [dataSource]="data" class="mat-elevation-z8" matSort>
+        <table
+          mat-table
+          [dataSource]="books || []"
+          class="mat-elevation-z8"
+          matSort
+        >
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
               <mat-checkbox
@@ -115,14 +116,16 @@ import { AddBookDialog } from '../../../../components/add-book-modal/add-book-mo
       </div>
 
       <mat-paginator
-        [length]="resultsLength"
+        [length]="400"
         [pageSize]="10"
         aria-label="Select page of GitHub search results"
       ></mat-paginator>
     </div>
   `,
 })
-export class AdminBooksCollectionOverviewComponent implements AfterViewInit {
+export class AdminBooksCollectionOverviewComponent {
+  @Input() books?: Book[];
+
   displayedColumns: string[] = [
     'select',
     'number',
@@ -137,65 +140,15 @@ export class AdminBooksCollectionOverviewComponent implements AfterViewInit {
 
   dataSource: MatTableDataSource<Book> | null = null;
 
-  realDatabase: BookDatabase | null | undefined;
-
-  resultsLength = 0;
-  isLoadingResults = true;
-  isRateLimitReached = false;
   selection = new SelectionModel<Book>(true, []);
 
-  @ViewChild(MatSort) sort: MatSort = <MatSort>{};
-  @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
-
   private dialog = inject(MatDialog);
-  members$: Observable<Book[]> | undefined;
-
-  constructor(private _httpClient: HttpClient) {}
 
   openDialog() {
     const dialogRef = this.dialog.open(AddBookDialog);
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
-  }
-
-  ngAfterViewInit() {
-    this.realDatabase = new BookDatabase(this._httpClient);
-
-    // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          return this.realDatabase!.getBooks(
-            this.sort.active,
-            this.sort.direction,
-            this.paginator.pageIndex
-          ).pipe(catchError(() => observableOf(null)));
-        }),
-        map((data) => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          this.isRateLimitReached = data === null;
-
-          if (data === null) {
-            return [];
-          }
-
-          // Only refresh the result length if there is new data. In case of rate
-          // limit errors, we do not want to reset the paginator to zero, as that
-          // would prevent users from re-triggering requests.
-          this.resultsLength = data.data.count;
-          return data.data.items;
-        })
-      )
-      .subscribe((data) => {
-        this.data = data;
-        this.dataSource = new MatTableDataSource<Book>(data);
-      });
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -224,22 +177,5 @@ export class AdminBooksCollectionOverviewComponent implements AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
       row.id
     }`;
-  }
-}
-
-export class BookDatabase {
-  constructor(private _httpClient: HttpClient) {}
-
-  getBooks(
-    sort: string,
-    order: SortDirection,
-    page: number
-  ): Observable<RawApiDataBooks> {
-    const href = 'http://localhost:8000/api/v1/books';
-    const requestUrl = `${href}?sort=id,desc`;
-
-    return this._httpClient
-      .get<RawApiDataBooks>(requestUrl)
-      .pipe(map((response) => response));
   }
 }

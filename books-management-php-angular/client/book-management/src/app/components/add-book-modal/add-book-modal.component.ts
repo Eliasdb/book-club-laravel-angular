@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
-import { Book } from '../../_models/book';
+import { ToastrService } from 'ngx-toastr';
 import { BooksService } from '../../_services/books-service/books.service';
 import { CartItemComponent } from '../header/cart-item/cart-item.component';
 
@@ -21,7 +21,7 @@ import { CartItemComponent } from '../header/cart-item/cart-item.component';
 
       <form
         #addBookForm="ngForm"
-        (ngSubmit)="addBook()"
+        (ngSubmit)="onAddBook()"
         autocomplete="off"
         class="form"
       >
@@ -117,14 +117,18 @@ import { CartItemComponent } from '../header/cart-item/cart-item.component';
     RouterLink,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatProgressSpinnerModule,
   ],
   styleUrls: ['./add-book-modal.component.scss'],
 })
 export class AddBookDialog {
   private bookService = inject(BooksService);
+  private toastr = inject(ToastrService);
 
-  book: Book = {
+  addBook = this.bookService.addBook();
+
+  book: any = {
     photoUrl: '',
     genre: '',
     title: '',
@@ -134,9 +138,8 @@ export class AddBookDialog {
     description: '',
   };
 
-  // protected createBookMutation = this.bookService.createCreateBookMutation();
-
-  async addBook() {
-    // await this.createBookMutation.mutate(this.book);
+  onAddBook() {
+    this.addBook.mutate(this.book);
+    this.toastr.success(`'${this.book.title}' has been added!`);
   }
 }

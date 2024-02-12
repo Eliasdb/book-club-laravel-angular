@@ -1,0 +1,40 @@
+.nav-tabs {
+  margin-bottom: 1rem;
+}
+
+.tab-icon {
+  margin-right: 8px;
+}
+
+.img-container {
+  height: 7rem;
+  width: 5rem;
+}
+
+.img-container img {
+  height: 100%;
+  width: 100%;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.fav-container {
+  margin: 2rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+  gap: 1rem 0rem;
+}
+
+.fav-item {
+  display: flex;
+  gap: 1rem;
+}
+
+.fav-info {
+  min-width: 15rem;
+}
+
+.text-bold {
+  font-weight: bold;
+}

@@ -18,8 +18,19 @@ export interface RawApiDataBook {
 }
 
 export interface RawApiDataUserFav {
-  data: Customer;
-  favourites: Book[];
+  data: {
+    addedDate: Date;
+    address: string;
+    city: string;
+    email: string;
+    favourites: Book[];
+    firstName: string;
+    lastName: string;
+    id: number;
+    name: string;
+    phoneNumber: string;
+    postalCode: string;
+  };
 }
 
 export interface Todo {

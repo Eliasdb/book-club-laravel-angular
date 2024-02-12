@@ -1,0 +1,17 @@
+.form {
+  display: grid;
+  grid-column: repeat();
+  grid-template-columns: repeat(4, 1fr);
+  padding: 2rem 4rem;
+  gap: 1rem;
+  max-width: 100%;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.details-label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}

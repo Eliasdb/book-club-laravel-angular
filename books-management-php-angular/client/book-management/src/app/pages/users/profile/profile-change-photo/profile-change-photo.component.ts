@@ -51,8 +51,8 @@ import { RawApiDataUserFav } from '../../../../_models/rawapi';
       </div>
     </div>
   `,
-  styleUrls: ['./change-photo.component.scss'],
+  styleUrls: ['./profile-change-photo.component.scss'],
 })
-export class ChangePhotoComponent {
+export class ProfileChangePhotoComponent {
   @Input() user?: RawApiDataUserFav;
 }

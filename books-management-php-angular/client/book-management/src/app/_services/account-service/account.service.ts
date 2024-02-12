@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
 import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+import { RawApiDataUserFav } from '../../_models/rawapi';
 import { User } from '../../_models/user';
 
 @Injectable({
@@ -30,6 +32,20 @@ export class AccountService {
   currentToken$ = this.currentTokenSource.asObservable();
 
   private http = inject(HttpClient);
+  private query = injectQuery();
+  private mutation = injectMutation();
+  private queryClient = injectQueryClient();
+
+  register(model: any) {
+    return this.http.post<User>(this.baseURL + '/register', model).pipe(
+      map((user: User) => {
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user.userName));
+          this.currentUserSource.next(user);
+        }
+      })
+    );
+  }
 
   login(model: any) {
     // pipe: does something with observable before subscribing
@@ -48,30 +64,35 @@ export class AccountService {
     );
   }
 
-  register(model: any) {
-    return this.http.post<User>(this.baseURL + '/register', model).pipe(
-      map((user: User) => {
-        if (user) {
-          localStorage.setItem('user', JSON.stringify(user.userName));
-          this.currentUserSource.next(user);
-        }
-      })
-    );
-  }
-
-  updateUser(user: User) {
-    return this.http.patch<User>(this.baseURL + `/users/${this.userId}`, user);
+  updateUser() {
+    return this.mutation({
+      mutationFn: (user: User) =>
+        this.http.patch<User>(
+          `http://localhost:8000/api/v1/users/${this.userId}`,
+          user
+        ),
+      onSuccess: () =>
+        this.queryClient.invalidateQueries({ queryKey: ['USER_DETAILS'] }),
+    });
   }
 
   getUserDetails() {
-    return this.http
-      .get<any>(`${this.baseURL}/users/${this.userId}?includeFavourites=true`)
-      .pipe(
-        map((details) => {
-          this.userDetails = details;
-          return details;
-        })
-      );
+    return this.query({
+      queryKey: ['USER_DETAILS'],
+      queryFn: () => {
+        return this.http
+          .get<RawApiDataUserFav>(
+            `http://localhost:8000/api/v1/users/${this.userId}?includeFavourites=true`
+          )
+          .pipe(
+            // projects what we are getting back from API
+            map((response) => {
+              console.log(response.data);
+              return response.data;
+            })
+          );
+      },
+    });
   }
 
   setCurrentUser(user: User) {

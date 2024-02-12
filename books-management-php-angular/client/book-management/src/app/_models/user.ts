@@ -1,10 +1,8 @@
 import { Book } from './book';
 
 export interface User {
-  message(message: any): unknown;
   email: string;
-  password: string;
-  passwordConfirmation?: string;
+  password?: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -16,4 +14,5 @@ export interface User {
   userName?: string;
   accessToken?: string;
   books?: Book[];
+  favourites?: Book[];
 }

@@ -50,7 +50,7 @@ import { BooksSortBarComponent } from '../books-sort-bar/books-sort-bar.componen
               (sort)="sortBy($event)"
             />
 
-            @if (books.result$ | async; as result) { @if (result.isSuccess) {
+            @if (booksResults$ | async; as result) { @if (result.isSuccess) {
 
             <section class="collection-container">
               <books-collection-grid-overview
@@ -82,7 +82,7 @@ export class BooksCollectionContainer {
   private booksService = inject(BooksService);
   private bookParamService = inject(BookParamService);
 
-  protected books = inject(BooksService).getBooks();
+  // protected books = inject(BooksService).getBooks();
   protected author$ = this.bookParamService.author$;
   protected genre$ = this.bookParamService.genre$;
   protected query$ = this.bookParamService.query$;
@@ -101,7 +101,7 @@ export class BooksCollectionContainer {
   ]).pipe(
     switchMap(
       ([search, author, genre, status, sort]) =>
-        this.booksService.getBooks({
+        this.booksService.queryBooks({
           search,
           author,
           genre,

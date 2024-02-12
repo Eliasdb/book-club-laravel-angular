@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideQueryClientOptions } from '@ngneat/query';
+import { provideQueryDevTools } from '@ngneat/query-devtools';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { SharedModule } from './_modules/shared.module';
@@ -25,7 +27,14 @@ import { WorkspaceModule } from './pages/users/workspace/workspace.module';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-
+    provideQueryClientOptions({
+      defaultOptions: {
+        queries: {
+          staleTime: 3000,
+        },
+      },
+    }),
+    provideQueryDevTools(),
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
