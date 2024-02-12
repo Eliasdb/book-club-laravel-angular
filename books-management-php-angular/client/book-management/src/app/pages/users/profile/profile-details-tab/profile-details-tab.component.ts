@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'profile-settings-detail-tab',
+  selector: 'profile-details-tab',
   standalone: true,
   imports: [FormsModule],
   template: ` <div class="form-container">
@@ -43,8 +43,8 @@ import { FormsModule } from '@angular/forms';
       </div>
     </form>
   </div>`,
-  styleUrl: './profile-settings-detail-tab.component.scss',
+  styleUrl: './profile-details-tab.component.scss',
 })
-export class ProfileSettingsDetailTabComponent {
+export class ProfileDetailsTabComponent {
   @Input() user?: any;
 }

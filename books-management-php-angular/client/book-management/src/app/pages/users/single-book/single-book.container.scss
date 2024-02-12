@@ -67,3 +67,8 @@ h3 {
   box-shadow: var(--mdc-protected-button-container-elevation-shadow);
   background-color: grey !important;
 }
+
+.book-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}

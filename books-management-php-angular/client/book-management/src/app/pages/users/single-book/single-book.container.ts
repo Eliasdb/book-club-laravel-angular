@@ -7,11 +7,13 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { filterSuccessResult } from '@ngneat/query';
 import { ToastrService } from 'ngx-toastr';
 import { distinctUntilChanged, filter, map, switchMap, take } from 'rxjs';
+import { FavouriteBook } from '../../../_models/book';
 import { BooksService } from '../../../_services/books-service/books.service';
 import { CartService } from '../../../_services/cart-service/cart.service';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
 import { AddButtonComponent } from './add-button/add-button.component';
 import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
+
 @Component({
   standalone: true,
   imports: [
@@ -57,27 +59,38 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
                 adipisci id consequuntur maxime neque nam quisquam.
               </p>
 
-              <p>
-                <span class="bold-text">Author:</span>
-                {{ (book$ | async)?.author }}
-              </p>
-              <p>
-                <span class="bold-text">Genre:</span>
-                {{ (book$ | async)?.genre }}
-              </p>
-              <p>
-                <span class="bold-text">Status:</span>
-                {{ (book$ | async)?.status }}
-              </p>
+              <div class="book-info">
+                <div>
+                  <p>
+                    <span class="bold-text">Author:</span>
+                    {{ (book$ | async)?.author }}
+                  </p>
+                  <p>
+                    <span class="bold-text">Genre:</span>
+                    {{ (book$ | async)?.genre }}
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <span class="bold-text">Year:</span>
+                    {{ (book$ | async)?.publishedDate | date : 'y' }}
+                  </p>
+                  <p>
+                    <span class="bold-text">Status:</span>
+                    {{ (book$ | async)?.status }}
+                  </p>
+                </div>
+              </div>
+
               <hr />
 
               <div class="btn-container">
                 <add-button
                   [isDisabled]="isDisabled"
                   [book]="(book$ | async) || null"
-                  (add)="addToCart($event)"
+                  (add)="addToCart()"
                 />
-                <favourite-button />
+                <favourite-button (favourite)="onFavouriteBook()" />
               </div>
             </div>
           </section>
@@ -99,6 +112,7 @@ export class SingleBookContainer {
   protected cartService = inject(CartService);
   private activatedRoute = inject(ActivatedRoute);
   isDisabled?: boolean;
+  private userId = localStorage.getItem('id');
 
   public bookId$ = this.activatedRoute.params.pipe(
     distinctUntilChanged(),
@@ -115,12 +129,28 @@ export class SingleBookContainer {
     map((res) => res.data)
   );
 
-  addToCart($event: Event) {
+  addToCart() {
     this.book$.pipe(take(1)).subscribe((book) => {
       console.log('added');
 
       this.cartService.addToCart(book);
       this.toastr.success(`${book.title} added to cart!`);
+    });
+  }
+
+  favouriteBook = this.booksService.favouriteBook();
+
+  onFavouriteBook() {
+    this.book$.pipe(take(1)).subscribe((book) => {
+      const favouritedBook: FavouriteBook = {
+        ...book,
+        originalId: book.id,
+        userId: Number(this.userId),
+      };
+      console.log(favouritedBook);
+
+      this.favouriteBook.mutate(favouritedBook);
+      this.toastr.success(`${favouritedBook.title} added to favourites!`);
     });
   }
 

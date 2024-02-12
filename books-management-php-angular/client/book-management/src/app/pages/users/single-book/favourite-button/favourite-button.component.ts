@@ -1,28 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { ToggleComponent } from '../toggle/toggle.component';
 
 @Component({
   selector: 'favourite-button',
   standalone: true,
-  imports: [MatButtonModule, ToggleComponent],
+  imports: [MatButtonModule, ToggleComponent, MatIconModule],
   template: `
-    <!-- <button mat-raised-button> -->
-    <!-- @if {
-    <mat-icon>favorite</mat-icon>
-    } @else {
-    <mat-icon>favorite_border</mat-icon>
-    } -->
-
-    <!-- <ng-template #outline> </ng-template>
+    <button mat-raised-button (click)="favouriteEmit($event)">
+      <mat-icon>favorite</mat-icon>
       Favourite
-    </button> -->
-    <toggle [on]="false" (toggled)="showMessage($event)"></toggle>
+    </button>
   `,
   styleUrl: './favourite-button.component.scss',
 })
 export class FavouriteButtonComponent {
-  showMessage(value: any) {
-    console.log(value);
+  @Output() favourite = new EventEmitter<Event>();
+
+  favouriteEmit($event: any) {
+    this.favourite.emit($event);
   }
 }

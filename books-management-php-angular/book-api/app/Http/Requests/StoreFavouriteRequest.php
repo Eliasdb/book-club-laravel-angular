@@ -22,29 +22,43 @@ class StoreFavouriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" =>["required"],
-            "photoUrl" =>["required"],
+            "title" => ["required"],
+            "photoUrl" => ["required"],
             // "status" =>["required", Rule::in(["loaned out", "in stock"])],
-            "author" =>["required"],
-            "status" =>["required"],
-            "genre" =>["required"],
-            "publishedDate" =>["required"],
+            "author" => ["required"],
+            "status" => ["required"],
+            "genre" => ["required"],
+            "publishedDate" => ["required"],
+            "userId" => ["required"],
+            "originalId" => ["required"],
+
         ];
     }
 
     protected function prepareForValidation()
     {
-        if ($this->publishedDate)
-        {
+        if ($this->publishedDate) {
             $this->merge([
             "published_date" => $this->publishedDate
         ]);
         }
 
-        if ($this->photoUrl)
-        {
+        if ($this->userId) {
+            $this->merge([
+            "user_id" => $this->userId
+        ]);
+        }
+
+        if ($this->photoUrl) {
             $this->merge([
                 "photo_url" => $this->photoUrl
+            ]);
+        }
+
+
+        if ($this->originalId) {
+            $this->merge([
+                "original_id" => $this->originalId
             ]);
         }
     }

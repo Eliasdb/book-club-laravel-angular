@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
 import { map } from 'rxjs';
-import { Book } from '../../_models/book';
+import { Book, FavouriteBook } from '../../_models/book';
 import { RawApiDataBook, RawApiDataBooks } from '../../_models/rawapi';
 import {
   AUTHORS_QUERY_PARAM,
@@ -163,10 +163,24 @@ export class BooksService {
 
   favouriteBook() {
     return this.mutation({
-      mutationFn: (book: Book) =>
-        this.http.post<Book>(`http://localhost:8000/api/v1/favourites`, book),
+      mutationFn: (book: FavouriteBook) =>
+        this.http.post<FavouriteBook>(
+          `http://localhost:8000/api/v1/favourites`,
+          book
+        ),
       onSuccess: () =>
-        this.queryClient.invalidateQueries({ queryKey: ['FAVOURITE_BOOKS'] }),
+        this.queryClient.invalidateQueries({ queryKey: ['USER_DETAILS'] }),
+    });
+  }
+
+  removeFromFavourites() {
+    return this.mutation({
+      mutationFn: (id: number) =>
+        this.http.delete<FavouriteBook>(
+          `http://localhost:8000/api/v1/favourites/${id}`
+        ),
+      onSuccess: () =>
+        this.queryClient.invalidateQueries({ queryKey: ['USER_DETAILS'] }),
     });
   }
 

@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../../../../_services/account-service/account.service';
 
 @Component({
-  selector: 'profile-settings-edit-tab',
+  selector: 'profile-edit-tab',
   standalone: true,
   imports: [FormsModule, MatButtonModule],
   template: ` <div class="form-container">
@@ -109,14 +109,14 @@ import { AccountService } from '../../../../_services/account-service/account.se
         />
       </div>
       <div class="edit-form-group"></div>
-      <div class="edit-form-group">
+      <div class="edit-form-group-btn">
         <button mat-raised-button type="submit">Save changes</button>
       </div>
     </form>
   </div>`,
-  styleUrl: './profile-settings-edit-tab.component.scss',
+  styleUrl: './profile-edit-tab.component.scss',
 })
-export class ProfileSettingsEditTabComponent {
+export class ProfileEditTabComponent {
   private accountService = inject(AccountService);
   private toastr = inject(ToastrService);
   updateUser = this.accountService.updateUser();

@@ -21,7 +21,8 @@ class FavouriteFactory extends Factory
         $sentence =  $this->faker->sentence($nbWords = 10, $variableNbWords = true);
 
         return [
-            "user_id" => 2,
+            "user_id" => 201,
+            "original_id" => null,
             "photo_url" => "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
             "description" =>  $sentence,
             "title" => $this->faker->name(),

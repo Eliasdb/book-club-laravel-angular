@@ -68,8 +68,8 @@ class FavouriteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Favourite $favourite)
+    public function destroy(Request $request, Favourite $favourite)
     {
-        //
+        $favourite->delete($request->all());
     }
 }

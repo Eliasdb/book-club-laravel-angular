@@ -31,3 +31,8 @@
   width: 100%;
   border-radius: 50%;
 }
+
+.mat-mdc-raised-button:not(:disabled) {
+  width: 8rem;
+  font-size: 10px;
+}

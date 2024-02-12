@@ -18,6 +18,7 @@ class FavouriteResource extends JsonResource
             "id" => $this->id,
             "photoUrl" => $this->photo_url,
             "userId" => $this->user_id,
+            "originalId" => $this->original_id,
             "title" => $this->title,
             "genre" => $this->genre,
             "author" => $this->author,

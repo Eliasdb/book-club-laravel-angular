@@ -1,0 +1,54 @@
+.img-container {
+  width: 5rem;
+  height: 7rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.img-container img {
+  height: 100%;
+  width: 100%;
+  border-radius: 7px;
+}
+
+.favourites-container {
+  gap: 2rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  padding: 2rem;
+  justify-content: center;
+}
+
+.remove-btn {
+  scale: 0.5;
+  position: absolute;
+  left: 3.1rem;
+  top: -10px;
+  cursor: auto !important;
+}
+
+.remove-btn {
+  display: none;
+}
+
+.img-container {
+  &:hover {
+    .remove-btn {
+      display: block !important;
+    }
+  }
+}
+
+p {
+  text-align: center;
+}
+
+.c {
+  padding: 2rem 2rem;
+}
+
+.browse-link {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+}
