@@ -4,7 +4,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("https://img.freepik.com/free-vector/tea-books-cozy-pattern_1191-505.jpg");
+  // background-image: url("https://img.freepik.com/free-vector/cream-memphis-pattern-wallpaper_53876-119211.jpg");
+  background-image: url("https://img.freepik.com/free-vector/stylish-hexagonal-line-pattern-background_1017-19742.jpg");
+
   background-repeat: repeat;
 }
 
@@ -98,6 +100,7 @@ mat-form-field {
 .form-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  margin-top: 1rem;
 }
 
 .form-row {
@@ -108,4 +111,11 @@ mat-form-field {
 
 label {
   color: white;
+}
+
+.text-container {
+  color: white;
+  /* padding: 0rem; */
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 }

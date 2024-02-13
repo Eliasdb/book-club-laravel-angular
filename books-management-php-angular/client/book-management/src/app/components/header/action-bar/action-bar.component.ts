@@ -3,7 +3,8 @@ import { Component, Input, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CartService } from '../../../_services/cart-service/cart.service';
-import { CartDialog } from '../../cart-modal/cart-modal.component';
+import { CartDialog } from '../../modals/cart-modal/cart-modal.component';
+
 @Component({
   standalone: true,
   imports: [MatButtonModule, MatDialogModule, CommonModule],

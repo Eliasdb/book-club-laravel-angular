@@ -6,8 +6,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { BooksService } from '../../_services/books-service/books.service';
-import { CartItemComponent } from '../header/cart-item/cart-item.component';
+import { BooksService } from '../../../_services/books-service/books.service';
+import { CartItemComponent } from '../../header/cart-item/cart-item.component';
 
 @Component({
   selector: 'cart-dialog',

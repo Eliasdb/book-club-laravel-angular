@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { User } from '../../../_models/user';
 import { AccountService } from '../../../_services/account-service/account.service';
 
 @Component({
@@ -31,139 +32,8 @@ import { AccountService } from '../../../_services/account-service/account.servi
   selector: 'register',
   template: `
     <section class="register-page">
-      <form
-        #registerForm="ngForm"
-        (ngSubmit)="register()"
-        autocomplete="on"
-        class="form"
-      >
-        <div class="img-container">
-          <img
-            src="./assets/registerlogo.png"
-            alt="company logo"
-            class="logo"
-          />
-        </div>
-        <h2 class="register-title">Sign up</h2>
-        <hr class="horizontal-line" />
-        <div class="register-inputs">
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              name="name"
-              [(ngModel)]="model.name"
-              placeholder="Username"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <input
-              type="email"
-              class="form-control"
-              name="email"
-              [(ngModel)]="model.email"
-              placeholder="Email"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              name="firstName"
-              [(ngModel)]="model.firstName"
-              placeholder="First Name"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              name="lastName"
-              [(ngModel)]="model.lastName"
-              placeholder="Last Name"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              name="phoneNumber"
-              [(ngModel)]="model.phoneNumber"
-              placeholder="Phone number"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              name="address"
-              [(ngModel)]="model.address"
-              placeholder="Address"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              name="postalCode"
-              [(ngModel)]="model.postalCode"
-              placeholder="Postal code"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              name="city"
-              [(ngModel)]="model.city"
-              placeholder="City"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <input
-              type="password"
-              class="form-control"
-              name="password"
-              [(ngModel)]="model.password"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <input
-              type="password"
-              class="form-control"
-              name="confirm-password"
-              [(ngModel)]="model.password_confirmation"
-              placeholder="Confirm password"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="buttons">
-          <button class="register-btn" type="submit">Register</button>
-          <button class="cancel-btn" (click)="cancel()" type="button">
-            Cancel
-          </button>
-          <p class="text">
-            Already have an account?
-            <a routerLink="/login" class="click-here"> Click here </a> to log
-            in.
-          </p>
-        </div>
-      </form>
       <div class="stepper-container">
-        <form [formGroup]="formGroup">
+        <form [formGroup]="formGroup" (ngSubmit)="register()">
           <mat-vertical-stepper
             #linearVerticalStepper="matVerticalStepper"
             formArrayName="formArray"
@@ -252,34 +122,61 @@ import { AccountService } from '../../../_services/account-service/account.servi
               </div>
 
               <div>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button matStepperNext type="button">Next</button>
               </div>
             </mat-step>
 
             <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
               <ng-template matStepLabel>Address</ng-template>
+              <div class="form-container">
+                <div class="form-row">
+                  <label>Address</label>
+                  <div>
+                    <mat-form-field>
+                      <input
+                        matInput
+                        formControlName="addressFormCtrl"
+                        required
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
 
-              <mat-form-field>
-                <mat-label>Address</mat-label>
-                <input matInput formControlName="addressFormCtrl" />
-              </mat-form-field>
+                <div class="form-row">
+                  <label>Postal code</label>
+                  <div>
+                    <mat-form-field>
+                      <input
+                        matInput
+                        formControlName="postalCodeCtrl"
+                        required
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
 
-              <mat-form-field>
-                <mat-label>Address</mat-label>
-                <input matInput formControlName="addressFormCtrl" />
-              </mat-form-field>
-
+                <div class="form-row">
+                  <label>City</label>
+                  <div>
+                    <mat-form-field>
+                      <input matInput formControlName="cityCtrl" required />
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
               <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button matStepperPrevious type="button">
+                  Back
+                </button>
+                <button mat-button matStepperNext type="button">Next</button>
               </div>
             </mat-step>
 
             <mat-step>
               <ng-template matStepLabel>Confirm</ng-template>
-              Everything seems correct.
+              <div class="text-container"><p>Ready to join the club?</p></div>
               <div>
-                <button mat-button>Done</button>
+                <button mat-button type="submit">Done</button>
                 <button
                   type="button"
                   mat-button
@@ -302,8 +199,6 @@ export class RegisterComponent implements OnInit {
   private router = inject(Router);
   private toastr = inject(ToastrService);
 
-  model: any = {};
-
   formGroup!: FormGroup;
   constructor(private _formBuilder: FormBuilder) {}
 
@@ -325,15 +220,35 @@ export class RegisterComponent implements OnInit {
         }),
         this._formBuilder.group({
           addressFormCtrl: ['', Validators.required],
+          postalCodeCtrl: ['', Validators.required],
+          cityCtrl: ['', Validators.required],
         }),
       ]),
     });
   }
 
+  formData(): any {
+    return this.formGroup.value;
+  }
+
   register() {
-    this.accountService.register(this.model).subscribe({
+    const firstFormData = this.formData().formArray[0];
+    const secondFormData = this.formData().formArray[1];
+
+    const mergedFormData: User = {
+      name: firstFormData.userNameFormCtrl,
+      email: firstFormData.emailFormCtrl,
+      firstName: firstFormData.firstNameFormCtrl,
+      lastName: firstFormData.lastNameFormCtrl,
+      phoneNumber: firstFormData.phoneNumberFormCtrl,
+      password: firstFormData.passwordFormCtrl,
+      address: secondFormData.addressFormCtrl,
+      postalCode: secondFormData.postalCodeCtrl,
+      city: secondFormData.cityCtrl,
+    };
+
+    this.accountService.register(mergedFormData).subscribe({
       next: () => {
-        this.cancel();
         this.toastr.success('Registered successfully!');
         this.router.navigateByUrl('/login');
       },
@@ -342,9 +257,5 @@ export class RegisterComponent implements OnInit {
         console.log(error);
       },
     });
-  }
-
-  cancel() {
-    this.cancelRegister.emit(false);
   }
 }

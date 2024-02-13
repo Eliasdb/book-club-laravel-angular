@@ -12,6 +12,7 @@ export interface User {
   token?: string;
   id?: number;
   userName?: string;
+  name?: string;
   accessToken?: string;
   books?: Book[];
   favourites?: Book[];

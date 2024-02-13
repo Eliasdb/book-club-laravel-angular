@@ -4,9 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
 import { BehaviorSubject, take } from 'rxjs';
-import { Book } from '../../_models/book';
-import { CartService } from '../../_services/cart-service/cart.service';
-import { CartItemComponent } from '../header/cart-item/cart-item.component';
+import { Book } from '../../../_models/book';
+import { CartService } from '../../../_services/cart-service/cart.service';
+import { CartItemComponent } from '../../header/cart-item/cart-item.component';
 
 @Component({
   selector: 'cart-dialog',

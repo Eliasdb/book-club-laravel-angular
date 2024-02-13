@@ -9,7 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Book } from '../../../../_models/book';
-import { AddBookDialog } from '../../../../components/add-book-modal/add-book-modal.component';
+import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-book-modal.component';
 
 /**
  * @title Table with selection
