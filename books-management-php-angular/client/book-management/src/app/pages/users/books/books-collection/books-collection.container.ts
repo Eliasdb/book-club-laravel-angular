@@ -93,17 +93,16 @@ export class BooksCollectionContainer {
 
   protected booksResults$ = combineLatest([
     this.query$,
-    this.author$,
+    // this.author$,
     this.genre$,
     this.status$,
     this.sort$,
     // whenever these change value, it will start a call
   ]).pipe(
     switchMap(
-      ([search, author, genre, status, sort]) =>
+      ([search, genre, status, sort]) =>
         this.booksService.queryBooks({
           search,
-          author,
           genre,
           status,
           sort,

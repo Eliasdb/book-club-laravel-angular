@@ -8,7 +8,7 @@ import { Book } from '../../_models/book';
   providedIn: 'root',
 })
 export class CartService {
-  public currentCartSource = new BehaviorSubject<Book[] | null>([]);
+  public currentCartSource = new BehaviorSubject<Book[] | null | undefined>([]);
   private baseURL = environment.apiUrl;
   private http = inject(HttpClient);
   private userId = localStorage.getItem('id');

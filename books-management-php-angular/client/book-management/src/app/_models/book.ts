@@ -1,5 +1,5 @@
 export interface Book {
-  id?: number;
+  id?: number | undefined;
   photoUrl: string;
   userId?: number;
   genre: string;
