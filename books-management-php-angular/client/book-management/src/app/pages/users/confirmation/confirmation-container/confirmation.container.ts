@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
       <p>Your books will arrive soon...</p>
     </div>
   </div>`,
-  styleUrls: ['./confirmation.component.scss'],
+  styleUrls: ['./confirmation.container.scss'],
 })
 export class ConfirmationContainer implements OnInit {
   private router = inject(Router);
