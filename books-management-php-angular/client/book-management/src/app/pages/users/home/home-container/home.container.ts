@@ -4,20 +4,20 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { AccountService } from '../../../../_services/account-service/account.service';
+import { HomePostPromptComponent } from '../home-post-prompt/home-post-prompt.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterLink, MatButtonModule, MatBottomSheetModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    MatButtonModule,
+    MatBottomSheetModule,
+    HomePostPromptComponent,
+  ],
   selector: 'home',
   template: ` <section class="body">
-    <section class="intro-text">
-      <h1 *ngIf="currentUser$ | async as user">Hello {{ user }}!</h1>
-      <p class="welcome">
-        Welcome to the club! Feel free to have a look around.
-      </p>
-      <button mat-raised-button routerLink="/books">Browse</button>
-    </section>
-    <section class="footer-container"></section>
+    <home-post-prompt />
   </section>`,
   styleUrls: ['./home.container.scss'],
 })

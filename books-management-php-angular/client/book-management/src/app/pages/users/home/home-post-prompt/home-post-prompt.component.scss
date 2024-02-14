@@ -1,0 +1,38 @@
+.img-container {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.img-container img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.prompt-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+mat-card {
+  width: 40rem;
+}
+
+.text {
+  background-color: lightgreen;
+  border-radius: 50px;
+  width: 35rem;
+  padding: 0.5rem;
+  display: flex;
+  cursor: pointer;
+}
+
+.text:hover {
+  filter: brightness(95%);
+}
+p {
+  margin: 0;
+  margin-left: 0.2rem;
+  font-size: 14px;
+}

@@ -1,0 +1,65 @@
+.btn-container {
+  gap: 0.5rem;
+  width: 100%;
+  margin: 1rem;
+}
+
+.post-btn {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  border-radius: 2px;
+  padding: 15px 34px;
+  border: none;
+  transition: box-shadow 0.2s ease 0s, transform 0.1s ease 0s;
+  background-color: lightgreen;
+  color: black;
+  width: inherit;
+}
+
+.post-btn {
+  background-color: lightgreen;
+  color: black;
+  padding: 12px 34px;
+}
+
+.img-container {
+  height: 3rem;
+  width: 3rem;
+}
+
+.img-container img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.profile-details {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+textarea {
+  resize: none;
+  padding: 1rem;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 1rem;
+}
+
+.mini-fab {
+  scale: 0.8;
+}
+
+mat-dialog-actions {
+  margin-top: -2rem;
+}
