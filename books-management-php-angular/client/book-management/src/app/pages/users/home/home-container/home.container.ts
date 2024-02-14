@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { AccountService } from '../../../_services/account-service/account.service';
+import { AccountService } from '../../../../_services/account-service/account.service';
 
 @Component({
   standalone: true,
@@ -19,9 +19,9 @@ import { AccountService } from '../../../_services/account-service/account.servi
     </section>
     <section class="footer-container"></section>
   </section>`,
-  styleUrls: ['./home.component.scss'],
+  styleUrls: ['./home.container.scss'],
 })
-export class HomeComponent {
+export class HomeContainer {
   private accountService = inject(AccountService);
 
   protected currentUser$ = this.accountService.currentUser$;

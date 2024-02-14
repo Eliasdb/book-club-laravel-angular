@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   </div>`,
   styleUrls: ['./confirmation.component.scss'],
 })
-export class ConfirmationComponent implements OnInit {
+export class ConfirmationContainer implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {

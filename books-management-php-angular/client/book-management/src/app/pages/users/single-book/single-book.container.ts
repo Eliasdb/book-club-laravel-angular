@@ -108,9 +108,10 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
       <p>Loading...</p>
       } @if (result.isSuccess) {
       <div class="related-title">
-        <hr />
+        <hr class="hr" />
         <h2>Related books</h2>
       </div>
+      <div class="underlay"></div>
 
       <div class="cards-container">
         @for(result of result.data.items; track $index){
@@ -123,19 +124,9 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
               [matRippleDisabled]="disabled"
               [matRippleUnbounded]="unbounded"
             >
-              <mat-card class="card">
-                <mat-card-content>
-                  <div class="related-img-container">
-                    <img
-                      class="related-book-image"
-                      src="{{ result.photoUrl }}"
-                    />
-                  </div>
-                  <div class="book-title">
-                    <p class="title">{{ result.title }}</p>
-                  </div>
-                </mat-card-content>
-              </mat-card>
+              <div class="related-img-container">
+                <img class="related-book-image" src="{{ result.photoUrl }}" />
+              </div>
             </div>
           </section>
         </a>

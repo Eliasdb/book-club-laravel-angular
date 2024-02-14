@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Book } from '../../../_models/book';
-import { CartService } from '../../../_services/cart-service/cart.service';
-import { OrderItemComponent } from './order-item/order-item.component';
+import { Book } from '../../../../_models/book';
+import { CartService } from '../../../../_services/cart-service/cart.service';
+import { OrderItemComponent } from '../order-item/order-item.component';
 
 @Component({
   standalone: true,
@@ -28,9 +28,9 @@ import { OrderItemComponent } from './order-item/order-item.component';
       </div>
     </div>
   `,
-  styleUrls: ['./checkout.component.scss'],
+  styleUrls: ['./checkout.container.scss'],
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutContainer implements OnInit {
   protected cartService = inject(CartService);
   private router = inject(Router);
 

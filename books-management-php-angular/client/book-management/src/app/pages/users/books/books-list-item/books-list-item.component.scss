@@ -1,19 +1,24 @@
-.book-card {
+.book-img-container {
   width: 10rem;
   height: 15rem;
 }
 
-.book-card img {
+.book-img-container img {
   height: 100%;
   width: 100%;
-  border-radius: 0.5rem;
+  border-radius: 5px;
 }
 
 .card-text {
+  width: 24rem;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
-h3 {
-  font-size: 13px !important;
+.book-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }

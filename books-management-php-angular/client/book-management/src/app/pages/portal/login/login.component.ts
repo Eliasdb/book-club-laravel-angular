@@ -28,7 +28,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
           class="form-control"
           name="name"
           [(ngModel)]="user.name"
-          placeholder="Name"
+          placeholder="Username"
         />
       </div>
       <div class="form-group">

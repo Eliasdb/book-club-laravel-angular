@@ -11,6 +11,7 @@
 .single-book-image {
   height: 100%;
   width: 100%;
+  border-radius: 5px;
 }
 
 .img-container {
@@ -26,6 +27,14 @@
 .related-img-container {
   width: 8rem;
   height: 11rem;
+}
+
+.related-img-container:hover {
+  img {
+    scale: 1.1;
+    transition: 2s;
+    border: 1px solid;
+  }
 }
 
 .book-info-container {
@@ -91,6 +100,7 @@ h3 {
   width: 47rem;
   gap: 2rem;
   padding: 2rem;
+  position: relative;
 }
 
 .title {
@@ -119,6 +129,7 @@ h3 {
 
   -webkit-user-drag: none;
   -webkit-tap-highlight-color: transparent;
+  border-radius: 5px;
 }
 
 .mat-mdc-card-content {
@@ -143,7 +154,20 @@ a {
   align-items: center;
 }
 
-hr {
+.hr {
   width: 17rem;
   margin-bottom: 0.5rem;
+}
+.full-card {
+  border-radius: 3px;
+}
+
+.underlay {
+  position: absolute;
+  width: 47rem;
+  height: 6rem;
+  background-color: #69f0ae;
+  top: 55rem;
+  border-top: 1px;
+  box-shadow: 0px 0px 1px 0px;
 }

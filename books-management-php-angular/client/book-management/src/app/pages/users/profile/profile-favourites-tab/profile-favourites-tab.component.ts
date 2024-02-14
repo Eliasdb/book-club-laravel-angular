@@ -15,7 +15,7 @@ import { BooksService } from '../../../../_services/books-service/books.service'
     <div class="c">
       @if(user.data.favourites.length === 0) {
 
-      <p style="">No favourites added yet...</p>
+      <p style="margin-top:2rem;">No favourites added yet...</p>
 
       } @if(user.data.favourites.length > 0) {
 

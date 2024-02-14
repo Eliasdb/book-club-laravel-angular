@@ -17,8 +17,6 @@ import { CartItemComponent } from '../../header/cart-item/cart-item.component';
     </h2>
 
     <mat-dialog-content class="mat-typography">
-      <!-- <h3>Please fill in the following data:</h3> -->
-
       <form
         #addBookForm="ngForm"
         (ngSubmit)="onAddBook()"

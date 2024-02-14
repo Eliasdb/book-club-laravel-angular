@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { BooksCollectionContainer } from '../books/books-collection/books-collection.container';
-import { CheckoutComponent } from '../checkout/checkout.component';
-import { ConfirmationComponent } from '../confirmation/confirmation.component';
-import { HomeComponent } from '../home/home.component';
-import { ProfileComponent } from '../profile/profile-container/profile.container';
+import { BooksCollectionContainer } from '../books/books-collection-container/books-collection.container';
+import { CheckoutContainer } from '../checkout/checkout-container/checkout.container';
+import { ConfirmationContainer } from '../confirmation/confirmation-container/confirmation.container';
+import { HomeContainer } from '../home/home-container/home.container';
+import { ProfileContainer } from '../profile/profile-container/profile.container';
 import { SingleBookContainer } from '../single-book/single-book.container';
 import { WorkspaceContainer } from './workspace.container';
 
@@ -13,8 +13,8 @@ export const WorkspaceRoutes: Routes = [
     component: WorkspaceContainer,
 
     children: [
-      { path: 'home', component: HomeComponent },
-      { path: 'profile', component: ProfileComponent },
+      { path: 'home', component: HomeContainer },
+      { path: 'profile', component: ProfileContainer },
       {
         path: 'books',
         component: BooksCollectionContainer,
@@ -24,8 +24,8 @@ export const WorkspaceRoutes: Routes = [
         component: SingleBookContainer,
       },
 
-      { path: 'checkout', component: CheckoutComponent },
-      { path: 'confirmation', component: ConfirmationComponent },
+      { path: 'checkout', component: CheckoutContainer },
+      { path: 'confirmation', component: ConfirmationContainer },
     ],
   },
 ];

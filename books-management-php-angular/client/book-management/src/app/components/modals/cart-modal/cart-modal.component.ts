@@ -24,7 +24,9 @@ import { CartItemComponent } from '../../header/cart-item/cart-item.component';
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <div class="btn-container">
-        <button class="remove-item-btn" (click)="onClick()">Remove</button>
+        <button class="remove-item-btn" (click)="removeSelection()">
+          Remove
+        </button>
         <button
           class="checkout-btn"
           routerLink="/checkout"
@@ -46,50 +48,46 @@ import { CartItemComponent } from '../../header/cart-item/cart-item.component';
   styleUrls: ['./cart-modal.component.scss'],
 })
 export class CartDialog {
-  ngOnInit(): void {
-    this.items$.next(this.cartService.getItems());
-  }
+  protected cartService = inject(CartService);
+  items$ = this.cartService.currentCartSource;
+
   selectedItems$ = new BehaviorSubject<any[]>([]);
   selectedIds$ = new BehaviorSubject<any[]>([]);
 
-  state$ = new BehaviorSubject<boolean>(false);
+  isChecked$ = new BehaviorSubject<boolean>(false);
 
-  setState(ev: any) {
-    this.state$.pipe(take(1)).subscribe(() => {
-      this.state$.next(ev);
+  setState(state: boolean) {
+    this.isChecked$.pipe(take(1)).subscribe(() => {
+      this.isChecked$.next(state);
     });
   }
 
-  protected cartService = inject(CartService);
-  items$ = this.cartService.currentCartSource;
-  onClick() {
-    this.selectedItems$.pipe(take(1)).subscribe((items) => {
-      const selectedItems = items;
-      if (items) {
+  removeSelection() {
+    this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
+      if (selectedItems) {
         const selectedIds = selectedItems.map((item) => item.id);
         this.selectedIds$?.next(selectedIds);
       }
     });
+
     this.items$.pipe(take(1)).subscribe((items) => {
-      const cartItems = items;
-      const filteredItems = cartItems?.filter(
+      const filteredItems = items?.filter(
         ({ id }) => !this.selectedIds$?.getValue().includes(id)
       );
       this.items$.next(filteredItems);
     });
+
     localStorage.setItem('cart', JSON.stringify(this.items$.value));
   }
 
   onItemSelected(selected: Book) {
-    console.log('onItemSelected', selected);
-    console.log('state', this.state$.value);
-
-    if (this.state$.value === true) {
+    if (this.isChecked$.value === true) {
       this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
         this.selectedItems$.next([...selectedItems, selected]);
       });
     }
-    if (this.state$.value === false) {
+
+    if (this.isChecked$.value === false) {
       this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
         const selectedIds = selectedItems.map((item) => item.id);
 
@@ -100,5 +98,9 @@ export class CartDialog {
         this.selectedItems$.next(filteredItems);
       });
     }
+  }
+
+  ngOnInit(): void {
+    this.items$.next(this.cartService.getItems());
   }
 }
