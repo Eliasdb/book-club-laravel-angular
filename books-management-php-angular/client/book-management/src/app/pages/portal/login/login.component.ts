@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { User } from '../../../_models/user';
 import { AccountService } from '../../../_services/account-service/account.service';
 
 @Component({
@@ -17,7 +18,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
       class="form"
     >
       <div class="img-container">
-        <img src="./assets/registerlogo.png" alt="company logo" class="logo" />
+        <img src="./assets/login-logo.png" alt="company logo" class="logo" />
       </div>
       <h2 class="login-title">Login</h2>
       <hr />
@@ -26,7 +27,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
           type="text"
           class="form-control"
           name="name"
-          [(ngModel)]="model.name"
+          [(ngModel)]="user.name"
           placeholder="Name"
         />
       </div>
@@ -35,7 +36,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
           type="password"
           class="form-control"
           name="password"
-          [(ngModel)]="model.password"
+          [(ngModel)]="user.password"
           placeholder="Password"
         />
       </div>
@@ -57,10 +58,18 @@ export class LoginComponent {
   private toastr = inject(ToastrService);
 
   protected currentUser$ = this.accountService.currentUser$;
-  model: any = {};
+  user: User = {
+    email: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    address: '',
+    postalCode: '',
+    city: '',
+  };
 
   login() {
-    this.accountService.login(this.model).subscribe({
+    this.accountService.login(this.user).subscribe({
       next: () => {
         this.toastr.success(`Logged in successfully!`);
         this.router.navigateByUrl('/home');

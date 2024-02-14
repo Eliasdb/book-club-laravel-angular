@@ -15,7 +15,7 @@ import { BooksService } from '../../../../_services/books-service/books.service'
     <div class="c">
       @if(user.data.favourites.length === 0) {
 
-      <p>No favourites added yet...</p>
+      <p style="">No favourites added yet...</p>
 
       } @if(user.data.favourites.length > 0) {
 
@@ -27,7 +27,6 @@ import { BooksService } from '../../../../_services/books-service/books.service'
             alt="favorite book"
             routerLink="/books/{{ favourite.originalId }}"
           />
-          {{ favourite.id }}
 
           <button
             (click)="onRemoveBook(favourite)"

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { filterSuccessResult } from '@ngneat/query';
@@ -10,6 +11,7 @@ import { distinctUntilChanged, filter, map, switchMap, take } from 'rxjs';
 import { FavouriteBook } from '../../../_models/book';
 import { BooksService } from '../../../_services/books-service/books.service';
 import { CartService } from '../../../_services/cart-service/cart.service';
+import { BreadcrumbsComponent } from '../../../components/breadcrumbs/breadcrumbs.component';
 import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
 import { AddButtonComponent } from './add-button/add-button.component';
 import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
@@ -25,21 +27,24 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
     MatIconModule,
     AddButtonComponent,
     FavouriteButtonComponent,
+    MatRippleModule,
+    BreadcrumbsComponent,
   ],
   selector: 'single-book',
   template: `
-    @if (bookResults$ | async; as result) { @if (result.isLoading) {
-
-    <books-loading-state></books-loading-state>
-
-    } @if (result.isSuccess) {
-
     <section class="book-container">
+      @if (bookResults$ | async; as result) { @if (result.isLoading) {
+
+      <books-loading-state></books-loading-state>
+
+      } @if (result.isSuccess) {
+      <div class="b-crumbs">
+        <breadcrumbs [book]="(book$ | async) || null" />
+      </div>
       <mat-card>
         <mat-card-content>
           <section class="card-container">
             <div class="img">
-              <a class="back-link" routerLink="/books"> &larr; Overview</a>
               <div class="img-container">
                 <img
                   src="https://edit.org/images/cat/book-covers-big-2019101610.jpg"
@@ -96,15 +101,57 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
           </section>
         </mat-card-content>
       </mat-card>
-    </section>
+      } @if (result.isError) {
+      <p>Error</p>
+      } } @if (relatedBookResults$ | async; as result) { @if (result.isLoading)
+      {
+      <p>Loading...</p>
+      } @if (result.isSuccess) {
+      <div class="related-title">
+        <hr />
+        <h2>Related books</h2>
+      </div>
 
-    } @if (result.isError) {
-    <p>Error</p>
-    } }
+      <div class="cards-container">
+        @for(result of result.data.items; track $index){
+        <a routerLink="../../books/{{ result.id }}">
+          <section class="full-card">
+            <div
+              class="example-ripple-container mat-elevation-z4"
+              matRipple
+              [matRippleCentered]="centered"
+              [matRippleDisabled]="disabled"
+              [matRippleUnbounded]="unbounded"
+            >
+              <mat-card class="card">
+                <mat-card-content>
+                  <div class="related-img-container">
+                    <img
+                      class="related-book-image"
+                      src="{{ result.photoUrl }}"
+                    />
+                  </div>
+                  <div class="book-title">
+                    <p class="title">{{ result.title }}</p>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </section>
+        </a>
+
+        }
+      </div>
+      } }
+    </section>
   `,
   styleUrls: ['./single-book.container.scss'],
 })
-export class SingleBookContainer {
+export class SingleBookContainer implements OnInit {
+  centered = false;
+  disabled = false;
+  unbounded = false;
+
   // private useQuery = inject(UseQuery);
   protected booksService = inject(BooksService);
   private toastr = inject(ToastrService);
@@ -129,6 +176,17 @@ export class SingleBookContainer {
     map((res) => res.data)
   );
 
+  public bookGenre$ = this.book$.pipe(
+    map((res) => {
+      console.log('genre', res.genre);
+      return res.genre;
+    })
+  );
+
+  protected relatedBookResults$ = this.bookGenre$.pipe(
+    switchMap((genre) => this.booksService.queryBooksByGenre(genre).result$)
+  );
+
   addToCart() {
     this.book$.pipe(take(1)).subscribe((book) => {
       console.log('added');
@@ -139,6 +197,7 @@ export class SingleBookContainer {
   }
 
   favouriteBook = this.booksService.favouriteBook();
+  relatedBooks = this.booksService.queryBooksByGenre();
 
   onFavouriteBook() {
     this.book$.pipe(take(1)).subscribe((book) => {
@@ -147,11 +206,23 @@ export class SingleBookContainer {
         originalId: book.id,
         userId: Number(this.userId),
       };
-      console.log(favouritedBook);
 
       this.favouriteBook.mutate(favouritedBook);
       this.toastr.success(`${favouritedBook.title} added to favourites!`);
     });
+  }
+
+  loadRelated() {
+    this.book$.pipe(take(1)).subscribe((book) => {
+      const genre = book.genre;
+      console.log(genre);
+      const y = this.booksService.queryBooksByGenre(genre);
+      console.log(y);
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadRelated();
   }
 
   // protected isLoading$ = this.bookResults$.pipe(map((res) => res.isLoading));

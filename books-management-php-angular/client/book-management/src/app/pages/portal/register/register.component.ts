@@ -34,6 +34,10 @@ import { AccountService } from '../../../_services/account-service/account.servi
     <section class="register-page">
       <div class="stepper-container">
         <form [formGroup]="formGroup" (ngSubmit)="register()">
+          <div class="title">
+            <p>Sign up</p>
+          </div>
+
           <mat-vertical-stepper
             #linearVerticalStepper="matVerticalStepper"
             formArrayName="formArray"
@@ -188,6 +192,12 @@ import { AccountService } from '../../../_services/account-service/account.servi
             </mat-step>
           </mat-vertical-stepper>
         </form>
+        <div class="bottom-text">
+          <p>
+            Already have an account? Click
+            <span class="click"><a routerLink="/login">here</a></span> to login.
+          </p>
+        </div>
       </div>
     </section>
   `,

@@ -18,14 +18,6 @@
   border-radius: 1rem;
 }
 
-// input {
-//   background-color: #24262b;
-//   color: inherit;
-//   border: 0;
-//   padding: 1rem;
-//   outline: none;
-// }
-
 h2 {
   text-align: center;
 }
@@ -85,14 +77,6 @@ h2 {
   text-align: center;
 }
 
-.stepper-container {
-  display: flex;
-}
-
-// input {
-//   background: white !important;
-// }
-
 mat-form-field {
   scale: 0.8;
 }
@@ -118,4 +102,28 @@ label {
   /* padding: 0rem; */
   margin-top: 1rem;
   margin-bottom: 2rem;
+}
+
+.title {
+  height: 2rem;
+  background: #24262b;
+  color: white;
+  border-radius: 3px 3px 0px 0px;
+  padding: 2rem;
+  font-size: 21px;
+}
+
+.bottom-text {
+  margin-top: 0.5rem;
+  text-align: right;
+  font-size: 13px;
+}
+
+.click {
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }

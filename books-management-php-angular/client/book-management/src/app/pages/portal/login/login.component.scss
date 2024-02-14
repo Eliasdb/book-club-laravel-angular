@@ -13,7 +13,7 @@
   padding: 3rem;
   background-color: #24262b;
   color: white;
-  border-radius: 1rem;
+  border-radius: 3px;
 }
 
 input {
@@ -44,11 +44,10 @@ button {
   font-size: 16px;
   line-height: 20px;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 3px;
   padding: 14px 24px;
   border: none;
-  transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
-    -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+  transition: box-shadow 0.2s ease 0s, transform 0.1s ease 0s;
 }
 
 .login-btn {
@@ -58,9 +57,9 @@ button {
 }
 
 .logo {
-  width: 12rem;
-  scale: 1.5;
-  margin-bottom: 3rem;
+  width: 8rem;
+  scale: 1;
+  margin-bottom: 2rem;
 }
 
 .text {

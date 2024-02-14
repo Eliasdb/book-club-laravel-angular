@@ -8,7 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     <div class="books-loader">
       <section class="loader-inner">
         <mat-spinner></mat-spinner>
-        <p class="loader-text">Fetching books from database...</p>
+        <p class="loader-text">Fetching from database...</p>
       </section>
     </div>
   `,

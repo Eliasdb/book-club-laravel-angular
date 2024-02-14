@@ -54,30 +54,6 @@ class AuthController extends Controller
 
     }
 
-    public function bulkUpdate()
-    {
-        $vat = 0.20;
-        $transactions = Transaction::get();
-
-        foreach ($transactions->chunk(5000) as $chunk) {
-            $cases = [];
-            $ids = [];
-            $params = [];
-
-            foreach ($chunk as $transaction) {
-                $cases[] = "WHEN {$transaction->id} then ?";
-                $params[] = $transaction->profit * $vat;
-                $ids[] = $transaction->id;
-            }
-
-            $ids = implode(',', $ids);
-            $cases = implode(' ', $cases);
-
-            if (!empty($ids)) {
-                Book::update("UPDATE transactions SET `price` = CASE `id` {$cases} END WHERE `id` in ({$ids})", $params);
-            }
-        }
-    }
     /**
      * Update the specified resource in storage.
      */
@@ -131,7 +107,7 @@ class AuthController extends Controller
         $includeFavourites = request()->query("includeFavourites");
 
         if ($includeBooks) {
-            return new UserResource($user->loadMissing("favourites"));
+            return new UserResource($user->loadMissing("books"));
         }
 
         if ($includeFavourites) {

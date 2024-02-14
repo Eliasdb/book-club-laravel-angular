@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { BehaviorSubject, take } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Book } from '../../../_models/book';
 
 @Component({
@@ -13,16 +13,9 @@ import { Book } from '../../../_models/book';
     <div class="content-container">
       <mat-checkbox
         class="example-margin"
-        [(ngModel)]="checked"
         (click)="clickChecked(item)"
         (change)="clickChecked2($event)"
       ></mat-checkbox>
-      <input
-        type="checkbox"
-        class="checkbox"
-        (click)="onClick()"
-        (click)="getCheckboxValues($event, item)"
-      />
       <div class="img-container">
         <img
           src="https://edit.org/images/cat/book-covers-big-2019101610.jpg"
@@ -56,43 +49,5 @@ export class CartItemComponent {
 
   clickChecked2(event: any) {
     if (this.item) this.state.emit(event.checked);
-  }
-
-  name = 'Angular';
-
-  order = ['One', 'Two', 'Three', 'Four'];
-
-  newArray: any = [];
-
-  onClick() {
-    console.log('Clikc');
-    this.selectedItems$.pipe(take(1)).subscribe((items) => {
-      // console.log(items);
-    });
-  }
-
-  //Checkbox Change detecting function
-  getCheckboxValues(ev: any, data: Book) {
-    let obj = {
-      order: data,
-    };
-
-    if (ev.target.checked) {
-      // Pushing the object into array
-      // this.selectedItems$.next();
-      // console.log(this.selectedItems$.getValue());
-
-      this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
-        this.selectedItems$.next([...selectedItems, data]);
-      });
-    } else {
-      let el = this.newArray.find((itm: any) => itm.order === data);
-
-      if (el) this.newArray.splice(this.newArray.indexOf(el), 1);
-    }
-    // console.log(this.selectedItems$.getValue());
-    //Duplicates the obj if we uncheck it
-    //How to remove the value from array if we uncheck it
-    // console.log(this.newArray);
   }
 }

@@ -33,9 +33,7 @@ export interface RawApiDataUserFav {
   };
 }
 
-export interface Todo {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
+export interface LogOut {
+  message: string;
+  status: boolean;
 }

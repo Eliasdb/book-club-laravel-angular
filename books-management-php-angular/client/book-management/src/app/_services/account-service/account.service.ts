@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
 import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { RawApiDataUserFav } from '../../_models/rawapi';
+import { LogOut, RawApiDataUserFav } from '../../_models/rawapi';
 import { User } from '../../_models/user';
 
 @Injectable({
@@ -95,18 +95,26 @@ export class AccountService {
     });
   }
 
+  logout() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('id');
+    this.currentUserSource.next(null);
+
+    return this.http.get<LogOut>('http://localhost:8000/api/v1/logout').pipe(
+      // projects what we are getting back from API
+      map((response) => {
+        console.log(response);
+        return response;
+      })
+    );
+  }
+
   setCurrentUser(user: User) {
     this.currentUserSource.next(user);
   }
 
   setCurrentToken(token: string) {
     this.currentTokenSource.next(token);
-  }
-
-  logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    localStorage.removeItem('id');
-    this.currentUserSource.next(null);
   }
 }

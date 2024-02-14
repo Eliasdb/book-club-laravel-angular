@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AccountService } from '../../../_services/account-service/account.service';
 
 @Component({
   selector: 'nav-bar',
@@ -75,7 +77,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         </li>
       </ul>
       <div class="logout-btn">
-        Logout
+        <a routerLink="/logout" (click)="logout()"> Logout</a>
         <img
           src="./assets/logout-btn.svg"
           alt="Logout button"
@@ -94,8 +96,22 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent {
-  public userId = localStorage.getItem('id');
-
   @Input()
   hideLauncher!: boolean;
+
+  protected userId = localStorage.getItem('id');
+  private accountService = inject(AccountService);
+  private toastr = inject(ToastrService);
+
+  logout() {
+    this.accountService.logout().subscribe({
+      next: () => {
+        this.toastr.success('Successfully logged out. See you soon!');
+        // this.router.navigateByUrl('/home');
+      },
+      error: (error) => {
+        // console.log(error.error.errors.name[0]);
+      },
+    });
+  }
 }

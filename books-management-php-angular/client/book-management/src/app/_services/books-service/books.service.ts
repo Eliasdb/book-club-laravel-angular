@@ -22,17 +22,6 @@ export class BooksService {
   private query = injectQuery();
   private queryClient = injectQueryClient();
 
-  // private isFavouritedSource = new BehaviorSubject<boolean>(false);
-  // isFavourited$ = this.isFavouritedSource.asObservable();
-
-  // public getIsFavourited(): Observable<boolean> {
-  //   return this.isFavourited$;
-  // }
-
-  // public toggleFavourite(): void {
-  //   this.isFavouritedSource.next(!this.isFavouritedSource.value);
-  // }
-
   public queryBooks(parameters?: Partial<BookQueryParams>) {
     return this.query({
       queryKey: [
@@ -136,7 +125,7 @@ export class BooksService {
     });
   }
 
-  queryBooksById(id: number) {
+  public queryBooksById(id: number) {
     return this.query({
       queryKey: ['BOOKS', id],
       queryFn: () => {
@@ -152,7 +141,25 @@ export class BooksService {
     });
   }
 
-  addBook() {
+  public queryBooksByGenre(genre?: string) {
+    return this.query({
+      queryKey: ['RELATED_BOOKS', genre],
+      queryFn: () => {
+        return this.http
+          .get<RawApiDataBooks>(
+            `http://localhost:8000/api/v1/books?genre=${genre}`
+          )
+          .pipe(
+            // projects what we are getting back from API
+            map((response) => {
+              return response.data;
+            })
+          );
+      },
+    });
+  }
+
+  public addBook() {
     return this.mutation({
       mutationFn: (book: Book) =>
         this.http.post<Book>(`http://localhost:8000/api/v1/books`, book),
@@ -161,7 +168,7 @@ export class BooksService {
     });
   }
 
-  favouriteBook() {
+  public favouriteBook() {
     return this.mutation({
       mutationFn: (book: FavouriteBook) =>
         this.http.post<FavouriteBook>(
@@ -173,7 +180,7 @@ export class BooksService {
     });
   }
 
-  removeFromFavourites() {
+  public removeFromFavourites() {
     return this.mutation({
       mutationFn: (id: number) =>
         this.http.delete<FavouriteBook>(
@@ -183,26 +190,4 @@ export class BooksService {
         this.queryClient.invalidateQueries({ queryKey: ['USER_DETAILS'] }),
     });
   }
-
-  // addBook(book: Book) {
-  //   return queryOptions({
-  //     queryKey: ['BOOKS', book.title],
-  //     queryFn: () => {
-  //       return this.http.post<Book>(`${environment.apiUrl}/books`, book).pipe(
-  //         // projects what we are getting back from API
-  //         map((data) => {
-  //           console.log(data);
-
-  //           return data;
-  //         })
-  //       );
-  //     },
-  //   });
-  // }
-
-  // createCreateBookMutation() {
-  //   return this.useMutation((book: Book) =>
-  //     this.http.post<Book>(`${environment.apiUrl}/books`, book)
-  //   );
-  // }
 }

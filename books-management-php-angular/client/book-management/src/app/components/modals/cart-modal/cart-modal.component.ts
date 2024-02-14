@@ -21,8 +21,6 @@ import { CartItemComponent } from '../../header/cart-item/cart-item.component';
           (itemSelected)="onItemSelected($event)"
         />
       </div>
-
-      <p>spijtirefefg</p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <div class="btn-container">
@@ -48,6 +46,9 @@ import { CartItemComponent } from '../../header/cart-item/cart-item.component';
   styleUrls: ['./cart-modal.component.scss'],
 })
 export class CartDialog {
+  ngOnInit(): void {
+    this.items$.next(this.cartService.getItems());
+  }
   selectedItems$ = new BehaviorSubject<any[]>([]);
   selectedIds$ = new BehaviorSubject<any[]>([]);
 
@@ -62,7 +63,6 @@ export class CartDialog {
   protected cartService = inject(CartService);
   items$ = this.cartService.currentCartSource;
   onClick() {
-    // this.items$.next(this.selectedItems$.value);
     this.selectedItems$.pipe(take(1)).subscribe((items) => {
       const selectedItems = items;
       if (items) {
@@ -92,17 +92,12 @@ export class CartDialog {
     if (this.state$.value === false) {
       this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
         const selectedIds = selectedItems.map((item) => item.id);
+
         const filteredItems = selectedItems.filter(
           ({ id }) => !selectedIds.includes(id)
         );
 
         this.selectedItems$.next(filteredItems);
-
-        // filter(({id})=> this.items$.getValue().includes(selected.id);
-
-        console.log(filteredItems);
-
-        console.log('NOT CHECKED', selectedItems);
       });
     }
   }

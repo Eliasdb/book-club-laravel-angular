@@ -106,11 +106,6 @@ textarea {
   color: black !important;
 }
 
-.mat-mdc-dialog-container {
-  min-height: 30rem !important;
-  min-width: 50rem !important;
-}
-
 .mat-step-icon-selected,
 .mat-step-icon-state-edit {
   background-color: lightgreen !important;
@@ -213,5 +208,14 @@ html {
 }
 
 .mat-stepper-vertical {
-  border-radius: 3px !important;
+  border-radius: 0px 0px 3px 3px !important;
+}
+
+.mat-stepper-vertical,
+.mat-stepper-horizontal {
+  background-color: #24262b !important;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
 }

@@ -22,13 +22,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //api/v1/
-Route::group(["prefix" => "v1", "namespace" => "App\Http\Controllers\Api\V1"], function()
-{
+Route::group(["prefix" => "v1", "namespace" => "App\Http\Controllers\Api\V1"], function () {
     Route::apiResource("favourites", FavouriteController::class);
     Route::apiResource("register", AuthController::class);
     Route::post("login", [AuthController::class, "login"]);
     Route::apiResource("books", BookController::class);
     Route::apiResource("users", AuthController::class);
+    Route::get("logout", [AuthController::class, "logout"]);
 
 });
 
@@ -37,10 +37,9 @@ Route::group([
     "prefix" => "v1",
     "namespace" => "App\Http\Controllers\Api\V1",
     "middleware" => ["auth:sanctum"]
-], function(){
- 
+], function () {
+
 
     // Route::get("profile", [ApiController::class, "profile"]);
     // Route::get("refresh", [ApiController::class, "refreshToken"]);
-    // Route::get("logout", [ApiController::class, "logout"]);
 });
