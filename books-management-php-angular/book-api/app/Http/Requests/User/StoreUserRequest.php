@@ -1,11 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
@@ -25,10 +22,10 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" =>["required"],
+            "name" => ["required"],
             // "firstName" =>["required"],
             // "lastName" =>["required"],
-            "email" =>["required", "email"],
+            "email" => ["required", "email"],
             "password" => ["required"],
             // "phoneNumber" => ["required"],
             // "address" =>["required"],
@@ -39,33 +36,29 @@ class StoreUserRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        if ($this->postalCode)
-        {
+        if ($this->postalCode) {
             $this->merge([
             "postal_code" => $this->postalCode
         ]);
         }
 
-        if ($this->firstName)
-        {
+        if ($this->firstName) {
             $this->merge([
             "first_name" => $this->firstName
         ]);
         }
 
-        if ($this->lastName)
-        {
+        if ($this->lastName) {
             $this->merge([
             "last_name" => $this->lastName
         ]);
         }
 
-        if ($this->phoneNumber)
-        {
+        if ($this->phoneNumber) {
             $this->merge([
             "phone_number" => $this->phoneNumber
         ]);
         }
-      
+
     }
 }

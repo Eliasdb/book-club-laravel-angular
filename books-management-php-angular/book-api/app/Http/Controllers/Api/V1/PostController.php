@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
-use App\Http\Resources\V1\PostCollection;
-use App\Models\Post;
+use App\Filters\V1\CustomersFilter;
 use Illuminate\Http\Request;
+use App\Http\Requests\Post\StorePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
+use App\Http\Resources\V1\Post\PostCollection;
+use App\Http\Resources\V1\Post\PostResource;
+
+use App\Models\Post;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\PostResource;
 
 class PostController extends Controller
 {
@@ -18,10 +20,18 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $offset = $request->offset ?? 0;
-        $limit = $request->limit ?? 100;
+        $limit = $request->limit ?? 10;
+
+        $includeComments = $request->query("includeComments");
+
         $posts = Post::skip($offset)->limit($limit)->filter()->get();
 
+        if ($includeComments) {
+            $posts = Post::with("comments")->get();
+        }
+
         return new PostCollection($posts);
+
     }
 
     /**
@@ -45,7 +55,13 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $includeComments = request()->query("includeComments");
+
+        if ($includeComments) {
+            return new PostResource($post->loadMissing("comments"));
+        }
+
+        return new PostResource($post);
     }
 
     /**

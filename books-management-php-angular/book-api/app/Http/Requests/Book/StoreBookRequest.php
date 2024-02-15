@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Book;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,28 +23,26 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" =>["required"],
-            "photoUrl" =>["required"],
-            "description" =>["required"],
+            "title" => ["required"],
+            "photoUrl" => ["required"],
+            "description" => ["required"],
             // "status" =>["required", Rule::in(["loaned out", "in stock"])],
-            "author" =>["required"],
-            "status" =>["required"],
-            "genre" =>["required"],
-            "publishedDate" =>["required"],
+            "author" => ["required"],
+            "status" => ["required"],
+            "genre" => ["required"],
+            "publishedDate" => ["required"],
         ];
     }
 
-     protected function prepareForValidation()
+    protected function prepareForValidation()
     {
-        if ($this->publishedDate)
-        {
+        if ($this->publishedDate) {
             $this->merge([
             "published_date" => $this->publishedDate
         ]);
         }
 
-        if ($this->photoUrl)
-        {
+        if ($this->photoUrl) {
             $this->merge([
                 "photo_url" => $this->photoUrl
             ]);

@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\CustomersFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\V1\UserCollection;
-use App\Http\Resources\V1\UserResource;
-use App\Models\Book;
+use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Resources\V1\User\UserCollection;
+use App\Http\Resources\V1\User\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -25,17 +22,17 @@ class AuthController extends Controller
         $includeFavourites = $request->query("includeFavourites");
 
 
-        $customers = User::where($filterItems);
+        $users = User::where($filterItems);
 
         if ($includeBooks) {
-            $customers = $customers->with("books");
+            $users = $users->with("books");
         }
 
         if ($includeFavourites) {
-            $customers = $customers->with("favourites");
+            $users = $users->with("favourites");
         }
 
-        return new UserCollection($customers->paginate());
+        return new UserCollection($users->paginate());
 
     }
 
@@ -43,7 +40,6 @@ class AuthController extends Controller
     // Register API (POST, formdata)
     public function store(StoreUserRequest $request)
     {
-
         $user =  new UserResource(User::create($request->all()));
 
         // Response
@@ -139,16 +135,16 @@ class AuthController extends Controller
     }
 
     // Refresh Token API (GET)
-    public function refreshToken()
-    {
-        $newToken = auth()->refresh();
+    // public function refreshToken()
+    // {
+    //     $newToken = auth()->refresh();
 
-        return response()->json([
-            "status" => true,
-            "message" => "New access token generated.",
-            "token" => $newToken
-        ]);
-    }
+    //     return response()->json([
+    //         "status" => true,
+    //         "message" => "New access token generated.",
+    //         "token" => $newToken
+    //     ]);
+    // }
 
     // Logout API (GET)
     public function logout()

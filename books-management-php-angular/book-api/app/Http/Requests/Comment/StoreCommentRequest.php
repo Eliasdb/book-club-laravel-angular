@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Comment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFavouriteRequest extends FormRequest
+class StoreCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,28 +22,16 @@ class StoreFavouriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => ["required"],
+            "postId" => ["required"],
+            "poster" => ["required"],
             "photoUrl" => ["required"],
-            // "status" =>["required", Rule::in(["loaned out", "in stock"])],
-            "author" => ["required"],
-            "status" => ["required"],
-            "genre" => ["required"],
-            "publishedDate" => ["required"],
-            "userId" => ["required"],
-            "originalId" => ["required"],
-
+            "content" => ["required"],
         ];
     }
 
     protected function prepareForValidation()
     {
-        if ($this->publishedDate) {
-            $this->merge([
-            "published_date" => $this->publishedDate
-        ]);
-        }
-
-        if ($this->userId) {
+        if ($this->postId) {
             $this->merge([
             "user_id" => $this->userId
         ]);
@@ -52,13 +40,6 @@ class StoreFavouriteRequest extends FormRequest
         if ($this->photoUrl) {
             $this->merge([
                 "photo_url" => $this->photoUrl
-            ]);
-        }
-
-
-        if ($this->originalId) {
-            $this->merge([
-                "original_id" => $this->originalId
             ]);
         }
     }

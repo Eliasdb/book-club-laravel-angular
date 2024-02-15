@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\V1;
+namespace App\Http\Resources\V1\Book;
 
 use App\Models\Book;
 use Illuminate\Http\Request;

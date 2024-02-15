@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BookController;
+use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\FavouriteController;
 use App\Http\Controllers\Api\V1\PostController;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ Route::group(["prefix" => "v1", "namespace" => "App\Http\Controllers\Api\V1"], f
     Route::apiResource("books", BookController::class);
     Route::apiResource("users", AuthController::class);
     Route::apiResource("posts", PostController::class);
+    Route::apiResource("comments", CommentController::class);
 
 });
 

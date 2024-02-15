@@ -35,17 +35,15 @@ class Book extends Model
         return $query->orWhere('author', 'like', "%$value%");
     }
 
-
-
     protected $fillable = [
-      "title",
-      "photo_url",
-      "status",
-      "genre",
-      "description",
-      "author",
-      "published_date",
-      "user_id"
+     "title",
+     "photo_url",
+     "status",
+     "genre",
+     "description",
+     "author",
+     "published_date",
+     "user_id"
     ];
 
     public function user()

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\StoreBookRequest;
-use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\BookResource;
-use App\Http\Resources\V1\BookCollection;
-use App\Filters\V1\BooksFilter;
+
 use Illuminate\Http\Request;
+use App\Http\Requests\Book\StoreBookRequest;
+use App\Http\Requests\Book\UpdateBookRequest;
+use App\Http\Resources\V1\Book\BookResource;
+use App\Http\Resources\V1\Book\BookCollection;
+
 use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller

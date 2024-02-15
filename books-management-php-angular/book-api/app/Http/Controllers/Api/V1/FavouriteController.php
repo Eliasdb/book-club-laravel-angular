@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\StoreFavouriteRequest;
-use App\Http\Requests\UpdateFavouriteRequest;
+use App\Http\Requests\Favourite\StoreFavouriteRequest;
+use App\Http\Requests\Favourite\UpdateFavouriteRequest;
 use App\Models\Favourite;
-use App\Http\Resources\V1\FavouriteResource;
-use App\Http\Resources\V1\FavouriteCollection;
+use App\Http\Resources\V1\Favourite\FavouriteResource;
+use App\Http\Resources\V1\Favourite\FavouriteCollection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

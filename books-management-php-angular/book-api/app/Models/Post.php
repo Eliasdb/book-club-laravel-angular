@@ -19,10 +19,16 @@ class Post extends Model
         "photo_url",
         "sort"
       ];
+
     protected $fillable = [
         "user_id",
         "username",
         "content",
         "photo_url",
       ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
