@@ -43,6 +43,18 @@ export class PostService {
     });
   }
 
+  editPost() {
+    return this.mutation({
+      mutationFn: (post: Post) =>
+        this.http.patch<Post>(
+          `http://localhost:8000/api/v1/posts/${post.id}`,
+          post
+        ),
+      onSuccess: () =>
+        this.queryClient.invalidateQueries({ queryKey: ['POSTS'] }),
+    });
+  }
+
   removePost() {
     return this.mutation({
       mutationFn: (id: number) =>

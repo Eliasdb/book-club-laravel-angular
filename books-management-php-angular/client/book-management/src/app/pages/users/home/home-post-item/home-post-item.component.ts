@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Post } from '../../../../_models/post';
+import { EditPostDialog } from '../../../../components/modals/edit-post-modal/edit-post-modal.component';
 
 @Component({
   selector: 'home-post-item',
@@ -28,8 +30,10 @@ import { Post } from '../../../../_models/post';
               </div>
             </section>
             <section class="right-side">
-              <mat-icon class="share">edit</mat-icon>
+              @if(userId === post.userId) {
+              <mat-icon class="share" (click)="openDialog()">edit</mat-icon>
               <mat-icon class="share" (click)="deletePost()">delete</mat-icon>
+              }
             </section>
           </section>
           <section class="post-item-body">
@@ -89,8 +93,23 @@ import { Post } from '../../../../_models/post';
 })
 export class HomePostItemComponent {
   @Input() post?: Post;
-
   @Output() delete = new EventEmitter<string>();
+
+  private dialog = inject(MatDialog);
+  protected userId = Number(localStorage.getItem('id'));
+
+  openDialog() {
+    const dialogRef = this.dialog.open(EditPostDialog, {
+      data: {
+        postId: this.post?.id,
+        content: this.post?.content,
+        username: this.post?.username,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 
   deletePost() {
     this.delete.emit();
