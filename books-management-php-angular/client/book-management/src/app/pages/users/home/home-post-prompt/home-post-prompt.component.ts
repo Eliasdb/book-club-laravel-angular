@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { PostDialog } from '../../../../components/modals/post-modal/post-modal.component';
+import { AddPostDialog } from '../../../../components/modals/add-post-modal/add-post-modal.component';
 
 @Component({
   selector: 'home-post-prompt',
@@ -32,7 +32,7 @@ export class HomePostPromptComponent {
   private dialog = inject(MatDialog);
 
   openDialog() {
-    const dialogRef = this.dialog.open(PostDialog);
+    const dialogRef = this.dialog.open(AddPostDialog);
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });

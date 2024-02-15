@@ -1,6 +1,7 @@
 .post-item-header {
   display: flex;
   gap: 0.5rem;
+  justify-content: space-between;
 }
 
 .img-container-poster {
@@ -115,4 +116,13 @@ input {
   background-color: #f0f2f5;
   padding: 0.5rem;
   border-radius: 14px;
+}
+
+.left-side {
+  display: flex;
+  gap: 0.5rem;
+}
+
+mat-icon {
+  cursor: pointer;
 }

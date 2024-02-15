@@ -1,5 +1,6 @@
 import { Book } from './book';
 import { Customer } from './customer';
+import { Post } from './post';
 
 export interface RawApiDataCustomer {
   data: Customer[];
@@ -36,4 +37,14 @@ export interface RawApiDataUserFav {
 export interface LogOut {
   message: string;
   status: boolean;
+}
+
+export interface RawApiDataBook {
+  data: Book;
+}
+
+export interface RawApiDataPosts {
+  data: {
+    items: Post[];
+  };
 }

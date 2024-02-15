@@ -8,6 +8,7 @@ use App\Http\Resources\V1\PostCollection;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\PostResource;
 
 class PostController extends Controller
 {
@@ -18,7 +19,7 @@ class PostController extends Controller
     {
         $offset = $request->offset ?? 0;
         $limit = $request->limit ?? 100;
-        $posts = Post::skip($offset)->limit($limit)->get();
+        $posts = Post::skip($offset)->limit($limit)->filter()->get();
 
         return new PostCollection($posts);
     }
@@ -36,7 +37,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        return new PostResource(Post::create($request->all()));
     }
 
     /**
@@ -66,8 +67,8 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Request $request, Post $post)
     {
-        //
+        $post->delete($request->all());
     }
 }
