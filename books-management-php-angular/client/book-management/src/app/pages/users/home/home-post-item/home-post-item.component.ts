@@ -1,15 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { Post } from '../../../../_models/post';
+import { BehaviorSubject, take } from 'rxjs';
+import { Comment, Post } from '../../../../_models/post';
+import { CommentService } from '../../../../_services/comment-service/comment.service';
 import { EditPostDialog } from '../../../../components/modals/edit-post-modal/edit-post-modal.component';
 
 @Component({
   selector: 'home-post-item',
   standalone: true,
-  imports: [MatCardModule, MatIconModule, CommonModule],
+  imports: [MatCardModule, MatIconModule, CommonModule, FormsModule],
   template: ` @if(post) {
     <section class="post-item">
       <mat-card>
@@ -60,18 +70,20 @@ import { EditPostDialog } from '../../../../components/modals/edit-post-modal/ed
             <hr />
           </section>
           <section class="comment-section">
+            @for (comment of post.comments; track $index) {
             <div class="comment-container">
               <div class="img-container-commenter">
                 <img
-                  src="https://material.angular.io/assets/img/examples/shiba1.jpg"
-                  alt=""
+                  src="{{ comment.photoUrl }}"
+                  alt="Profile picture commenter"
                 />
               </div>
               <div class="comment-details">
-                <p class="commenter-name">Elias De Bock</p>
-                <p>This content sucks!!</p>
+                <p class="commenter-name">{{ comment.poster }}</p>
+                <p>{{ comment.content }}</p>
               </div>
             </div>
+            }
           </section>
           <section class="add-comment-section">
             <div class="img-container-commenter">
@@ -81,8 +93,14 @@ import { EditPostDialog } from '../../../../components/modals/edit-post-modal/ed
               />
             </div>
             <div class="input-container">
-              <input type="text" placeholder="Write a comment..." />
-              <mat-icon class="post-action-icon">keyboard_arrow_right</mat-icon>
+              <input
+                type="text"
+                placeholder="Write a comment..."
+                [(ngModel)]="comment.content"
+              />
+              <mat-icon class="post-action-icon" (click)="onAddComment()"
+                >keyboard_arrow_right</mat-icon
+              >
             </div>
           </section>
         </mat-card-content>
@@ -91,12 +109,30 @@ import { EditPostDialog } from '../../../../components/modals/edit-post-modal/ed
     }`,
   styleUrl: './home-post-item.component.scss',
 })
-export class HomePostItemComponent {
+export class HomePostItemComponent implements OnInit {
+  private commentService = inject(CommentService);
+
   @Input() post?: Post;
-  @Output() delete = new EventEmitter<string>();
+  @Output() deleteP = new EventEmitter();
 
   private dialog = inject(MatDialog);
   protected userId = Number(localStorage.getItem('id'));
+  private user: string = JSON.parse(localStorage.getItem('user') || '');
+
+  postId$ = new BehaviorSubject<number | undefined>(0);
+
+  comment: Comment = {
+    postId: 0,
+    poster: this.user,
+    content: '',
+    photoUrl: 'https://material.angular.io/assets/img/examples/shiba1.jpg',
+  };
+
+  addComment = this.commentService.addComment();
+
+  onAddComment() {
+    this.addComment.mutate(this.comment);
+  }
 
   openDialog() {
     const dialogRef = this.dialog.open(EditPostDialog, {
@@ -112,6 +148,14 @@ export class HomePostItemComponent {
   }
 
   deletePost() {
-    this.delete.emit();
+    this.deleteP.emit();
+  }
+
+  ngOnInit(): void {
+    this.postId$.next(this.post?.id);
+    this.postId$.pipe(take(1)).subscribe((res) => {
+      console.log('lol', res);
+      this.comment.postId = res;
+    });
   }
 }

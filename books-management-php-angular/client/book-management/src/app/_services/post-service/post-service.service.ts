@@ -20,7 +20,7 @@ export class PostService {
       queryFn: () => {
         return this.http
           .get<RawApiDataPosts>(
-            `http://localhost:8000/api/v1/posts?sort=id,desc`
+            `http://localhost:8000/api/v1/posts?includeComments=true?&sort=id,desc`
           )
           .pipe(
             // projects what we are getting back from API

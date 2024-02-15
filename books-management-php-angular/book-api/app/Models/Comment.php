@@ -11,6 +11,13 @@ class Comment extends Model
     use HasFactory;
     use FilterQueryString;
 
+    protected $fillable = [
+        "post_id",
+        "poster",
+        "content",
+        "photo_url",
+      ];
+
 
     public function post()
     {

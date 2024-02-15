@@ -33,7 +33,7 @@ class StoreCommentRequest extends FormRequest
     {
         if ($this->postId) {
             $this->merge([
-            "user_id" => $this->userId
+            "post_id" => $this->postId
         ]);
         }
 

@@ -27,7 +27,7 @@ class PostController extends Controller
         $posts = Post::skip($offset)->limit($limit)->filter()->get();
 
         if ($includeComments) {
-            $posts = Post::with("comments")->get();
+            $posts = Post::with("comments")->skip($offset)->limit($limit)->filter()->get();
         }
 
         return new PostCollection($posts);

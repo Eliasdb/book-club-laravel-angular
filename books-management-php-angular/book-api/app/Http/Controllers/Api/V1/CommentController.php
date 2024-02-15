@@ -7,6 +7,7 @@ use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\Comment\CommentCollection;
+use App\Http\Resources\V1\Comment\CommentResource;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -38,7 +39,7 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        //
+        return new CommentResource(Comment::create($request->all()));
     }
 
     /**

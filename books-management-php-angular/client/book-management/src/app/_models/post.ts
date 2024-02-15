@@ -5,4 +5,12 @@ export interface Post {
   photoUrl?: string;
   content: string;
   creationDate?: Date;
+  comments?: Comment[];
+}
+
+export interface Comment {
+  postId: number | undefined;
+  poster: string;
+  content: string;
+  photoUrl: string;
 }
