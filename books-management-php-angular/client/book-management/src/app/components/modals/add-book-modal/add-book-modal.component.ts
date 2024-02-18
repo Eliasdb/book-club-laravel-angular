@@ -7,7 +7,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BooksService } from '../../../_services/books-service/books.service';
-import { CartItemComponent } from '../../header/cart-item/cart-item.component';
 
 @Component({
   selector: 'cart-dialog',
@@ -103,7 +102,7 @@ import { CartItemComponent } from '../../header/cart-item/cart-item.component';
           class="form-control hidden"
           name="status"
           [(ngModel)]="book.status"
-          value="Available"
+          value="available"
         />
       </form>
     </mat-dialog-content> `,
@@ -111,7 +110,6 @@ import { CartItemComponent } from '../../header/cart-item/cart-item.component';
   imports: [
     MatDialogModule,
     MatButtonModule,
-    CartItemComponent,
     RouterLink,
     CommonModule,
     FormsModule,
@@ -131,7 +129,7 @@ export class AddBookDialog {
     genre: '',
     title: '',
     author: '',
-    status: 'Available',
+    status: 'available',
     publishedDate: '',
     description: '',
   };

@@ -26,7 +26,6 @@ export class PostService {
             // projects what we are getting back from API
             map((response) => {
               console.log(response);
-
               return response.data;
             })
           );

@@ -23,4 +23,23 @@ export class CommentService {
         this.queryClient.invalidateQueries({ queryKey: ['POSTS'] }),
     });
   }
+
+  // queryCommentsByPostId(id: number | undefined) {
+  //   return this.query({
+  //     queryKey: ['COMMENTS', id],
+  //     queryFn: () => {
+  //       return this.http
+  //         .get<any>(
+  //           `http://localhost:8000/api/v1/posts/${id}?includeComments=true`
+  //         )
+  //         .pipe(
+  //           // projects what we are getting back from API
+  //           map((response) => {
+  //             console.log(response);
+  //             return response.data;
+  //           })
+  //         );
+  //     },
+  //   });
+  // }
 }

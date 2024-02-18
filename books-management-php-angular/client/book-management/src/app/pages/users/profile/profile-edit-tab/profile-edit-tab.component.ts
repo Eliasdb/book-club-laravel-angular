@@ -131,6 +131,7 @@ export class ProfileEditTabComponent {
   onUpdateUser(): void {
     this.updateUser.mutate(this.model);
     this.setIndexBackToZero();
+    localStorage.setItem('user', this.model.name);
     this.model = {};
     this.toastr.success('Profile successfully updated!');
   }

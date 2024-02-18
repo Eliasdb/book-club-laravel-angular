@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { BehaviorSubject, take } from 'rxjs';
 import { Book } from '../../../_models/book';
 import { CartService } from '../../../_services/cart-service/cart.service';
-import { CartItemComponent } from '../../header/cart-item/cart-item.component';
+import { CartItemComponent } from '../../cart-item/cart-item.component';
 
 @Component({
   selector: 'cart-dialog',
@@ -89,10 +89,12 @@ export class CartDialog {
 
     if (this.isChecked$.value === false) {
       this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
-        const selectedIds = selectedItems.map((item) => item.id);
+        const selectedId: number = selected.id || 0;
+        const selectedArray: number[] = [];
+        selectedArray.push(selectedId);
 
         const filteredItems = selectedItems.filter(
-          ({ id }) => !selectedIds.includes(id)
+          ({ id }) => !selectedArray?.includes(id)
         );
 
         this.selectedItems$.next(filteredItems);

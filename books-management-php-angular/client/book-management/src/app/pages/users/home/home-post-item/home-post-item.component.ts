@@ -8,6 +8,8 @@ import {
   inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,7 +21,14 @@ import { EditPostDialog } from '../../../../components/modals/edit-post-modal/ed
 @Component({
   selector: 'home-post-item',
   standalone: true,
-  imports: [MatCardModule, MatIconModule, CommonModule, FormsModule],
+  imports: [
+    MatCardModule,
+    MatIconModule,
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+  ],
   template: ` @if(post) {
     <section class="post-item">
       <mat-card>
@@ -33,7 +42,7 @@ import { EditPostDialog } from '../../../../components/modals/edit-post-modal/ed
                 />
               </div>
               <div class="post-item-details">
-                <p class="bold">{{ post.username }}</p>
+                <p class="bold">&commat;{{ post.username }}</p>
                 <p class="grey">
                   <small>{{ post.creationDate | date : 'longDate' }}</small>
                 </p>
@@ -78,13 +87,22 @@ import { EditPostDialog } from '../../../../components/modals/edit-post-modal/ed
                   alt="Profile picture commenter"
                 />
               </div>
-              <div class="comment-details">
-                <p class="commenter-name">{{ comment.poster }}</p>
-                <p>{{ comment.content }}</p>
+
+              <div class="comment">
+                <div class="comment-details">
+                  <p class="commenter-name">{{ comment.poster }}</p>
+                  <p>{{ comment.content }}</p>
+                </div>
+                <div class="edit-delete-sheet-icon">
+                  <button mat-mini-fab color="primary">
+                    <mat-icon>keyboard_control</mat-icon>
+                  </button>
+                </div>
               </div>
             </div>
             }
           </section>
+          <div [hidden]="!isShowDiv">This Div is from Javatpoint.com.</div>
           <section class="add-comment-section">
             <div class="img-container-commenter">
               <img
@@ -97,6 +115,7 @@ import { EditPostDialog } from '../../../../components/modals/edit-post-modal/ed
                 type="text"
                 placeholder="Write a comment..."
                 [(ngModel)]="comment.content"
+                (keyup.enter)="onAddComment()"
               />
               <mat-icon class="post-action-icon" (click)="onAddComment()"
                 >keyboard_arrow_right</mat-icon
@@ -120,6 +139,7 @@ export class HomePostItemComponent implements OnInit {
   private user: string = JSON.parse(localStorage.getItem('user') || '');
 
   postId$ = new BehaviorSubject<number | undefined>(0);
+  isShowDiv = false;
 
   comment: Comment = {
     postId: 0,

@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { BehaviorSubject } from 'rxjs';
-import { Book } from '../../../_models/book';
+import { Book } from '../../_models/book';
 
 @Component({
   selector: 'cart-item',
@@ -36,12 +35,6 @@ export class CartItemComponent {
   @Input() item: Book | null = null;
   @Output() itemSelected = new EventEmitter<any>();
   @Output() state = new EventEmitter<boolean>();
-
-  selectedItems$ = new BehaviorSubject<Book[]>([]);
-
-  itemX: any = {};
-
-  checked = false;
 
   clickChecked(item: Book) {
     if (this.item) this.itemSelected.emit(item);

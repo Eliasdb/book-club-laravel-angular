@@ -35,19 +35,19 @@ import { BooksSortBarComponent } from '../books-sort-bar/books-sort-bar.componen
           <book-filters
             [value]="query$ | async"
             [bookStatus]="status$ | async"
+            [activeGenre]="genre$ | async"
             (search)="onSearch($event)"
             (filterGenre)="filterGenre($event)"
             (filterStatus)="filterStatus($event)"
             (clearFilters)="clearFilters()"
-            [activeGenre]="genre$ | async"
           />
           <section class="books">
             <books-sort-bar
               [showList]="showList"
-              (clickEvent)="toggleShowList()"
               [bookCount]="(totalBooksCount$ | async) || 0"
               [selectedSort]="(sort$ | async) || 'title,asc'"
               (sort)="sortBy($event)"
+              (clickEvent)="toggleShowList()"
             />
 
             @if (booksResults$ | async; as result) { @if (result.isSuccess) {

@@ -1,7 +1,8 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
-import { map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { Book, FavouriteBook } from '../../_models/book';
 import { RawApiDataBook, RawApiDataBooks } from '../../_models/rawapi';
 import {
@@ -17,6 +18,11 @@ import {
   providedIn: 'root',
 })
 export class BooksService {
+  selectedItems$ = new BehaviorSubject<any[]>([]);
+  isChecked$ = new BehaviorSubject<boolean>(false);
+  isSheetClosed$ = new BehaviorSubject<boolean>(true);
+  selection = new SelectionModel<Book>(true, []);
+
   private http = inject(HttpClient);
   private mutation = injectMutation();
   private query = injectQuery();
@@ -119,7 +125,7 @@ export class BooksService {
           })
           .pipe(
             // projects what we are getting back from API
-            map((response) => response.data)
+            map((response) => response)
           );
       },
     });
@@ -163,6 +169,15 @@ export class BooksService {
     return this.mutation({
       mutationFn: (book: Book) =>
         this.http.post<Book>(`http://localhost:8000/api/v1/books`, book),
+      onSuccess: () =>
+        this.queryClient.invalidateQueries({ queryKey: ['ADMIN_BOOKS'] }),
+    });
+  }
+
+  public deleteBook() {
+    return this.mutation({
+      mutationFn: (id: number) =>
+        this.http.delete<Book>(`http://localhost:8000/api/v1/books/${id}`),
       onSuccess: () =>
         this.queryClient.invalidateQueries({ queryKey: ['ADMIN_BOOKS'] }),
     });

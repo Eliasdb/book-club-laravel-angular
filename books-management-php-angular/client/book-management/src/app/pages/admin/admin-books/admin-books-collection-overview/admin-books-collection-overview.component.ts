@@ -1,14 +1,23 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Book } from '../../../../_models/book';
+import { BooksService } from '../../../../_services/books-service/books.service';
 import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-book-modal.component';
 
 /**
@@ -26,6 +35,8 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
     MatPaginatorModule,
     DatePipe,
     MatButtonModule,
+    MatIconModule,
+    FormsModule,
   ],
   template: `
     <section class="collection-title">
@@ -70,12 +81,16 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
                 (change)="$event ? selection.toggle(row) : null"
                 [checked]="selection.isSelected(row)"
                 [aria-label]="checkboxLabel(row)"
+                (click)="clickChecked(row)"
+                (click)="clickE()"
+                (change)="clickChecked2($event)"
               >
               </mat-checkbox>
             </td>
           </ng-container>
           <ng-container matColumnDef="number">
             <th mat-header-cell *matHeaderCellDef>#</th>
+
             <td mat-cell *matCellDef="let row">{{ row.id }}</td>
           </ng-container>
 
@@ -123,8 +138,13 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
     </div>
   `,
 })
-export class AdminBooksCollectionOverviewComponent {
+export class AdminBooksCollectionOverviewComponent implements OnInit {
+  ngOnInit(): void {
+    console.log(this.dataSource);
+  }
   @Input() books?: Book[];
+  data: Book[] = [];
+  private bookService = inject(BooksService);
 
   displayedColumns: string[] = [
     'select',
@@ -136,13 +156,28 @@ export class AdminBooksCollectionOverviewComponent {
     'year',
   ];
 
-  data: Book[] = [];
-
   dataSource: MatTableDataSource<Book> | null = null;
 
-  selection = new SelectionModel<Book>(true, []);
+  selection = this.bookService.selection;
 
   private dialog = inject(MatDialog);
+
+  @Output() clickEv = new EventEmitter();
+
+  @Output() itemSelected = new EventEmitter<any>();
+  @Output() state = new EventEmitter<boolean>();
+
+  clickChecked(row: Book) {
+    this.itemSelected.emit(row);
+  }
+
+  clickE() {
+    this.clickEv.emit();
+  }
+
+  clickChecked2(event: any) {
+    this.state.emit(event.checked);
+  }
 
   openDialog() {
     const dialogRef = this.dialog.open(AddBookDialog);
@@ -154,14 +189,14 @@ export class AdminBooksCollectionOverviewComponent {
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
+    // console.log(numSelected);
+
     const numRows = this.dataSource?.data.length;
     return numSelected === numRows;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
-    console.log(this.dataSource);
-
     if (this.isAllSelected()) {
       this.selection.clear();
       return;

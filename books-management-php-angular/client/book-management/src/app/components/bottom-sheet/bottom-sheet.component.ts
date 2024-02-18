@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { take } from 'rxjs';
+import { BooksService } from '../../_services/books-service/books.service';
 
 @Component({
   standalone: true,
@@ -17,9 +19,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   template: `
     <mat-toolbar>
       <div class="selected-books">
-        <span>0 books selected</span>
+        <span>{{ this.selectedItems$.getValue().length }} books selected</span>
         <span>|</span>
-        <a mat-raised-button (click)="closeBottomSheet()" class="clear-btn"
+        <a mat-raised-button (click)="clearSelection()" class="clear-btn"
           >Clear</a
         >
       </div>
@@ -30,6 +32,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         mat-icon-button
         class="example-icon"
         aria-label="Example icon-button with delete icon"
+        (click)="deleteSelection()"
       >
         <mat-icon
           class="example-icon"
@@ -43,9 +46,27 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   styleUrls: ['./bottom-sheet.component.scss'],
 })
 export class BottomSheetComponent {
+  private bookService = inject(BooksService);
+
+  selectedItems$ = this.bookService.selectedItems$;
+  selection = this.bookService.selection;
+  deleteBook = this.bookService.deleteBook();
+
   private _bottomSheet = inject(MatBottomSheet);
 
-  closeBottomSheet(): void {
+  clearSelection(): void {
+    this.selectedItems$.next([]);
+    this.bookService.isSheetClosed$.next(true);
+    this.selection.clear();
     this._bottomSheet.dismiss(BottomSheetComponent);
+  }
+
+  deleteSelection() {
+    this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
+      selectedItems.forEach((item) => {
+        this.deleteBook.mutate(item.id);
+      });
+    });
+    this.selectedItems$.next([]);
   }
 }
