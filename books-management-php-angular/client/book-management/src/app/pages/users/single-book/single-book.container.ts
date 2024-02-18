@@ -9,6 +9,7 @@ import { filterSuccessResult } from '@ngneat/query';
 import { ToastrService } from 'ngx-toastr';
 import { distinctUntilChanged, filter, map, switchMap, take } from 'rxjs';
 import { FavouriteBook } from '../../../_models/book';
+import { AccountService } from '../../../_services/account-service/account.service';
 import { BooksService } from '../../../_services/books-service/books.service';
 import { CartService } from '../../../_services/cart-service/cart.service';
 import { BreadcrumbsComponent } from '../../../components/breadcrumbs/breadcrumbs.component';
@@ -91,7 +92,6 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
 
               <div class="btn-container">
                 <add-button
-                  [isDisabled]="isDisabled"
                   [book]="(book$ | async) || null"
                   (add)="addToCart()"
                 />
@@ -139,18 +139,20 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
   styleUrls: ['./single-book.container.scss'],
 })
 export class SingleBookContainer implements OnInit {
+  // private useQuery = inject(UseQuery);
+  protected booksService = inject(BooksService);
+  protected accountService = inject(AccountService);
+  private toastr = inject(ToastrService);
+  protected cartService = inject(CartService);
+  private activatedRoute = inject(ActivatedRoute);
+
   centered = false;
   disabled = false;
   unbounded = false;
 
-  // private useQuery = inject(UseQuery);
-  protected booksService = inject(BooksService);
-  private toastr = inject(ToastrService);
-
-  protected cartService = inject(CartService);
-  private activatedRoute = inject(ActivatedRoute);
-  isDisabled?: boolean;
   private userId = localStorage.getItem('id');
+  favouriteBook = this.accountService.favouriteBook();
+  relatedBooks = this.booksService.queryBooksByGenre();
 
   public bookId$ = this.activatedRoute.params.pipe(
     distinctUntilChanged(),
@@ -187,9 +189,6 @@ export class SingleBookContainer implements OnInit {
     });
   }
 
-  favouriteBook = this.booksService.favouriteBook();
-  relatedBooks = this.booksService.queryBooksByGenre();
-
   onFavouriteBook() {
     this.book$.pipe(take(1)).subscribe((book) => {
       const favouritedBook: FavouriteBook = {
@@ -205,16 +204,11 @@ export class SingleBookContainer implements OnInit {
 
   loadRelated() {
     this.book$.pipe(take(1)).subscribe((book) => {
-      const genre = book.genre;
-      console.log(genre);
-      const y = this.booksService.queryBooksByGenre(genre);
-      console.log(y);
+      this.booksService.queryBooksByGenre(book.genre);
     });
   }
 
   ngOnInit(): void {
     this.loadRelated();
   }
-
-  // protected isLoading$ = this.bookResults$.pipe(map((res) => res.isLoading));
 }

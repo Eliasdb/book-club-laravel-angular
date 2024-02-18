@@ -6,7 +6,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { BooksService } from '../../../_services/books-service/books.service';
+import { Book } from '../../../_models/book';
+import { AdminService } from '../../../_services/admin-service/admin.service';
 
 @Component({
   selector: 'cart-dialog',
@@ -119,12 +120,12 @@ import { BooksService } from '../../../_services/books-service/books.service';
   styleUrls: ['./add-book-modal.component.scss'],
 })
 export class AddBookDialog {
-  private bookService = inject(BooksService);
+  private adminService = inject(AdminService);
   private toastr = inject(ToastrService);
 
-  addBook = this.bookService.addBook();
+  addBook = this.adminService.addBook();
 
-  book: any = {
+  book: Book = {
     photoUrl: '',
     genre: '',
     title: '',

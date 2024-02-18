@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { FavouriteBook } from '../../../../_models/book';
-import { BooksService } from '../../../../_services/books-service/books.service';
+import { AccountService } from '../../../../_services/account-service/account.service';
 
 @Component({
   selector: 'profile-favourites-tab',
@@ -46,15 +46,14 @@ import { BooksService } from '../../../../_services/books-service/books.service'
   styleUrl: './profile-favourites-tab.component.scss',
 })
 export class ProfileFavouritesTabComponent {
-  @Input() user?: any;
-
-  private bookService = inject(BooksService);
+  private accountService = inject(AccountService);
   private toastr = inject(ToastrService);
 
-  removeBook = this.bookService.removeFromFavourites();
+  @Input() user?: any;
+
+  removeBook = this.accountService.removeFromFavourites();
 
   onRemoveBook(favourite: FavouriteBook) {
-    console.log(this.user);
     if (favourite.id) {
       this.removeBook.mutate(favourite.id);
     }

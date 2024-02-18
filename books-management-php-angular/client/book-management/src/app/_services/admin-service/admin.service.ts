@@ -1,8 +1,10 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
-import { map } from 'rxjs';
-import { RawApiDataBook, RawApiDataBooks } from '../../_models/rawapi';
+import { BehaviorSubject, map } from 'rxjs';
+import { Book } from '../../_models/book';
+import { RawApiDataBooks } from '../../_models/rawapi';
 import {
   AUTHORS_QUERY_PARAM,
   BookQueryParams,
@@ -10,21 +12,27 @@ import {
   SEARCH_QUERY_PARAM,
   SORT_QUERY_PARAM,
   STATUS_QUERY_PARAM,
-} from './book-param.type';
+} from '../books-service/book-param.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BooksService {
+export class AdminService {
   private http = inject(HttpClient);
   private mutation = injectMutation();
   private query = injectQuery();
   private queryClient = injectQueryClient();
 
-  public queryBooks(parameters?: Partial<BookQueryParams>) {
+  isSheetClosed$ = new BehaviorSubject<boolean>(true);
+  selection = new SelectionModel<Book>(true, []);
+  selectedBooks$ = new BehaviorSubject<Book[]>([]);
+  selectedIds$ = new BehaviorSubject<any[]>([]);
+  isChecked$ = new BehaviorSubject<boolean>(false);
+
+  public queryAdminBooks(parameters?: Partial<BookQueryParams>) {
     return this.query({
       queryKey: [
-        'BOOKS',
+        'ADMIN_BOOKS',
         parameters?.[AUTHORS_QUERY_PARAM],
         parameters?.[GENRE_QUERY_PARAM],
         parameters?.[SEARCH_QUERY_PARAM],
@@ -33,14 +41,13 @@ export class BooksService {
       ] as const,
 
       queryFn: () => {
-        const { status } = {
+        const { sort } = {
           ...parameters,
-          status:
-            parameters && parameters.status ? parameters.status : 'available',
+          sort: parameters && parameters.status ? parameters.status : 'id,desc',
         };
 
         let params = new HttpParams();
-        params = params.set('status', status);
+        params = params.set('sort', sort);
 
         if (parameters?.genre && parameters?.genre !== '') {
           params = params.set('genre', parameters.genre);
@@ -67,43 +74,27 @@ export class BooksService {
           })
           .pipe(
             // projects what we are getting back from API
-            map((response) => response.data)
+            map((response) => response)
           );
       },
     });
   }
 
-  public queryBooksById(id: number) {
-    return this.query({
-      queryKey: ['BOOKS', id],
-      queryFn: () => {
-        return this.http
-          .get<RawApiDataBook>(`http://localhost:8000/api/v1/books/${id}`)
-          .pipe(
-            // projects what we are getting back from API
-            map((response) => {
-              return response.data;
-            })
-          );
-      },
+  public addBook() {
+    return this.mutation({
+      mutationFn: (book: Book) =>
+        this.http.post<Book>(`http://localhost:8000/api/v1/books`, book),
+      onSuccess: () =>
+        this.queryClient.invalidateQueries({ queryKey: ['ADMIN_BOOKS'] }),
     });
   }
 
-  public queryBooksByGenre(genre?: string) {
-    return this.query({
-      queryKey: ['RELATED_BOOKS', genre],
-      queryFn: () => {
-        return this.http
-          .get<RawApiDataBooks>(
-            `http://localhost:8000/api/v1/books?genre=${genre}`
-          )
-          .pipe(
-            // projects what we are getting back from API
-            map((response) => {
-              return response.data;
-            })
-          );
-      },
+  public deleteBook() {
+    return this.mutation({
+      mutationFn: (id: number) =>
+        this.http.delete<Book>(`http://localhost:8000/api/v1/books/${id}`),
+      onSuccess: () =>
+        this.queryClient.invalidateQueries({ queryKey: ['ADMIN_BOOKS'] }),
     });
   }
 }

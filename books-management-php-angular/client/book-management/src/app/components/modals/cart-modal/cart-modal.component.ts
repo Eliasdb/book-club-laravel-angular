@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
-import { BehaviorSubject, take } from 'rxjs';
+import { take } from 'rxjs';
 import { Book } from '../../../_models/book';
 import { CartService } from '../../../_services/cart-service/cart.service';
 import { CartItemComponent } from '../../cart-item/cart-item.component';
@@ -50,11 +50,9 @@ import { CartItemComponent } from '../../cart-item/cart-item.component';
 export class CartDialog {
   protected cartService = inject(CartService);
   items$ = this.cartService.currentCartSource;
-
-  selectedItems$ = new BehaviorSubject<any[]>([]);
-  selectedIds$ = new BehaviorSubject<any[]>([]);
-
-  isChecked$ = new BehaviorSubject<boolean>(false);
+  selectedItems$ = this.cartService.selectedCartItems$;
+  selectedIds$ = this.cartService.selectedIds$;
+  isChecked$ = this.cartService.isChecked$;
 
   setState(state: boolean) {
     this.isChecked$.pipe(take(1)).subscribe(() => {
@@ -93,11 +91,12 @@ export class CartDialog {
         const selectedArray: number[] = [];
         selectedArray.push(selectedId);
 
-        const filteredItems = selectedItems.filter(
-          ({ id }) => !selectedArray?.includes(id)
-        );
-
-        this.selectedItems$.next(filteredItems);
+        if (selectedItems) {
+          const filteredItems = selectedItems.filter(
+            ({ id }) => !selectedArray?.includes(id || 0)
+          );
+          this.selectedItems$.next(filteredItems);
+        }
       });
     }
   }

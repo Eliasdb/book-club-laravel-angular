@@ -12,8 +12,8 @@ import { Book } from '../../_models/book';
     <div class="content-container">
       <mat-checkbox
         class="example-margin"
-        (click)="clickChecked(item)"
-        (change)="clickChecked2($event)"
+        (click)="selectCartItem(item)"
+        (change)="emitCheckedState($event)"
       ></mat-checkbox>
       <div class="img-container">
         <img
@@ -36,11 +36,11 @@ export class CartItemComponent {
   @Output() itemSelected = new EventEmitter<any>();
   @Output() state = new EventEmitter<boolean>();
 
-  clickChecked(item: Book) {
+  selectCartItem(item: Book) {
     if (this.item) this.itemSelected.emit(item);
   }
 
-  clickChecked2(event: any) {
+  emitCheckedState(event: any) {
     if (this.item) this.state.emit(event.checked);
   }
 }

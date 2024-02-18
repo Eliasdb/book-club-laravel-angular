@@ -80,10 +80,10 @@ import { Genre, mappedGenres } from '../../../../_data/data';
   styleUrls: ['./books-filters.component.scss'],
 })
 export class BooksFiltersComponent implements OnInit {
-  genres: Genre[] = mappedGenres;
-  @Input() bookStatus: string | null = null;
-
   protected isChecked = true;
+  private fb = inject(FormBuilder);
+  protected searchControl = this.fb.control('');
+  genres: Genre[] = mappedGenres;
 
   @Input() set value(v: string | null) {
     if (v !== this.searchControl.value) {
@@ -92,28 +92,13 @@ export class BooksFiltersComponent implements OnInit {
   }
 
   @Input() activeGenre: Genre | string | null = null;
-  @Input() authors?: any[];
-
+  @Input() bookStatus: string | null = null;
   @Output() search = new EventEmitter<string>();
   @Output() filterGenre = new EventEmitter<string>();
   @Output() filterStatus = new EventEmitter<string>();
   @Output() clearFilters = new EventEmitter<void>();
 
-  private fb = inject(FormBuilder);
-  protected searchControl = this.fb.control('');
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['bookStatus']) {
-      if (this.bookStatus && this.bookStatus === 'loaned') {
-        this.isChecked = false;
-      }
-    }
-  }
-
   selectGenre(genre: Genre) {
-    // if (genre == 'all') {
-    //   this.filterGenre.emit('');
-    // }
     this.filterGenre.emit(genre);
   }
 
@@ -136,5 +121,13 @@ export class BooksFiltersComponent implements OnInit {
       .subscribe((value) => {
         this.search.emit(value);
       });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['bookStatus']) {
+      if (this.bookStatus && this.bookStatus === 'loaned') {
+        this.isChecked = false;
+      }
+    }
   }
 }

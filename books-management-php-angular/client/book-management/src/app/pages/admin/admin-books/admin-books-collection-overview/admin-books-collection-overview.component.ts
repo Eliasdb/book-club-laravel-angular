@@ -1,5 +1,13 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -10,7 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Book } from '../../../../_models/book';
-import { BooksService } from '../../../../_services/books-service/books.service';
+import { AdminService } from '../../../../_services/admin-service/admin.service';
 import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-book-modal.component';
 
 /**
@@ -55,6 +63,8 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
                 [checked]="selection.hasValue() && isAllSelected()"
                 [indeterminate]="selection.hasValue() && !isAllSelected()"
                 [aria-label]="checkboxLabel()"
+                (click)="selectAll()"
+                (change)="emitMainCheckedState($event)"
               >
               </mat-checkbox>
             </th>
@@ -65,7 +75,6 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
                 [checked]="selection.isSelected(row)"
                 [aria-label]="checkboxLabel(row)"
                 (click)="selectItem(row)"
-                (click)="onOpenSheet()"
                 (change)="emitCheckedState($event)"
               >
               </mat-checkbox>
@@ -118,15 +127,19 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
     </div>
   `,
 })
-export class AdminBooksCollectionOverviewComponent {
-  private bookService = inject(BooksService);
+export class AdminBooksCollectionOverviewComponent implements OnInit {
+  private adminService = inject(AdminService);
   private dialog = inject(MatDialog);
 
   @Input() books?: Book[];
 
   @Output() openSheet = new EventEmitter();
   @Output() itemSelected = new EventEmitter<Book>();
+  @Output() allItemSelected = new EventEmitter<Book[]>();
+  @Output() selectionEvent = new EventEmitter<SelectionModel<Book>>();
+
   @Output() checkedState = new EventEmitter<boolean>();
+  @Output() mainCheckedState = new EventEmitter<boolean>();
 
   displayedColumns: string[] = [
     'select',
@@ -138,19 +151,31 @@ export class AdminBooksCollectionOverviewComponent {
     'year',
   ];
 
-  dataSource: MatTableDataSource<Book> | null = null;
-  selection = this.bookService.selection;
+  dataSource: MatTableDataSource<Book> | undefined;
+  selection = this.adminService.selection;
+  selectedBooks$ = this.adminService.selectedBooks$;
 
   selectItem(book: Book) {
     this.itemSelected.emit(book);
+    this.openSheet.emit();
   }
 
-  onOpenSheet() {
+  onSelectionEvent(selection: SelectionModel<Book>) {
+    this.selectionEvent.emit(selection);
     this.openSheet.emit();
+  }
+
+  selectAll() {
+    this.openSheet.emit();
+    this.allItemSelected.emit(this.books);
   }
 
   emitCheckedState(event: any) {
     this.checkedState.emit(event.checked);
+  }
+
+  emitMainCheckedState(event: any) {
+    this.mainCheckedState.emit(event.checked);
   }
 
   openDialog() {
@@ -171,9 +196,6 @@ export class AdminBooksCollectionOverviewComponent {
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {
-      console.log(this.dataSource);
-      console.log(this.selection);
-
       this.selection.clear();
       return;
     }
@@ -188,5 +210,9 @@ export class AdminBooksCollectionOverviewComponent {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
       row.id
     }`;
+  }
+
+  ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<Book>(this.books);
   }
 }

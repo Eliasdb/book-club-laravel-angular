@@ -11,16 +11,6 @@ export interface Book {
   lastLoanedDate?: Date;
 }
 
-export interface FavouriteBook {
-  id?: number;
-  photoUrl: string;
+export interface FavouriteBook extends Book {
   originalId?: number;
-  userId?: number;
-  genre: string;
-  description: string;
-  title: string;
-  author: string;
-  status: string;
-  publishedDate: string;
-  lastLoanedDate?: Date;
 }

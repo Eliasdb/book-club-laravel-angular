@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { Book } from './_models/book';
 import { User } from './_models/user';
 import { AccountService } from './_services/account-service/account.service';
 import { CartService } from './_services/cart-service/cart.service';
@@ -41,7 +42,7 @@ export class AppComponent implements OnInit {
   setCart() {
     const cartString = localStorage.getItem('cart');
     if (!cartString) return;
-    const cart: any = JSON.parse(cartString);
+    const cart: Book[] = JSON.parse(cartString);
     this.cartService.setCurrentCart(cart);
   }
 }

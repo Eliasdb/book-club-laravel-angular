@@ -1,3 +1,4 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
@@ -17,9 +18,9 @@ import {
   take,
 } from 'rxjs';
 import { Book } from '../../../../_models/book';
+import { AdminService } from '../../../../_services/admin-service/admin.service';
 import { BookParamService } from '../../../../_services/book-param-service/book-param.service';
 import { SORT_QUERY_PARAM } from '../../../../_services/books-service/book-param.type';
-import { BooksService } from '../../../../_services/books-service/books.service';
 import { BottomSheetComponent } from '../../../../components/bottom-sheet/bottom-sheet.component';
 import { AdminBooksCollectionOverviewComponent } from '../admin-books-collection-overview/admin-books-collection-overview.component';
 @Component({
@@ -39,7 +40,10 @@ import { AdminBooksCollectionOverviewComponent } from '../admin-books-collection
       (sortbyId)="sortById('id,asc')"
       [books]="(books$ | async) || []"
       (checkedState)="setCheckedState($event)"
+      (mainCheckedState)="setMainCheckedState($event)"
       (itemSelected)="onItemSelected($event)"
+      (selectionEvent)="setSelection($event)"
+      (allItemSelected)="onAllItemSelected($event)"
       (openSheet)="openBottomSheet()"
     />
     } }
@@ -48,7 +52,7 @@ import { AdminBooksCollectionOverviewComponent } from '../admin-books-collection
 })
 export class AdminBooksCollectionContainer {
   private _bottomSheet = inject(MatBottomSheet);
-  private booksService = inject(BooksService);
+  private adminService = inject(AdminService);
   private bookParamService = inject(BookParamService);
 
   // protected books = inject(BooksService).getAdminBooks();
@@ -59,10 +63,10 @@ export class AdminBooksCollectionContainer {
   protected sort$ = this.bookParamService.sort$;
 
   public showList: boolean = false;
-  private isSheetClosed$ = this.booksService.isSheetClosed$;
-  selectedItems$ = this.booksService.selectedItems$;
-  isChecked$ = this.booksService.isChecked$;
-  selectedIds$ = new BehaviorSubject<any[]>([]);
+  private isSheetClosed$ = this.adminService.isSheetClosed$;
+  selectedBooks$ = this.adminService.selectedBooks$;
+  isChecked$ = this.adminService.isChecked$;
+  isMainChecked$ = new BehaviorSubject<boolean>(false);
 
   protected booksResults$ = combineLatest([
     this.query$,
@@ -74,7 +78,7 @@ export class AdminBooksCollectionContainer {
   ]).pipe(
     switchMap(
       ([search, author, genre, status, sort]) =>
-        this.booksService.queryAdminBooks({
+        this.adminService.queryAdminBooks({
           search,
           author,
           genre,
@@ -106,24 +110,53 @@ export class AdminBooksCollectionContainer {
     });
   }
 
+  protected setMainCheckedState(state: boolean) {
+    this.isMainChecked$.pipe(take(1)).subscribe(() => {
+      this.isMainChecked$.next(state);
+    });
+  }
+
+  setSelection(selection: SelectionModel<Book>) {
+    // this.selectedItems$
+    //   .pipe(take(1))
+    //   .subscribe((selectedItems) =>
+    //     selection.setSelection(this.selectedItems$.getValue())
+    //   );
+  }
+
   protected onItemSelected(selected: Book) {
     if (this.isChecked$.value === true) {
-      this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
-        this.selectedItems$.next([...selectedItems, selected]);
+      this.selectedBooks$.pipe(take(1)).subscribe((selectedBooks) => {
+        this.selectedBooks$.next([...selectedBooks, selected]);
       });
     }
 
     if (this.isChecked$.value === false) {
-      this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
+      this.selectedBooks$.pipe(take(1)).subscribe((selectedBooks) => {
         const selectedId: number = selected.id || 0;
-        const selectedArray: number[] = [];
+        const selectedArray: number[] | undefined = [];
         selectedArray.push(selectedId);
 
-        const filteredItems = selectedItems.filter(
-          ({ id }) => !selectedArray?.includes(id)
-        );
+        if (selectedBooks) {
+          const filteredItems = selectedBooks.filter(
+            ({ id }: Book) => !selectedArray?.includes(id || 0)
+          );
+          this.selectedBooks$.next(filteredItems);
+        }
+      });
+    }
+  }
 
-        this.selectedItems$.next(filteredItems);
+  protected onAllItemSelected(selected: Book[]) {
+    if (this.isMainChecked$.value === true) {
+      this.selectedBooks$.pipe(take(1)).subscribe(() => {
+        this.selectedBooks$.next(selected);
+      });
+    }
+
+    if (this.isMainChecked$.value === false) {
+      this.selectedBooks$.pipe(take(1)).subscribe(() => {
+        this.selectedBooks$.next([]);
       });
     }
   }

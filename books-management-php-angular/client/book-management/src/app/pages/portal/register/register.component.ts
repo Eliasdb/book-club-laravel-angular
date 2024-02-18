@@ -237,7 +237,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  formData(): any {
+  formData(): FormGroup['value'] {
     return this.formGroup.value;
   }
 

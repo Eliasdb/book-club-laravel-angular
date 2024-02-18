@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
 import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+import { FavouriteBook } from '../../_models/book';
 import { LogOut, RawApiDataUserFav } from '../../_models/rawapi';
 import { User } from '../../_models/user';
 
@@ -92,6 +93,29 @@ export class AccountService {
             })
           );
       },
+    });
+  }
+
+  public favouriteBook() {
+    return this.mutation({
+      mutationFn: (book: FavouriteBook) =>
+        this.http.post<FavouriteBook>(
+          `http://localhost:8000/api/v1/favourites`,
+          book
+        ),
+      onSuccess: () =>
+        this.queryClient.invalidateQueries({ queryKey: ['USER_DETAILS'] }),
+    });
+  }
+
+  public removeFromFavourites() {
+    return this.mutation({
+      mutationFn: (id: number) =>
+        this.http.delete<FavouriteBook>(
+          `http://localhost:8000/api/v1/favourites/${id}`
+        ),
+      onSuccess: () =>
+        this.queryClient.invalidateQueries({ queryKey: ['USER_DETAILS'] }),
     });
   }
 

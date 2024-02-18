@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { Book } from '../../_models/book';
 
@@ -12,12 +12,10 @@ export class CartService {
   private baseURL = environment.apiUrl;
   private http = inject(HttpClient);
   private userId = localStorage.getItem('id');
-  public clicked$ = of(true);
-  public favourited: boolean = false;
 
-  toggleClicked() {
-    this.clicked$ = of(false);
-  }
+  selectedCartItems$ = new BehaviorSubject<Book[]>([]);
+  isChecked$ = new BehaviorSubject<boolean>(false);
+  selectedIds$ = new BehaviorSubject<any[]>([]);
 
   getItems() {
     const items = localStorage.getItem('cart') || '[]';

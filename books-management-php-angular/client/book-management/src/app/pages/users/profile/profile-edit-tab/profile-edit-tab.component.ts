@@ -18,19 +18,18 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Username</label>
         <input
-          [(ngModel)]="model.name"
+          [(ngModel)]="user.name"
           class="form-control"
           type="text"
           name="userName"
           placeholder="@eliasdb3"
-          value=""
         />
       </div>
 
       <div class="edit-form-group">
         <label>Email</label>
         <input
-          [(ngModel)]="model.email"
+          [(ngModel)]="user.email"
           class="form-control"
           type="text"
           name="email"
@@ -41,7 +40,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>First Name</label>
         <input
-          [(ngModel)]="model.firstName"
+          [(ngModel)]="user.firstName"
           class="form-control"
           type="text"
           name="name"
@@ -53,7 +52,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Last Name</label>
         <input
-          [(ngModel)]="model.lastName"
+          [(ngModel)]="user.lastName"
           class="form-control"
           type="text"
           name="lastName"
@@ -64,7 +63,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Phone Number</label>
         <input
-          [(ngModel)]="model.phoneNumber"
+          [(ngModel)]="user.phoneNumber"
           class="form-control"
           type="text"
           name="address"
@@ -76,7 +75,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Address</label>
         <input
-          [(ngModel)]="model.address"
+          [(ngModel)]="user.address"
           class="form-control"
           type="text"
           name="address"
@@ -88,7 +87,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Postal code</label>
         <input
-          [(ngModel)]="model.postalCode"
+          [(ngModel)]="user.postalCode"
           class="form-control"
           type="text"
           name="postalCode"
@@ -100,7 +99,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>City</label>
         <input
-          [(ngModel)]="model.city"
+          [(ngModel)]="user.city"
           class="form-control"
           type="text"
           name="city"
@@ -121,7 +120,16 @@ export class ProfileEditTabComponent {
   private toastr = inject(ToastrService);
   updateUser = this.accountService.updateUser();
   selectedIndex: number = 0;
-  model: any = {};
+  user: any = {
+    name: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    address: '',
+    postalCode: '',
+    city: '',
+  };
   @Output() selectIndexEvent = new EventEmitter<number>();
 
   setIndexBackToZero() {
@@ -129,10 +137,10 @@ export class ProfileEditTabComponent {
   }
 
   onUpdateUser(): void {
-    this.updateUser.mutate(this.model);
+    this.updateUser.mutate(this.user);
     this.setIndexBackToZero();
-    localStorage.setItem('user', this.model.name);
-    this.model = {};
+    if (this.user.name) localStorage.setItem('user', this.user.name);
+    this.user = {};
     this.toastr.success('Profile successfully updated!');
   }
 }

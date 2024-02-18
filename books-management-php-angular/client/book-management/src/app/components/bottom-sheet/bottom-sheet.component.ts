@@ -5,7 +5,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { take } from 'rxjs';
-import { BooksService } from '../../_services/books-service/books.service';
+import { AdminService } from '../../_services/admin-service/admin.service';
 
 @Component({
   standalone: true,
@@ -19,7 +19,7 @@ import { BooksService } from '../../_services/books-service/books.service';
   template: `
     <mat-toolbar>
       <div class="selected-books">
-        <span>{{ this.selectedItems$.getValue().length }} books selected</span>
+        <span>{{ this.selectedBooks$.getValue().length }} books selected</span>
         <span>|</span>
         <a mat-raised-button (click)="clearSelection()" class="clear-btn"
           >Clear</a
@@ -46,27 +46,27 @@ import { BooksService } from '../../_services/books-service/books.service';
   styleUrls: ['./bottom-sheet.component.scss'],
 })
 export class BottomSheetComponent {
-  private bookService = inject(BooksService);
+  private adminService = inject(AdminService);
 
-  selectedItems$ = this.bookService.selectedItems$;
-  selection = this.bookService.selection;
-  deleteBook = this.bookService.deleteBook();
+  selectedBooks$ = this.adminService.selectedBooks$;
+  selection = this.adminService.selection;
+  deleteBook = this.adminService.deleteBook();
 
   private _bottomSheet = inject(MatBottomSheet);
 
   clearSelection(): void {
-    this.selectedItems$.next([]);
-    this.bookService.isSheetClosed$.next(true);
+    this.selectedBooks$.next([]);
     this.selection.clear();
+    this.adminService.isSheetClosed$.next(true);
     this._bottomSheet.dismiss(BottomSheetComponent);
   }
 
   deleteSelection() {
-    this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
-      selectedItems.forEach((item) => {
-        this.deleteBook.mutate(item.id);
+    this.selectedBooks$.pipe(take(1)).subscribe((selectedBooks) => {
+      selectedBooks.forEach((book) => {
+        if (book.id) this.deleteBook.mutate(book.id);
       });
+      this.selectedBooks$.next([]);
     });
-    this.selectedItems$.next([]);
   }
 }
