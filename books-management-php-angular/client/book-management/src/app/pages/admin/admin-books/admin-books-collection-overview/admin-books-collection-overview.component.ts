@@ -1,12 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  inject,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -48,16 +41,6 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
       </div>
     </section>
     <div class="example-container mat-elevation-z8">
-      <!-- <div *ngIf="isLoadingResults" class="example-loading-shade"> -->
-
-      <!-- <mat-spinner></mat-spinner> -->
-      <!-- @if (isRateLimitReached) {
-        <div class="example-rate-limit-reached">
-          GitHub's API rate limit has been reached. It will be reset in one minute.
-        </div>
-      } -->
-      <!-- </div> -->
-
       <div class="example-table-container">
         <table
           mat-table
@@ -81,20 +64,18 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
                 (change)="$event ? selection.toggle(row) : null"
                 [checked]="selection.isSelected(row)"
                 [aria-label]="checkboxLabel(row)"
-                (click)="clickChecked(row)"
-                (click)="clickE()"
-                (change)="clickChecked2($event)"
+                (click)="selectItem(row)"
+                (click)="onOpenSheet()"
+                (change)="emitCheckedState($event)"
               >
               </mat-checkbox>
             </td>
           </ng-container>
           <ng-container matColumnDef="number">
             <th mat-header-cell *matHeaderCellDef>#</th>
-
             <td mat-cell *matCellDef="let row">{{ row.id }}</td>
           </ng-container>
 
-          <!-- State Column -->
           <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef>Title</th>
             <td mat-cell *matCellDef="let row">{{ row.title }}</td>
@@ -104,7 +85,7 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
             <th mat-header-cell *matHeaderCellDef>Genre</th>
             <td mat-cell *matCellDef="let row">{{ row.genre }}</td>
           </ng-container>
-          <!-- Title Column -->
+
           <ng-container matColumnDef="author">
             <th mat-header-cell *matHeaderCellDef>Author</th>
             <td mat-cell *matCellDef="let row">{{ row.author }}</td>
@@ -121,7 +102,6 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
           </ng-container>
 
           <!-- Created Column -->
-
           <tr
             mat-header-row
             *matHeaderRowDef="displayedColumns; sticky: true"
@@ -138,13 +118,15 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
     </div>
   `,
 })
-export class AdminBooksCollectionOverviewComponent implements OnInit {
-  ngOnInit(): void {
-    console.log(this.dataSource);
-  }
-  @Input() books?: Book[];
-  data: Book[] = [];
+export class AdminBooksCollectionOverviewComponent {
   private bookService = inject(BooksService);
+  private dialog = inject(MatDialog);
+
+  @Input() books?: Book[];
+
+  @Output() openSheet = new EventEmitter();
+  @Output() itemSelected = new EventEmitter<Book>();
+  @Output() checkedState = new EventEmitter<boolean>();
 
   displayedColumns: string[] = [
     'select',
@@ -157,26 +139,18 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
   ];
 
   dataSource: MatTableDataSource<Book> | null = null;
-
   selection = this.bookService.selection;
 
-  private dialog = inject(MatDialog);
-
-  @Output() clickEv = new EventEmitter();
-
-  @Output() itemSelected = new EventEmitter<any>();
-  @Output() state = new EventEmitter<boolean>();
-
-  clickChecked(row: Book) {
-    this.itemSelected.emit(row);
+  selectItem(book: Book) {
+    this.itemSelected.emit(book);
   }
 
-  clickE() {
-    this.clickEv.emit();
+  onOpenSheet() {
+    this.openSheet.emit();
   }
 
-  clickChecked2(event: any) {
-    this.state.emit(event.checked);
+  emitCheckedState(event: any) {
+    this.checkedState.emit(event.checked);
   }
 
   openDialog() {
@@ -189,7 +163,6 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    // console.log(numSelected);
 
     const numRows = this.dataSource?.data.length;
     return numSelected === numRows;
@@ -198,10 +171,13 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {
+      console.log(this.dataSource);
+      console.log(this.selection);
+
       this.selection.clear();
       return;
     }
-    if (this.dataSource) this.selection.select(...this.dataSource?.data);
+    if (this.dataSource) this.selection.select(...this.dataSource.data);
   }
 
   /** The label for the checkbox on the passed row */

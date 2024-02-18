@@ -21,10 +21,7 @@ import { BookParamService } from '../../../../_services/book-param-service/book-
 import { SORT_QUERY_PARAM } from '../../../../_services/books-service/book-param.type';
 import { BooksService } from '../../../../_services/books-service/books.service';
 import { BottomSheetComponent } from '../../../../components/bottom-sheet/bottom-sheet.component';
-import {
-  AdminBooksCollectionOverview2Component,
-  AdminBooksCollectionOverviewComponent,
-} from '../admin-books-collection-overview/admin-books-collection-overview.component';
+import { AdminBooksCollectionOverviewComponent } from '../admin-books-collection-overview/admin-books-collection-overview.component';
 @Component({
   standalone: true,
   imports: [
@@ -34,28 +31,23 @@ import {
     MatButtonModule,
     MatBottomSheetModule,
     CommonModule,
-    AdminBooksCollectionOverview2Component,
   ],
   selector: 'admin-books-collection-container',
   template: ` <section class="collection-container">
-    <!-- <button mat-raised-button ">Open thing</button> -->
-
     @if (booksResults$ | async; as result) { @if (result.isSuccess) {
     <admin-books-collection-overview
       (sortbyId)="sortById('id,asc')"
       [books]="(books$ | async) || []"
-      (state)="setState($event)"
+      (checkedState)="setCheckedState($event)"
       (itemSelected)="onItemSelected($event)"
-      (clickEv)="openBottomSheet()"
+      (openSheet)="openBottomSheet()"
     />
-    <admin-books-collection-overview2 />
     } }
   </section>`,
   styleUrls: ['./admin-books-collection.container.scss'],
 })
 export class AdminBooksCollectionContainer {
   private _bottomSheet = inject(MatBottomSheet);
-
   private booksService = inject(BooksService);
   private bookParamService = inject(BookParamService);
 
@@ -68,6 +60,9 @@ export class AdminBooksCollectionContainer {
 
   public showList: boolean = false;
   private isSheetClosed$ = this.booksService.isSheetClosed$;
+  selectedItems$ = this.booksService.selectedItems$;
+  isChecked$ = this.booksService.isChecked$;
+  selectedIds$ = new BehaviorSubject<any[]>([]);
 
   protected booksResults$ = combineLatest([
     this.query$,
@@ -105,36 +100,13 @@ export class AdminBooksCollectionContainer {
     this.bookParamService.navigate({ [SORT_QUERY_PARAM]: sort });
   }
 
-  selectedItems$ = this.booksService.selectedItems$;
-  isChecked$ = this.booksService.isChecked$;
-
-  selectedIds$ = new BehaviorSubject<any[]>([]);
-
-  setState(state: boolean) {
+  protected setCheckedState(state: boolean) {
     this.isChecked$.pipe(take(1)).subscribe(() => {
       this.isChecked$.next(state);
     });
   }
 
-  removeSelection() {
-    this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
-      if (selectedItems) {
-        const selectedIds = selectedItems.map((item) => item.id);
-        this.selectedIds$?.next(selectedIds);
-      }
-    });
-
-    // this.items$.pipe(take(1)).subscribe((items) => {
-    //   const filteredItems = items?.filter(
-    //     ({ id }) => !this.selectedIds$?.getValue().includes(id)
-    //   );
-    //   this.items$.next(filteredItems);
-    // });
-
-    // localStorage.setItem('cart', JSON.stringify(this.items$.value));
-  }
-
-  onItemSelected(selected: Book) {
+  protected onItemSelected(selected: Book) {
     if (this.isChecked$.value === true) {
       this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
         this.selectedItems$.next([...selectedItems, selected]);
@@ -156,12 +128,11 @@ export class AdminBooksCollectionContainer {
     }
   }
 
-  openBottomSheet(): void {
+  protected openBottomSheet(): void {
     if (this.isSheetClosed$.getValue() === true) {
       this._bottomSheet.open(BottomSheetComponent, {
         hasBackdrop: false,
         restoreFocus: false,
-        disableClose: true,
       });
       this.isSheetClosed$.next(false);
     }
