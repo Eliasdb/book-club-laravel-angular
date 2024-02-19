@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
+import { User } from '../../../../_models/user';
 import { AccountService } from '../../../../_services/account-service/account.service';
 
 @Component({
@@ -120,16 +121,7 @@ export class ProfileEditTabComponent {
   private toastr = inject(ToastrService);
   updateUser = this.accountService.updateUser();
   selectedIndex: number = 0;
-  user: any = {
-    name: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    address: '',
-    postalCode: '',
-    city: '',
-  };
+  user: User = {};
   @Output() selectIndexEvent = new EventEmitter<number>();
 
   setIndexBackToZero() {
@@ -139,7 +131,8 @@ export class ProfileEditTabComponent {
   onUpdateUser(): void {
     this.updateUser.mutate(this.user);
     this.setIndexBackToZero();
-    if (this.user.name) localStorage.setItem('user', this.user.name);
+    if (this.user.name)
+      localStorage.setItem('user', JSON.stringify(this.user.name));
     this.user = {};
     this.toastr.success('Profile successfully updated!');
   }

@@ -107,11 +107,8 @@ export class NavBarComponent {
     this.accountService.logout().subscribe({
       next: () => {
         this.toastr.success('Successfully logged out. See you soon!');
-        // this.router.navigateByUrl('/home');
       },
-      error: (error) => {
-        // console.log(error.error.errors.name[0]);
-      },
+      error: (error) => {},
     });
   }
 }

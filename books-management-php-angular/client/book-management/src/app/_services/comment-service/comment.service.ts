@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
+import { injectMutation, injectQueryClient } from '@ngneat/query';
 import { Comment } from '../../_models/post';
 
 @Injectable({
@@ -9,10 +9,10 @@ import { Comment } from '../../_models/post';
 export class CommentService {
   private http = inject(HttpClient);
   private mutation = injectMutation();
-  private query = injectQuery();
   private queryClient = injectQueryClient();
+  // private query = injectQuery();
 
-  addComment() {
+  public addComment() {
     return this.mutation({
       mutationFn: (comment: Comment) =>
         this.http.post<Comment>(

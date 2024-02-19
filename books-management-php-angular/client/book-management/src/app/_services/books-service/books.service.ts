@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
+import { injectQuery } from '@ngneat/query';
 import { map } from 'rxjs';
 import { RawApiDataBook, RawApiDataBooks } from '../../_models/rawapi';
 import {
@@ -17,9 +17,7 @@ import {
 })
 export class BooksService {
   private http = inject(HttpClient);
-  private mutation = injectMutation();
   private query = injectQuery();
-  private queryClient = injectQueryClient();
 
   public queryBooks(parameters?: Partial<BookQueryParams>) {
     return this.query({
@@ -65,10 +63,7 @@ export class BooksService {
           .get<RawApiDataBooks>('http://localhost:8000/api/v1/books', {
             params,
           })
-          .pipe(
-            // projects what we are getting back from API
-            map((response) => response.data)
-          );
+          .pipe(map((response) => response.data));
       },
     });
   }
@@ -79,12 +74,7 @@ export class BooksService {
       queryFn: () => {
         return this.http
           .get<RawApiDataBook>(`http://localhost:8000/api/v1/books/${id}`)
-          .pipe(
-            // projects what we are getting back from API
-            map((response) => {
-              return response.data;
-            })
-          );
+          .pipe(map((response) => response.data));
       },
     });
   }
@@ -97,12 +87,7 @@ export class BooksService {
           .get<RawApiDataBooks>(
             `http://localhost:8000/api/v1/books?genre=${genre}`
           )
-          .pipe(
-            // projects what we are getting back from API
-            map((response) => {
-              return response.data;
-            })
-          );
+          .pipe(map((response) => response.data));
       },
     });
   }

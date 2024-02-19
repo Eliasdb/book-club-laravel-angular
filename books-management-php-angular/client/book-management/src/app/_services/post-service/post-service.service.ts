@@ -22,13 +22,7 @@ export class PostService {
           .get<RawApiDataPosts>(
             `http://localhost:8000/api/v1/posts?includeComments=true?&sort=id,desc`
           )
-          .pipe(
-            // projects what we are getting back from API
-            map((response) => {
-              console.log(response);
-              return response.data;
-            })
-          );
+          .pipe(map((response) => response.data));
       },
     });
   }

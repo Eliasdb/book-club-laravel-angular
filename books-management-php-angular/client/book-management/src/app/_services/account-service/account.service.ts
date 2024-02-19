@@ -11,26 +11,14 @@ import { User } from '../../_models/user';
   providedIn: 'root',
 })
 export class AccountService {
+  private currentUserSource = new BehaviorSubject<string | undefined | null>(
+    undefined
+  );
+  private currentTokenSource = new BehaviorSubject<string | null>(null);
+  public currentUser$ = this.currentUserSource.asObservable();
+  public currentToken$ = this.currentTokenSource.asObservable();
   private baseURL = environment.apiUrl;
   private userId = localStorage.getItem('id');
-  userDetails: any = {
-    id: 0,
-    email: '',
-    name: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    address: '',
-    postalCode: '',
-    city: '',
-  };
-
-  // User | null is a union type
-  private currentUserSource = new BehaviorSubject<User | null>(null);
-  private currentTokenSource = new BehaviorSubject<string | null>(null);
-  currentUser$ = this.currentUserSource.asObservable();
-  currentToken$ = this.currentTokenSource.asObservable();
 
   private http = inject(HttpClient);
   private query = injectQuery();
@@ -41,8 +29,8 @@ export class AccountService {
     return this.http.post<User>(this.baseURL + '/register', model).pipe(
       map((user: User) => {
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user.userName));
-          this.currentUserSource.next(user);
+          localStorage.setItem('user', JSON.stringify(user.name));
+          this.currentUserSource.next(user.name);
         }
       })
     );
@@ -53,13 +41,13 @@ export class AccountService {
     return this.http.post<User>(this.baseURL + '/login', model).pipe(
       map((response: User) => {
         const user = response;
-        console.log(user);
+        console.log(response);
 
         if (user) {
           localStorage.setItem('user', JSON.stringify(user.userName));
           localStorage.setItem('id', JSON.stringify(user.id));
           localStorage.setItem('token', JSON.stringify(user.accessToken));
-          this.currentUserSource.next(user);
+          this.currentUserSource.next(user.name);
         }
       })
     );
@@ -85,13 +73,7 @@ export class AccountService {
           .get<RawApiDataUserFav>(
             `http://localhost:8000/api/v1/users/${this.userId}?includeFavourites=true`
           )
-          .pipe(
-            // projects what we are getting back from API
-            map((response) => {
-              console.log(response.data);
-              return response.data;
-            })
-          );
+          .pipe(map((response) => response.data));
       },
     });
   }
@@ -128,14 +110,13 @@ export class AccountService {
     return this.http.get<LogOut>('http://localhost:8000/api/v1/logout').pipe(
       // projects what we are getting back from API
       map((response) => {
-        console.log(response);
         return response;
       })
     );
   }
 
   setCurrentUser(user: User) {
-    this.currentUserSource.next(user);
+    this.currentUserSource.next(user.name);
   }
 
   setCurrentToken(token: string) {

@@ -69,15 +69,15 @@ export class AddPostDialog {
   private userId = Number(localStorage.getItem('id'));
   private user: string = JSON.parse(localStorage.getItem('user') || '');
 
+  userDetails = this.accountService.getUserDetails();
+  addPosts = this.postService.addPost();
+
   post: Post = {
     userId: this.userId,
     username: this.user,
     photoUrl: 'https://material.angular.io/assets/img/examples/shiba1.jpg',
     content: '',
   };
-
-  userDetails = this.accountService.getUserDetails();
-  addPosts = this.postService.addPost();
 
   onAddPost() {
     this.addPosts.mutate(this.post);

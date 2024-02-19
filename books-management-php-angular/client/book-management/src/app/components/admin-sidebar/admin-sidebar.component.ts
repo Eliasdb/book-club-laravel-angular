@@ -4,7 +4,7 @@ import {
   MatBottomSheetModule,
 } from '@angular/material/bottom-sheet';
 import { RouterLink } from '@angular/router';
-import { BottomSheetComponent } from '../../bottom-sheet/bottom-sheet.component';
+import { BottomSheetComponent } from '../bottom-sheet/bottom-sheet.component';
 
 @Component({
   standalone: true,
@@ -30,8 +30,12 @@ import { BottomSheetComponent } from '../../bottom-sheet/bottom-sheet.component'
             class="{{ isSidebarOpen ? 'nav-link active' : 'nav-link' }}"
           >
             <span class="icon"
-              ><img src="./assets/stats.svg" alt="stats-icon" class="icon-img"
-            /></span>
+              ><img
+                src="./assets/stats.svg"
+                alt="stats-icon"
+                class="icon-img"
+              />
+            </span>
             Book Overview
           </li>
 
@@ -41,8 +45,12 @@ import { BottomSheetComponent } from '../../bottom-sheet/bottom-sheet.component'
             (click)="closeBottomSheet()"
           >
             <span class="icon"
-              ><img src="./assets/stats.svg" alt="stats-icon" class="icon-img"
-            /></span>
+              ><img
+                src="./assets/stats.svg"
+                alt="stats-icon"
+                class="icon-img"
+              />
+            </span>
             Order overview
           </li>
         </ul>

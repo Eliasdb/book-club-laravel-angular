@@ -32,15 +32,11 @@ export class HomePostsContainer {
     }
   }
 
-  protected posts$ = this.posts.result$
-    .pipe(
-      // don't need to subscribe because async pipe does it
-      filterSuccessResult(),
-      map((res) => {
-        console.log(res.data);
-
-        return res.data?.items;
-      })
-    )
-    .subscribe();
+  protected posts$ = this.posts.result$.pipe(
+    // don't need to subscribe because async pipe does it
+    filterSuccessResult(),
+    map((res) => {
+      return res.data?.items;
+    })
+  );
 }

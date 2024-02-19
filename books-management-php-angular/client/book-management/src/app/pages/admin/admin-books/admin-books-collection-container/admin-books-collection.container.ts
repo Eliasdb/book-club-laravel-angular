@@ -9,14 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { filterSuccessResult } from '@ngneat/query';
-import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  shareReplay,
-  switchMap,
-  take,
-} from 'rxjs';
+import { combineLatest, map, shareReplay, switchMap, take } from 'rxjs';
 import { Book } from '../../../../_models/book';
 import { AdminService } from '../../../../_services/admin-service/admin.service';
 import { BookParamService } from '../../../../_services/book-param-service/book-param.service';
@@ -66,7 +59,8 @@ export class AdminBooksCollectionContainer {
   private isSheetClosed$ = this.adminService.isSheetClosed$;
   selectedBooks$ = this.adminService.selectedBooks$;
   isChecked$ = this.adminService.isChecked$;
-  isMainChecked$ = new BehaviorSubject<boolean>(false);
+  isMainChecked$ = this.adminService.isMainChecked$;
+  selection = this.adminService.selection;
 
   protected booksResults$ = combineLatest([
     this.query$,
@@ -158,6 +152,7 @@ export class AdminBooksCollectionContainer {
       this.selectedBooks$.pipe(take(1)).subscribe(() => {
         this.selectedBooks$.next([]);
       });
+      this.selection.clear();
     }
   }
 

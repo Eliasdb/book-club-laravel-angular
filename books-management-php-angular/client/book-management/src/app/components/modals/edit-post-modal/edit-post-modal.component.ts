@@ -12,7 +12,6 @@ import { PostService } from '../../../_services/post-service/post-service.servic
   imports: [MatIconModule, MatDialogModule, MatButtonModule, FormsModule],
   template: ` <section class="top-bar">
       <h2 mat-dialog-title style="margin-top: 7px;">Edit post</h2>
-
       <button [mat-dialog-close]="true" mat-mini-fab class="mini-fab">
         <mat-icon>close</mat-icon>
       </button>
@@ -56,7 +55,7 @@ export class EditPostDialog {
   private postService = inject(PostService);
   editPost = this.postService.editPost();
 
-  post: Post = {
+  protected post: Post = {
     id: this.data.postId,
     content: '',
   };

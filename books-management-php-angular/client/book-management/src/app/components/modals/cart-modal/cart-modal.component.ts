@@ -49,18 +49,18 @@ import { CartItemComponent } from '../../cart-item/cart-item.component';
 })
 export class CartDialog {
   protected cartService = inject(CartService);
-  items$ = this.cartService.currentCartSource;
-  selectedItems$ = this.cartService.selectedCartItems$;
-  selectedIds$ = this.cartService.selectedIds$;
-  isChecked$ = this.cartService.isChecked$;
+  protected items$ = this.cartService.currentCartSource;
+  private selectedItems$ = this.cartService.selectedCartItems$;
+  private selectedIds$ = this.cartService.selectedIds$;
+  private isChecked$ = this.cartService.isChecked$;
 
-  setState(state: boolean) {
+  protected setState(state: boolean) {
     this.isChecked$.pipe(take(1)).subscribe(() => {
       this.isChecked$.next(state);
     });
   }
 
-  removeSelection() {
+  protected removeSelection() {
     this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
       if (selectedItems) {
         const selectedIds = selectedItems.map((item) => item.id);
@@ -78,7 +78,7 @@ export class CartDialog {
     localStorage.setItem('cart', JSON.stringify(this.items$.value));
   }
 
-  onItemSelected(selected: Book) {
+  protected onItemSelected(selected: Book) {
     if (this.isChecked$.value === true) {
       this.selectedItems$.pipe(take(1)).subscribe((selectedItems) => {
         this.selectedItems$.next([...selectedItems, selected]);

@@ -54,36 +54,32 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
                 />
               </div>
             </div>
-
+            @if (book$ | async; as book) {
             <div class="book-info-container">
-              <h3>{{ (book$ | async)?.title }}</h3>
+              <h3>{{ book.title }}</h3>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-                ut odit officiis aut facere. Eveniet corporis sequi fuga
-                debitis. Perspiciatis nihil sit quia minus accusantium? Minima
-                ratione, non totam, placeat aliquid, delectus voluptatibus
-                adipisci id consequuntur maxime neque nam quisquam.
+                {{ book.description }}
               </p>
 
               <div class="book-info">
                 <div>
                   <p>
                     <span class="bold-text">Author:</span>
-                    {{ (book$ | async)?.author }}
+                    {{ book.author }}
                   </p>
                   <p>
                     <span class="bold-text">Genre:</span>
-                    {{ (book$ | async)?.genre }}
+                    {{ book.genre }}
                   </p>
                 </div>
                 <div>
                   <p>
                     <span class="bold-text">Year:</span>
-                    {{ (book$ | async)?.publishedDate | date : 'y' }}
+                    {{ book.publishedDate | date : 'y' }}
                   </p>
                   <p>
                     <span class="bold-text">Status:</span>
-                    {{ (book$ | async)?.status }}
+                    {{ book.status }}
                   </p>
                 </div>
               </div>
@@ -98,6 +94,7 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
                 <favourite-button (favourite)="onFavouriteBook()" />
               </div>
             </div>
+            }
           </section>
         </mat-card-content>
       </mat-card>
@@ -130,7 +127,6 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
             </div>
           </section>
         </a>
-
         }
       </div>
       } }
@@ -139,22 +135,21 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
   styleUrls: ['./single-book.container.scss'],
 })
 export class SingleBookContainer implements OnInit {
-  // private useQuery = inject(UseQuery);
-  protected booksService = inject(BooksService);
-  protected accountService = inject(AccountService);
+  private booksService = inject(BooksService);
+  private accountService = inject(AccountService);
+  private cartService = inject(CartService);
   private toastr = inject(ToastrService);
-  protected cartService = inject(CartService);
   private activatedRoute = inject(ActivatedRoute);
 
-  centered = false;
-  disabled = false;
-  unbounded = false;
+  protected centered = false;
+  protected disabled = false;
+  protected unbounded = false;
 
   private userId = localStorage.getItem('id');
-  favouriteBook = this.accountService.favouriteBook();
-  relatedBooks = this.booksService.queryBooksByGenre();
 
-  public bookId$ = this.activatedRoute.params.pipe(
+  private favouriteBook = this.accountService.favouriteBook();
+
+  protected bookId$ = this.activatedRoute.params.pipe(
     distinctUntilChanged(),
     filter((params) => params['id']),
     map((params) => params['id'])
@@ -164,14 +159,13 @@ export class SingleBookContainer implements OnInit {
     switchMap((id) => this.booksService.queryBooksById(id).result$)
   );
 
-  public book$ = this.bookResults$.pipe(
+  protected book$ = this.bookResults$.pipe(
     filterSuccessResult(),
     map((res) => res.data)
   );
 
-  public bookGenre$ = this.book$.pipe(
+  protected bookGenre$ = this.book$.pipe(
     map((res) => {
-      console.log('genre', res.genre);
       return res.genre;
     })
   );
@@ -180,16 +174,14 @@ export class SingleBookContainer implements OnInit {
     switchMap((genre) => this.booksService.queryBooksByGenre(genre).result$)
   );
 
-  addToCart() {
+  protected addToCart() {
     this.book$.pipe(take(1)).subscribe((book) => {
-      console.log('added');
-
       this.cartService.addToCart(book);
       this.toastr.success(`${book.title} added to cart!`);
     });
   }
 
-  onFavouriteBook() {
+  protected onFavouriteBook() {
     this.book$.pipe(take(1)).subscribe((book) => {
       const favouritedBook: FavouriteBook = {
         ...book,
@@ -202,7 +194,7 @@ export class SingleBookContainer implements OnInit {
     });
   }
 
-  loadRelated() {
+  protected loadRelated() {
     this.book$.pipe(take(1)).subscribe((book) => {
       this.booksService.queryBooksByGenre(book.genre);
     });

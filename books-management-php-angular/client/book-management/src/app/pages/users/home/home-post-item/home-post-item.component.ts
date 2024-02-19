@@ -174,7 +174,6 @@ export class HomePostItemComponent implements OnInit {
   ngOnInit(): void {
     this.postId$.next(this.post?.id);
     this.postId$.pipe(take(1)).subscribe((res) => {
-      console.log('lol', res);
       this.comment.postId = res;
     });
   }

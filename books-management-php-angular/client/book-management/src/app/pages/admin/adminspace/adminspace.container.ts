@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
-import { AdminDashboardContainer } from '../../../components/admin-dashboard/admin-dashboard/admin-dashboard.container';
-import { AdminSidebarComponent } from '../../../components/admin-dashboard/admin-sidebar/admin-sidebar.component';
+import { AdminSidebarComponent } from '../../../components/admin-sidebar/admin-sidebar.component';
 import { FooterComponent } from '../../../components/footer/footer.component';
 import { HeaderComponent } from '../../../components/header/header/header.component';
 
@@ -16,7 +15,6 @@ import { HeaderComponent } from '../../../components/header/header/header.compon
     FooterComponent,
     HeaderComponent,
     RouterOutlet,
-    AdminDashboardContainer,
     MatSidenavModule,
     AdminSidebarComponent,
     MatSelectModule,

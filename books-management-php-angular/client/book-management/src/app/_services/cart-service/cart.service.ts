@@ -8,14 +8,14 @@ import { Book } from '../../_models/book';
   providedIn: 'root',
 })
 export class CartService {
-  public currentCartSource = new BehaviorSubject<Book[] | null | undefined>([]);
   private baseURL = environment.apiUrl;
   private http = inject(HttpClient);
   private userId = localStorage.getItem('id');
 
-  selectedCartItems$ = new BehaviorSubject<Book[]>([]);
-  isChecked$ = new BehaviorSubject<boolean>(false);
-  selectedIds$ = new BehaviorSubject<any[]>([]);
+  public selectedCartItems$ = new BehaviorSubject<Book[]>([]);
+  public isChecked$ = new BehaviorSubject<boolean>(false);
+  public selectedIds$ = new BehaviorSubject<any[]>([]);
+  public currentCartSource = new BehaviorSubject<Book[] | null | undefined>([]);
 
   getItems() {
     const items = localStorage.getItem('cart') || '[]';
@@ -36,9 +36,7 @@ export class CartService {
           `${this.baseURL}/books/${element}?userId=${this.userId}&status=loaned`,
           this.userId
         )
-        .subscribe((data) => {
-          console.log('hi this is patch request', data);
-        });
+        .subscribe(() => console.log('Order confirmed'));
     });
   }
 

@@ -7,7 +7,6 @@ import {
   map,
   shareReplay,
   startWith,
-  tap,
 } from 'rxjs';
 import { Genre } from '../../_data/data';
 import {
@@ -25,13 +24,12 @@ import {
 export class BookParamService {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
-
   private queryParams$ = this.activatedRoute.queryParams;
 
   public query$ = this.queryParams$.pipe(
-    tap((res) => {
-      console.log('authors', res);
-    }),
+    // tap((res) => {
+    //   console.log('authors', res);
+    // }),
     filter((params) => params[SEARCH_QUERY_PARAM] !== undefined),
     map((params): string => params[SEARCH_QUERY_PARAM]),
     startWith(''),
@@ -40,9 +38,6 @@ export class BookParamService {
   );
 
   public author$ = this.queryParams$.pipe(
-    tap((res) => {
-      console.log('authors', res);
-    }),
     filter((params) => params[AUTHORS_QUERY_PARAM] !== undefined),
     map((params): string => params[AUTHORS_QUERY_PARAM]),
     startWith(''),
@@ -51,9 +46,6 @@ export class BookParamService {
   );
 
   public genre$ = this.queryParams$.pipe(
-    tap((res) => {
-      console.log('genre', res);
-    }),
     filter((params) => params[GENRE_QUERY_PARAM] !== undefined),
     map((params): Genre => params[GENRE_QUERY_PARAM]),
     debounceTime(200),
@@ -62,9 +54,6 @@ export class BookParamService {
   );
 
   public status$ = this.queryParams$.pipe(
-    tap((res) => {
-      console.log('status', res);
-    }),
     filter((params) => params[STATUS_QUERY_PARAM] !== undefined),
     map((params): string => params[STATUS_QUERY_PARAM]),
     debounceTime(200),
@@ -74,9 +63,6 @@ export class BookParamService {
   );
 
   public sort$ = this.queryParams$.pipe(
-    tap((res) => {
-      console.log('sort', res);
-    }),
     filter((params) => params[SORT_QUERY_PARAM] !== undefined),
     map((params): string => params[SORT_QUERY_PARAM]),
     startWith(''),

@@ -28,6 +28,7 @@ export class AdminService {
   selectedBooks$ = new BehaviorSubject<Book[]>([]);
   selectedIds$ = new BehaviorSubject<any[]>([]);
   isChecked$ = new BehaviorSubject<boolean>(false);
+  isMainChecked$ = new BehaviorSubject<boolean>(false);
 
   public queryAdminBooks(parameters?: Partial<BookQueryParams>) {
     return this.query({
@@ -72,10 +73,7 @@ export class AdminService {
           .get<RawApiDataBooks>('http://localhost:8000/api/v1/books', {
             params,
           })
-          .pipe(
-            // projects what we are getting back from API
-            map((response) => response)
-          );
+          .pipe(map((response) => response));
       },
     });
   }

@@ -75,8 +75,6 @@ export class LoginComponent {
         this.router.navigateByUrl('/home');
       },
       error: (error) => {
-        // console.log(error.error.errors.name[0]);
-
         if (error.error.errors.name[0]) {
           this.toastr.error(error.error.errors.name[0]);
         }
