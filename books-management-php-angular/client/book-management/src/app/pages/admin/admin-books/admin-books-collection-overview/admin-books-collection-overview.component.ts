@@ -6,6 +6,7 @@ import {
   Input,
   OnInit,
   Output,
+  SimpleChanges,
   inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +21,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Book } from '../../../../_models/book';
 import { AdminService } from '../../../../_services/admin-service/admin.service';
 import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-book-modal.component';
+import { EditBookDialog } from '../../../../components/modals/edit-book-modal/edit-book-modal.component';
 
 /**
  * @title Table with selection
@@ -43,7 +45,7 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
     <section class="collection-title">
       <h3>Books</h3>
       <div>
-        <button mat-raised-button (click)="openDialog()" color="accent">
+        <button mat-raised-button (click)="openAddBookDialog()" color="accent">
           Add book
         </button>
       </div>
@@ -100,14 +102,21 @@ import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-
             <td mat-cell *matCellDef="let row">{{ row.author }}</td>
           </ng-container>
 
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let row">{{ row.status }}</td>
+          </ng-container>
+
           <ng-container matColumnDef="year">
             <th mat-header-cell *matHeaderCellDef>Year</th>
             <td mat-cell *matCellDef="let row">{{ row.publishedDate }}</td>
           </ng-container>
 
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let row">{{ row.status }}</td>
+          <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <mat-icon (click)="openEditBookDialog(row)">edit</mat-icon>
+            </td>
           </ng-container>
 
           <!-- Created Column -->
@@ -149,19 +158,18 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
     'author',
     'status',
     'year',
+    'edit',
   ];
 
   dataSource: MatTableDataSource<Book> | undefined;
   selection = this.adminService.selection;
   selectedBooks$ = this.adminService.selectedBooks$;
 
-  selectItem(book: Book) {
-    this.itemSelected.emit(book);
-    this.openSheet.emit();
-  }
+  book?: Book;
 
-  onSelectionEvent(selection: SelectionModel<Book>) {
-    this.selectionEvent.emit(selection);
+  selectItem(book: Book | undefined) {
+    this.itemSelected.emit(book);
+    if (book) book = this.book;
     this.openSheet.emit();
   }
 
@@ -178,8 +186,25 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
     this.mainCheckedState.emit(event.checked);
   }
 
-  openDialog() {
+  openAddBookDialog() {
     const dialogRef = this.dialog.open(AddBookDialog);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openEditBookDialog(row: Book) {
+    const dialogRef = this.dialog.open(EditBookDialog, {
+      data: {
+        id: row.id,
+        title: row.title,
+        genre: row.genre,
+        author: row.author,
+        date: row.publishedDate,
+        photoUrl: row.photoUrl,
+        description: row.description,
+      },
+    });
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
@@ -214,5 +239,11 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Book>(this.books);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['books']) {
+      this.dataSource = new MatTableDataSource<Book>(this.books);
+    }
   }
 }

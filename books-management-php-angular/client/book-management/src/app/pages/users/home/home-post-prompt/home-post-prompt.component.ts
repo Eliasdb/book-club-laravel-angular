@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { AddPostDialog } from '../../../../components/modals/add-post-modal/add-post-modal.component';
+import { CreatePostDialog } from '../../../../components/modals/create-post-modal/create-post-modal.component';
 
 @Component({
   selector: 'home-post-prompt',
@@ -19,7 +19,7 @@ import { AddPostDialog } from '../../../../components/modals/add-post-modal/add-
               />
             </div>
             <section class="text" (click)="openDialog()">
-              <p>What's on your mind, USER?</p>
+              <p>What's on your mind, {{ this.user }}?</p>
             </section>
           </section>
         </mat-card-content>
@@ -31,8 +31,10 @@ import { AddPostDialog } from '../../../../components/modals/add-post-modal/add-
 export class HomePostPromptComponent {
   private dialog = inject(MatDialog);
 
+  protected user: string = JSON.parse(localStorage.getItem('user') || '');
+
   openDialog() {
-    const dialogRef = this.dialog.open(AddPostDialog);
+    const dialogRef = this.dialog.open(CreatePostDialog);
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });

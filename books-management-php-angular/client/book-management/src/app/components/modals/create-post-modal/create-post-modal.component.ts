@@ -9,7 +9,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
 import { PostService } from '../../../_services/post-service/post-service.service';
 
 @Component({
-  selector: 'add-post-modal',
+  selector: 'create-post-modal',
   standalone: true,
   imports: [
     MatDialogModule,
@@ -35,13 +35,13 @@ import { PostService } from '../../../_services/post-service/post-service.servic
             alt=""
           />
         </div>
-        <p>{{ result.data.name }}</p>
+        <p>&commat;{{ result.data.name }}</p>
       </section>
       <section class="textarea-container">
         <textarea
           cols="60"
           rows="10"
-          placeholder="What's on your mind, USER?"
+          placeholder="What's on your mind {{ this.user }}?"
           [(ngModel)]="post.content"
         ></textarea>
       </section>
@@ -60,14 +60,14 @@ import { PostService } from '../../../_services/post-service/post-service.servic
     </mat-dialog-actions>
     } }
   `,
-  styleUrl: './add-post-modal.component.scss',
+  styleUrl: './create-post-modal.component.scss',
 })
-export class AddPostDialog {
+export class CreatePostDialog {
   private accountService = inject(AccountService);
   private postService = inject(PostService);
 
   private userId = Number(localStorage.getItem('id'));
-  private user: string = JSON.parse(localStorage.getItem('user') || '');
+  protected user: string = JSON.parse(localStorage.getItem('user') || '');
 
   userDetails = this.accountService.getUserDetails();
   addPosts = this.postService.addPost();

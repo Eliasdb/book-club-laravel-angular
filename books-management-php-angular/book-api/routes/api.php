@@ -34,7 +34,6 @@ Route::group(["prefix" => "v1", "namespace" => "App\Http\Controllers\Api\V1"], f
     Route::apiResource("users", AuthController::class);
     Route::apiResource("posts", PostController::class);
     Route::apiResource("comments", CommentController::class);
-
 });
 
 

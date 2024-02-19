@@ -8,11 +8,9 @@ import { Book } from '../../_models/book';
   standalone: true,
   imports: [MatIconModule, RouterLink],
   template: ` <section class="breadcrumbs-container">
-    <a routerLink="../../home"><mat-icon>home</mat-icon></a>
+    <p class="title"><a routerLink="../../books">Books</a></p>
     <mat-icon>keyboard_arrow_right</mat-icon>
-    <p><a routerLink="../../books">Books</a></p>
-    <mat-icon>keyboard_arrow_right</mat-icon>
-    <p class="title">{{ book?.title }}</p>
+    <p>{{ book?.title }}</p>
   </section>`,
   styleUrl: './breadcrumbs.component.scss',
 })

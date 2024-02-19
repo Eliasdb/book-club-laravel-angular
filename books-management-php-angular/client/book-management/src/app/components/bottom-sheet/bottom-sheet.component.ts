@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
 import { AdminService } from '../../_services/admin-service/admin.service';
 
@@ -19,7 +20,9 @@ import { AdminService } from '../../_services/admin-service/admin.service';
   template: `
     <mat-toolbar>
       <div class="selected-books">
-        <span>{{ this.selectedBooks$.getValue().length }} books selected</span>
+        <p class="items-selected">
+          {{ this.selectedBooks$.getValue().length }} books selected
+        </p>
         <span>|</span>
         <a mat-raised-button (click)="clearSelection()" class="clear-btn"
           >Clear</a
@@ -47,6 +50,7 @@ import { AdminService } from '../../_services/admin-service/admin.service';
 })
 export class BottomSheetComponent {
   private adminService = inject(AdminService);
+  private toastr = inject(ToastrService);
 
   selectedBooks$ = this.adminService.selectedBooks$;
   selection = this.adminService.selection;
@@ -67,6 +71,10 @@ export class BottomSheetComponent {
         if (book.id) this.deleteBook.mutate(book.id);
       });
       this.selectedBooks$.next([]);
+      this.selection.clear();
+      this.adminService.isSheetClosed$.next(true);
+      this._bottomSheet.dismiss(BottomSheetComponent);
+      this.toastr.success('Book successfully deleted.');
     });
   }
 }

@@ -11,9 +11,22 @@ import { CartItemComponent } from '../../cart-item/cart-item.component';
 @Component({
   selector: 'cart-dialog',
   template: `<h2 mat-dialog-title>Cart</h2>
+    @if(this.items$.getValue()?.length === 0) {
     <mat-dialog-content class="mat-typography">
+      <p>Your cart is empty... Please fill it!</p>
+      <button
+        class="browse-btn"
+        routerLink="/books"
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+      >
+        Browse
+      </button>
+    </mat-dialog-content>
+    } @else {
+    <mat-dialog-content class="mat-typography">
+      <h3>Your selection:</h3>
       <div class="cart-container">
-        <h3>Here's what you have selected so far:</h3>
         <cart-item
           *ngFor="let item of items$ | async"
           [item]="item"
@@ -36,7 +49,8 @@ import { CartItemComponent } from '../../cart-item/cart-item.component';
           Checkout
         </button>
       </div>
-    </mat-dialog-actions> `,
+    </mat-dialog-actions>
+    } `,
   standalone: true,
   imports: [
     MatDialogModule,

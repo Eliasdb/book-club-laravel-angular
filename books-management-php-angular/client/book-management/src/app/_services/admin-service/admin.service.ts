@@ -87,6 +87,18 @@ export class AdminService {
     });
   }
 
+  public editBook() {
+    return this.mutation({
+      mutationFn: (book: Book) =>
+        this.http.patch<Book>(
+          `http://localhost:8000/api/v1/books/${book.id}`,
+          book
+        ),
+      onSuccess: () =>
+        this.queryClient.invalidateQueries({ queryKey: ['ADMIN_BOOKS'] }),
+    });
+  }
+
   public deleteBook() {
     return this.mutation({
       mutationFn: (id: number) =>

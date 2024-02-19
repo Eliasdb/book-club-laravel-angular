@@ -29,3 +29,15 @@
 .clear-btn {
   background: transparent !important;
 }
+
+.items-selected {
+  display: flex;
+  margin: 0 0.5rem 0 0 !important;
+  justify-content: flex-end;
+  min-width: 11rem;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  padding: 0 !important;
+}

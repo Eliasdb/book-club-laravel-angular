@@ -1,4 +1,3 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
@@ -35,7 +34,6 @@ import { AdminBooksCollectionOverviewComponent } from '../admin-books-collection
       (checkedState)="setCheckedState($event)"
       (mainCheckedState)="setMainCheckedState($event)"
       (itemSelected)="onItemSelected($event)"
-      (selectionEvent)="setSelection($event)"
       (allItemSelected)="onAllItemSelected($event)"
       (openSheet)="openBottomSheet()"
     />
@@ -56,7 +54,7 @@ export class AdminBooksCollectionContainer {
   protected sort$ = this.bookParamService.sort$;
 
   public showList: boolean = false;
-  private isSheetClosed$ = this.adminService.isSheetClosed$;
+  public isSheetClosed$ = this.adminService.isSheetClosed$;
   selectedBooks$ = this.adminService.selectedBooks$;
   isChecked$ = this.adminService.isChecked$;
   isMainChecked$ = this.adminService.isMainChecked$;
@@ -110,14 +108,6 @@ export class AdminBooksCollectionContainer {
     });
   }
 
-  setSelection(selection: SelectionModel<Book>) {
-    // this.selectedItems$
-    //   .pipe(take(1))
-    //   .subscribe((selectedItems) =>
-    //     selection.setSelection(this.selectedItems$.getValue())
-    //   );
-  }
-
   protected onItemSelected(selected: Book) {
     if (this.isChecked$.value === true) {
       this.selectedBooks$.pipe(take(1)).subscribe((selectedBooks) => {
@@ -138,6 +128,8 @@ export class AdminBooksCollectionContainer {
           this.selectedBooks$.next(filteredItems);
         }
       });
+
+      // this.isSheetClosed$.next(true);
     }
   }
 
@@ -153,6 +145,8 @@ export class AdminBooksCollectionContainer {
         this.selectedBooks$.next([]);
       });
       this.selection.clear();
+      this._bottomSheet.dismiss(BottomSheetComponent);
+      this.isSheetClosed$.next(true);
     }
   }
 
