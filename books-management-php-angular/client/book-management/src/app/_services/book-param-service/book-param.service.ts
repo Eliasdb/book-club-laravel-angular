@@ -67,7 +67,6 @@ export class BookParamService {
     map((params): string => params[SORT_QUERY_PARAM]),
     startWith(''),
     debounceTime(200),
-
     distinctUntilChanged(),
     shareReplay({ bufferSize: 1, refCount: false })
   );

@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
-import { RawApiDataUserFav } from '../../../../_models/rawapi';
 
 @Component({
   standalone: true,
@@ -26,7 +25,7 @@ import { RawApiDataUserFav } from '../../../../_models/rawapi';
 
         <div class="change-btn-container">
           <h4 *ngIf="user" class="pt-sm-2 pb-1 mb-0 text-nowrap">
-            {{ user.data.firstName }} {{ user.data.lastName }}
+            {{ user.data.first_name }} {{ user.data.last_name }}
           </h4>
           <button mat-raised-button>
             <i class="fa fa-fw fa-camera"></i>
@@ -45,7 +44,7 @@ import { RawApiDataUserFav } from '../../../../_models/rawapi';
         </mat-chip>
         <div class="text-muted">
           <small *ngIf="user">
-            Joined {{ user.data.addedDate | date : 'longDate' }}</small
+            Joined {{ user.data.created_at | date : 'longDate' }}</small
           >
         </div>
       </div>
@@ -54,5 +53,5 @@ import { RawApiDataUserFav } from '../../../../_models/rawapi';
   styleUrls: ['./profile-change-photo.component.scss'],
 })
 export class ProfileChangePhotoComponent {
-  @Input() user?: RawApiDataUserFav;
+  @Input() user?: any;
 }

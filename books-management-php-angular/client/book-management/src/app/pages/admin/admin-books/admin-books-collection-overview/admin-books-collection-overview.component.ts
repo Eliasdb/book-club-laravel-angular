@@ -1,12 +1,11 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
   Input,
   OnInit,
   Output,
-  SimpleChanges,
   inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +17,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, map, tap } from 'rxjs';
 import { Book } from '../../../../_models/book';
 import { AdminService } from '../../../../_services/admin-service/admin.service';
 import { AddBookDialog } from '../../../../components/modals/add-book-modal/add-book-modal.component';
@@ -40,6 +41,7 @@ import { EditBookDialog } from '../../../../components/modals/edit-book-modal/ed
     MatButtonModule,
     MatIconModule,
     FormsModule,
+    CommonModule,
   ],
   template: `
     <section class="collection-title">
@@ -83,7 +85,16 @@ import { EditBookDialog } from '../../../../components/modals/edit-book-modal/ed
             </td>
           </ng-container>
           <ng-container matColumnDef="number">
-            <th mat-header-cell *matHeaderCellDef>#</th>
+            <th mat-header-cell *matHeaderCellDef>
+              <section>
+                <div class="arrows">
+                  <mat-icon (click)="sortAscending()">arrow_downward</mat-icon>
+
+                  <mat-icon (click)="sortDescending()">arrow_upward</mat-icon>
+                </div>
+                <div>#</div>
+              </section>
+            </th>
             <td mat-cell *matCellDef="let row">{{ row.id }}</td>
           </ng-container>
 
@@ -150,6 +161,9 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
   @Output() checkedState = new EventEmitter<boolean>();
   @Output() mainCheckedState = new EventEmitter<boolean>();
 
+  @Output() sortAsc = new EventEmitter<string>();
+  @Output() sortDesc = new EventEmitter<string>();
+
   displayedColumns: string[] = [
     'select',
     'number',
@@ -164,13 +178,33 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
   dataSource: MatTableDataSource<Book> | undefined;
   selection = this.adminService.selection;
   selectedBooks$ = this.adminService.selectedBooks$;
+  private activatedRoute = inject(ActivatedRoute);
 
   book?: Book;
+
+  bool$ = new BehaviorSubject(false);
+
+  protected sortParam$ = this.activatedRoute.queryParamMap.pipe(
+    // distinctUntilChanged(),
+    // filter((params) => params['sort']),
+    tap((params) => console.log(params.get('sort'))),
+    map((params) => {
+      params.get('sort');
+    })
+  );
 
   selectItem(book: Book | undefined) {
     this.itemSelected.emit(book);
     if (book) book = this.book;
     this.openSheet.emit();
+  }
+
+  sortAscending() {
+    this.sortAsc.emit('id,asc');
+  }
+
+  sortDescending() {
+    this.sortDesc.emit('id,desc');
   }
 
   selectAll() {
@@ -213,7 +247,6 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-
     const numRows = this.dataSource?.data.length;
     return numSelected === numRows;
   }
@@ -239,11 +272,5 @@ export class AdminBooksCollectionOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Book>(this.books);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['books']) {
-      this.dataSource = new MatTableDataSource<Book>(this.books);
-    }
   }
 }

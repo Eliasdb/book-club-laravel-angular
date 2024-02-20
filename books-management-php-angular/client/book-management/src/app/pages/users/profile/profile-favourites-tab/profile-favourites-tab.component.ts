@@ -12,7 +12,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
   standalone: true,
   imports: [RouterLink, CommonModule, MatIconModule, MatButtonModule],
   template: `
-    <div class="c">
+    <!-- <div class="c">
       @if(user.data.favourites.length === 0) {
 
       <p style="margin-top:2rem;">No favourites added yet...</p>
@@ -41,7 +41,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
         }
       </div>
       }
-    </div>
+    </div> -->
   `,
   styleUrl: './profile-favourites-tab.component.scss',
 })

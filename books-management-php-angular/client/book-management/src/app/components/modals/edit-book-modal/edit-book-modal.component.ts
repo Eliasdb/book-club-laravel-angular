@@ -12,7 +12,7 @@ import { AdminService } from '../../../_services/admin-service/admin.service';
 @Component({
   selector: 'cart-dialog',
   template: `<h2 mat-dialog-title>
-      Edit book {{ data.id }}
+      Edit book
       <hr style="margin-top: 0.5rem;" />
     </h2>
 
@@ -93,7 +93,7 @@ import { AdminService } from '../../../_services/admin-service/admin.service';
               [mat-dialog-close]="false"
               cdkFocusInitial
             >
-              <span> Add book </span>
+              <span> Edit book </span>
             </button>
           </div>
         </div>

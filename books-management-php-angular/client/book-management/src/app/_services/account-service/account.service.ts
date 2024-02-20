@@ -4,7 +4,7 @@ import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
 import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { FavouriteBook } from '../../_models/book';
-import { LogOut, RawApiDataUserFav } from '../../_models/rawapi';
+import { LogOut, RawApiDataUser } from '../../_models/rawapi';
 import { User } from '../../_models/user';
 
 @Injectable({
@@ -55,9 +55,9 @@ export class AccountService {
 
   updateUser() {
     return this.mutation({
-      mutationFn: (user: User) =>
-        this.http.patch<User>(
-          `http://localhost:8000/api/v1/users/${this.userId}`,
+      mutationFn: (user: RawApiDataUser) =>
+        this.http.patch<RawApiDataUser>(
+          `http://localhost:8000/api/v1/user`,
           user
         ),
       onSuccess: () =>
@@ -70,10 +70,16 @@ export class AccountService {
       queryKey: ['USER_DETAILS'],
       queryFn: () => {
         return this.http
-          .get<RawApiDataUserFav>(
-            `http://localhost:8000/api/v1/users/${this.userId}?includeFavourites=true`
+          .get<RawApiDataUser>(
+            `http://localhost:8000/api/v1/user?includeFavourites=true`
           )
-          .pipe(map((response) => response.data));
+          .pipe(
+            map((response) => {
+              console.log(response);
+
+              return response;
+            })
+          );
       },
     });
   }

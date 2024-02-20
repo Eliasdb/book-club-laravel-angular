@@ -79,3 +79,21 @@ mat-icon {
   scale: 0.7;
   cursor: pointer;
 }
+
+.arrows {
+  display: none;
+}
+
+section {
+  &:hover {
+    .arrows {
+      display: block !important;
+      position: absolute;
+      top: 16px;
+      left: 25px;
+      mat-icon {
+        scale: 0.5;
+      }
+    }
+  }
+}

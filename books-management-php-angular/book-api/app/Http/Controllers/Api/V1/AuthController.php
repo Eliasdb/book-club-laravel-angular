@@ -10,6 +10,7 @@ use App\Http\Resources\V1\User\UserCollection;
 use App\Http\Resources\V1\User\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -56,6 +57,18 @@ class AuthController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
+
+        $request->validate([
+            "id" => "required"
+        ]);
+        
+        $user = User::where('id', $request->id)->first();
+
+
+        $this->authorize('update', $user);
+
+
+      
         $user->update($request->all());
     }
 

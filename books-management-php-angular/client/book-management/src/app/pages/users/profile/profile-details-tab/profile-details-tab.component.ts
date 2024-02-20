@@ -19,12 +19,12 @@ import { FormsModule } from '@angular/forms';
 
       <div class="form-group">
         <label class="details-label">Name</label>
-        <p>{{ user.data.firstName }} {{ user.data.lastName }}</p>
+        <p>{{ user.data.first_name }} {{ user.data.last_name }}</p>
       </div>
 
       <div class="form-group">
         <label class="details-label">Phone</label>
-        <p>{{ user.data.phoneNumber }}</p>
+        <p>{{ user.data.phone_number }}</p>
       </div>
 
       <div class="form-group">
@@ -34,7 +34,7 @@ import { FormsModule } from '@angular/forms';
 
       <div class="form-group">
         <label class="details-label">Postal code</label>
-        <p>{{ user.data.postalCode }}</p>
+        <p>{{ user.data.postal_code }}</p>
       </div>
 
       <div class="form-group">

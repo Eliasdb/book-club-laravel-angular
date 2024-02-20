@@ -36,7 +36,7 @@ import { ProfileFavouritesTabComponent } from '../profile-favourites-tab/profile
         <mat-icon class="tab-icon">edit</mat-icon>
         Edit
       </ng-template>
-      <profile-edit-tab (selectIndexEvent)="selectIndex()" />
+      <profile-edit-tab (selectIndexEvent)="selectIndex()" [user]="user" />
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>

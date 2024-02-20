@@ -29,7 +29,8 @@ import { AdminBooksCollectionOverviewComponent } from '../admin-books-collection
   template: ` <section class="collection-container">
     @if (booksResults$ | async; as result) { @if (result.isSuccess) {
     <admin-books-collection-overview
-      (sortbyId)="sortById('id,asc')"
+      (sortAsc)="sortById($event)"
+      (sortDesc)="sortById($event)"
       [books]="(books$ | async) || []"
       (checkedState)="setCheckedState($event)"
       (mainCheckedState)="setMainCheckedState($event)"

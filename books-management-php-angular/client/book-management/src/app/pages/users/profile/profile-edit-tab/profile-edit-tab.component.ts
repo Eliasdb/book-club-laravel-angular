@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
-import { User } from '../../../../_models/user';
 import { AccountService } from '../../../../_services/account-service/account.service';
 
 @Component({
@@ -24,6 +23,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
           type="text"
           name="userName"
           placeholder="@eliasdb3"
+          value="{{ this.user.name }}"
         />
       </div>
 
@@ -41,7 +41,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>First Name</label>
         <input
-          [(ngModel)]="user.firstName"
+          [(ngModel)]="user.first_name"
           class="form-control"
           type="text"
           name="name"
@@ -53,7 +53,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Last Name</label>
         <input
-          [(ngModel)]="user.lastName"
+          [(ngModel)]="user.last_name"
           class="form-control"
           type="text"
           name="lastName"
@@ -64,7 +64,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Phone Number</label>
         <input
-          [(ngModel)]="user.phoneNumber"
+          [(ngModel)]="user.phone_number"
           class="form-control"
           type="text"
           name="address"
@@ -88,7 +88,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Postal code</label>
         <input
-          [(ngModel)]="user.postalCode"
+          [(ngModel)]="user.postal_code"
           class="form-control"
           type="text"
           name="postalCode"
@@ -119,9 +119,12 @@ import { AccountService } from '../../../../_services/account-service/account.se
 export class ProfileEditTabComponent {
   private accountService = inject(AccountService);
   private toastr = inject(ToastrService);
+
   updateUser = this.accountService.updateUser();
+
+  @Input() user?: any;
   selectedIndex: number = 0;
-  user: User = {};
+  // user: any = {};
   @Output() selectIndexEvent = new EventEmitter<number>();
 
   setIndexBackToZero() {

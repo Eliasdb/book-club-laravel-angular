@@ -42,13 +42,13 @@ export class AdminService {
       ] as const,
 
       queryFn: () => {
-        const { sort } = {
-          ...parameters,
-          sort: parameters && parameters.status ? parameters.status : 'id,desc',
-        };
+        // const { sort } = {
+        //   ...parameters,
+        //   sort: parameters && parameters.sort ? parameters.sort : 'id,asc',
+        // };
 
         let params = new HttpParams();
-        params = params.set('sort', sort);
+        // params = params.set('sort', sort);
 
         if (parameters?.genre && parameters?.genre !== '') {
           params = params.set('genre', parameters.genre);

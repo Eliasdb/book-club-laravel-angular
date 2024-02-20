@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\V1\BookController;
 use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\FavouriteController;
 use App\Http\Controllers\Api\V1\PostController;
+use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +21,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::middleware('auth:sanctum')->patch('/v1/user', function (UpdateUserRequest $request, User $user) {
+    $user = $request->user();
+    $user->update($request->all());
     return $request->user();
 });
 
