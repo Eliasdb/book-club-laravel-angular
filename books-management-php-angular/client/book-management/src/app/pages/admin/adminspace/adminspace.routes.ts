@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from '../../../_guards/auth.guard';
 import { AdminBooksCollectionContainer } from '../admin-books/admin-books-collection-container/admin-books-collection.container';
 import { CustomersCollectionContainer } from '../admin-customers/admin-customer-collection-container/admin-customers-collection.container';
 import { AdminStatsComponent } from '../admin-stats/admin-stats.component';
@@ -7,6 +8,8 @@ import { AdminSpaceContainer } from './adminspace.container';
 export const AdminSpaceRoutes: Routes = [
   {
     path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
     component: AdminSpaceContainer,
 
     children: [

@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// AUTHORIZED ROUTES
 Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
     return $request->user();
 });
@@ -31,26 +32,24 @@ Route::middleware('auth:sanctum')->patch('/v1/user', function (UpdateUserRequest
     return $request->user();
 });
 
-//api/v1/
+// PUBLIC ROUTES
 Route::group(["prefix" => "v1", "namespace" => "App\Http\Controllers\Api\V1"], function () {
     Route::apiResource("register", AuthController::class);
     Route::post("login", [AuthController::class, "login"]);
     Route::get("logout", [AuthController::class, "logout"]);
-
-    Route::apiResource("favourites", FavouriteController::class);
-    Route::apiResource("books", BookController::class);
-    Route::apiResource("users", AuthController::class);
-    Route::apiResource("posts", PostController::class);
-    Route::apiResource("comments", CommentController::class);
 });
 
-
+// AUTHENTICATED ROUTES
 Route::group([
     "prefix" => "v1",
     "namespace" => "App\Http\Controllers\Api\V1",
     "middleware" => ["auth:sanctum"]
 ], function () {
-
+    Route::apiResource("favourites", FavouriteController::class);
+    Route::apiResource("books", BookController::class);
+    Route::apiResource("users", AuthController::class);
+    Route::apiResource("posts", PostController::class);
+    Route::apiResource("comments", CommentController::class);
 
     // Route::get("profile", [ApiController::class, "profile"]);
     // Route::get("refresh", [ApiController::class, "refreshToken"]);

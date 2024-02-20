@@ -58,14 +58,14 @@ class AuthController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
 
-        $request->validate([
-            "id" => "required"
-        ]);
+        // $request->validate([
+        //     "id" => "required"
+        // ]);
         
-        $user = User::where('id', $request->id)->first();
+        // $user = User::where('id', $request->id)->first();
 
 
-        $this->authorize('update', $user);
+        // $this->authorize('update', $user);
 
 
       

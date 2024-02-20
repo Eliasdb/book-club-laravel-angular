@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Book } from './_models/book';
-import { User } from './_models/user';
 import { AccountService } from './_services/account-service/account.service';
 import { CartService } from './_services/cart-service/cart.service';
 
@@ -28,7 +27,7 @@ export class AppComponent implements OnInit {
   setCurrentUser() {
     const userString = localStorage.getItem('user');
     if (!userString) return;
-    const user: User = JSON.parse(userString);
+    const user: string = JSON.parse(userString);
     this.accountService.setCurrentUser(user);
   }
 

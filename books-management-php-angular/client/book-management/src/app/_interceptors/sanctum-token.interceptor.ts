@@ -9,7 +9,7 @@ import { Observable, take } from 'rxjs';
 import { AccountService } from '../_services/account-service/account.service';
 
 @Injectable()
-export class JwtInterceptor implements HttpInterceptor {
+export class LaravelSanctumTokenInterceptor implements HttpInterceptor {
   private accountService = inject(AccountService);
 
   intercept(

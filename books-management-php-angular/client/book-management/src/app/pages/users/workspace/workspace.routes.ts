@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from '../../../_guards/auth.guard';
 import { BooksCollectionContainer } from '../books/books-collection-container/books-collection.container';
 import { CheckoutContainer } from '../checkout/checkout-container/checkout.container';
 import { ConfirmationContainer } from '../confirmation/confirmation-container/confirmation.container';
@@ -10,6 +11,8 @@ import { WorkspaceContainer } from './workspace.container';
 export const WorkspaceRoutes: Routes = [
   {
     path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
     component: WorkspaceContainer,
 
     children: [

@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideQueryClientOptions } from '@ngneat/query';
 import { provideQueryDevTools } from '@ngneat/query-devtools';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
-import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { LaravelSanctumTokenInterceptor } from './_interceptors/sanctum-token.interceptor';
 import { SharedModule } from './_modules/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,7 +26,11 @@ import { WorkspaceModule } from './pages/users/workspace/workspace.module';
     AdminSpaceModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LaravelSanctumTokenInterceptor,
+      multi: true,
+    },
     provideQueryClientOptions({
       defaultOptions: {
         queries: {

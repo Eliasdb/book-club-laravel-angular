@@ -136,6 +136,7 @@ export class ProfileEditTabComponent {
     this.setIndexBackToZero();
     if (this.user.name)
       localStorage.setItem('user', JSON.stringify(this.user.name));
+    this.accountService.setCurrentUser(this.user.name);
     this.user = {};
     this.toastr.success('Profile successfully updated!');
   }

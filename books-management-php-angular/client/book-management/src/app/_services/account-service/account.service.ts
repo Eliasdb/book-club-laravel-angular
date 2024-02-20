@@ -29,8 +29,8 @@ export class AccountService {
     return this.http.post<User>(this.baseURL + '/register', model).pipe(
       map((user: User) => {
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user.name));
-          this.currentUserSource.next(user.name);
+          localStorage.setItem('user', JSON.stringify(user.userName));
+          this.currentUserSource.next(user.userName);
         }
       })
     );
@@ -47,7 +47,7 @@ export class AccountService {
           localStorage.setItem('user', JSON.stringify(user.userName));
           localStorage.setItem('id', JSON.stringify(user.id));
           localStorage.setItem('token', JSON.stringify(user.accessToken));
-          this.currentUserSource.next(user.name);
+          this.currentUserSource.next(user.userName);
         }
       })
     );
@@ -70,16 +70,8 @@ export class AccountService {
       queryKey: ['USER_DETAILS'],
       queryFn: () => {
         return this.http
-          .get<RawApiDataUser>(
-            `http://localhost:8000/api/v1/user?includeFavourites=true`
-          )
-          .pipe(
-            map((response) => {
-              console.log(response);
-
-              return response;
-            })
-          );
+          .get<RawApiDataUser>(`http://localhost:8000/api/v1/user`)
+          .pipe(map((response) => response));
       },
     });
   }
@@ -121,8 +113,8 @@ export class AccountService {
     );
   }
 
-  setCurrentUser(user: User) {
-    this.currentUserSource.next(user.name);
+  setCurrentUser(user: string) {
+    this.currentUserSource.next(user);
   }
 
   setCurrentToken(token: string) {
