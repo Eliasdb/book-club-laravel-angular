@@ -6,11 +6,13 @@ import { environment } from 'src/environments/environment.development';
 import { FavouriteBook } from '../../_models/book';
 import { LogOut, RawApiDataUser } from '../../_models/rawapi';
 import { User } from '../../_models/user';
+import { CartService } from '../cart-service/cart.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
+  private cartService = inject(CartService);
   private currentUserSource = new BehaviorSubject<string | undefined | null>(
     undefined
   );
@@ -18,7 +20,6 @@ export class AccountService {
   public currentUser$ = this.currentUserSource.asObservable();
   public currentToken$ = this.currentTokenSource.asObservable();
   private baseURL = environment.apiUrl;
-  private userId = localStorage.getItem('id');
 
   private http = inject(HttpClient);
   private query = injectQuery();
@@ -28,9 +29,13 @@ export class AccountService {
   register(model: any) {
     return this.http.post<User>(this.baseURL + '/register', model).pipe(
       map((user: User) => {
-        if (user) {
+        if (user.id && user.accessToken) {
           localStorage.setItem('user', JSON.stringify(user.userName));
+          localStorage.setItem('token', JSON.stringify(user.accessToken));
+          localStorage.setItem('id', JSON.stringify(user.id));
           this.currentUserSource.next(user.userName);
+          this.currentTokenSource.next(user.accessToken);
+          this.cartService.userId$.next(user.id);
         }
       })
     );
@@ -43,11 +48,13 @@ export class AccountService {
         const user = response;
         console.log(response);
 
-        if (user) {
+        if (user.id && user.accessToken) {
           localStorage.setItem('user', JSON.stringify(user.userName));
           localStorage.setItem('id', JSON.stringify(user.id));
           localStorage.setItem('token', JSON.stringify(user.accessToken));
           this.currentUserSource.next(user.userName);
+          this.currentTokenSource.next(user.accessToken);
+          this.cartService.userId$.next(user.id);
         }
       })
     );
@@ -56,9 +63,9 @@ export class AccountService {
   updateUser() {
     return this.mutation({
       mutationFn: (user: RawApiDataUser) =>
-        this.http.patch<RawApiDataUser>(
+        this.http.put<RawApiDataUser>(
           `http://localhost:8000/api/v1/user`,
-          user
+          user.data
         ),
       onSuccess: () =>
         this.queryClient.invalidateQueries({ queryKey: ['USER_DETAILS'] }),
@@ -70,8 +77,10 @@ export class AccountService {
       queryKey: ['USER_DETAILS'],
       queryFn: () => {
         return this.http
-          .get<RawApiDataUser>(`http://localhost:8000/api/v1/user`)
-          .pipe(map((response) => response));
+          .get<RawApiDataUser>(
+            `http://localhost:8000/api/v1/user?includeFavourites=true`
+          )
+          .pipe(map((response) => response.data));
       },
     });
   }

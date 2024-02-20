@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { ToastrService } from 'ngx-toastr';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RawApiDataUser } from '../../../../_models/rawapi';
 import { AccountService } from '../../../../_services/account-service/account.service';
+import { PortalSnackbar } from '../../../../components/snackbars/portal-snackbar/portal-snackbar.component';
 
 @Component({
   selector: 'profile-edit-tab',
@@ -18,19 +20,19 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Username</label>
         <input
-          [(ngModel)]="user.name"
+          [(ngModel)]="user.data.name"
           class="form-control"
           type="text"
           name="userName"
           placeholder="@eliasdb3"
-          value="{{ this.user.name }}"
+          value="{{ this.user.data.name }}"
         />
       </div>
 
       <div class="edit-form-group">
         <label>Email</label>
         <input
-          [(ngModel)]="user.email"
+          [(ngModel)]="user.data.email"
           class="form-control"
           type="text"
           name="email"
@@ -41,7 +43,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>First Name</label>
         <input
-          [(ngModel)]="user.first_name"
+          [(ngModel)]="user.data.firstName"
           class="form-control"
           type="text"
           name="name"
@@ -53,7 +55,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Last Name</label>
         <input
-          [(ngModel)]="user.last_name"
+          [(ngModel)]="user.data.lastName"
           class="form-control"
           type="text"
           name="lastName"
@@ -64,7 +66,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Phone Number</label>
         <input
-          [(ngModel)]="user.phone_number"
+          [(ngModel)]="user.data.phoneNumber"
           class="form-control"
           type="text"
           name="address"
@@ -76,7 +78,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Address</label>
         <input
-          [(ngModel)]="user.address"
+          [(ngModel)]="user.data.address"
           class="form-control"
           type="text"
           name="address"
@@ -88,7 +90,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>Postal code</label>
         <input
-          [(ngModel)]="user.postal_code"
+          [(ngModel)]="user.data.postalCode"
           class="form-control"
           type="text"
           name="postalCode"
@@ -100,7 +102,7 @@ import { AccountService } from '../../../../_services/account-service/account.se
       <div class="edit-form-group">
         <label>City</label>
         <input
-          [(ngModel)]="user.city"
+          [(ngModel)]="user.data.city"
           class="form-control"
           type="text"
           name="city"
@@ -118,13 +120,26 @@ import { AccountService } from '../../../../_services/account-service/account.se
 })
 export class ProfileEditTabComponent {
   private accountService = inject(AccountService);
-  private toastr = inject(ToastrService);
+  private snackBar = inject(MatSnackBar);
 
   updateUser = this.accountService.updateUser();
 
-  @Input() user?: any;
+  @Input() user: RawApiDataUser = {
+    data: {
+      addedDate: '',
+      address: '',
+      city: '',
+      email: '',
+      favourites: [],
+      firstName: '',
+      lastName: '',
+      id: 0,
+      name: '',
+      phoneNumber: '',
+      postalCode: '',
+    },
+  };
   selectedIndex: number = 0;
-  // user: any = {};
   @Output() selectIndexEvent = new EventEmitter<number>();
 
   setIndexBackToZero() {
@@ -132,12 +147,19 @@ export class ProfileEditTabComponent {
   }
 
   onUpdateUser(): void {
-    this.updateUser.mutate(this.user);
+    if (this.user && this.user.data && this.user.data.name) {
+      this.updateUser.mutate(this.user);
+      localStorage.setItem('user', JSON.stringify(this.user.data.name));
+      this.accountService.setCurrentUser(this.user.data.name);
+    }
+
     this.setIndexBackToZero();
-    if (this.user.name)
-      localStorage.setItem('user', JSON.stringify(this.user.name));
-    this.accountService.setCurrentUser(this.user.name);
-    this.user = {};
-    this.toastr.success('Profile successfully updated!');
+
+    this.snackBar.openFromComponent(PortalSnackbar, {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      data: { user: 'Profile', action: 'updated' },
+    });
   }
 }

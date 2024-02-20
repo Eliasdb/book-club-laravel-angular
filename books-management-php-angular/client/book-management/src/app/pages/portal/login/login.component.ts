@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../_models/user';
 import { AccountService } from '../../../_services/account-service/account.service';
+import { PortalSnackbar } from '../../../components/snackbars/portal-snackbar/portal-snackbar.component';
 
 @Component({
   standalone: true,
@@ -55,7 +56,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
 export class LoginComponent {
   private accountService = inject(AccountService);
   private router = inject(Router);
-  private toastr = inject(ToastrService);
+  private snackBar = inject(MatSnackBar);
 
   protected currentUser$ = this.accountService.currentUser$;
   user: User = {
@@ -71,18 +72,15 @@ export class LoginComponent {
   login() {
     this.accountService.login(this.user).subscribe({
       next: () => {
-        this.toastr.success(`Logged in successfully!`);
+        this.snackBar.openFromComponent(PortalSnackbar, {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+          data: { user: this.user.name, action: 'logged in' },
+        });
         this.router.navigateByUrl('/home');
       },
-      error: (error) => {
-        if (error.error.errors.name[0]) {
-          this.toastr.error(error.error.errors.name[0]);
-        }
-
-        if (error.error.errors.password[0]) {
-          this.toastr.error(error.error.errors.password[0]);
-        }
-      },
+      error: (error) => {},
     });
   }
 }

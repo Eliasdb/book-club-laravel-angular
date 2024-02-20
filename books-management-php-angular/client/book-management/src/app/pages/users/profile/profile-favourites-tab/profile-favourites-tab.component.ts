@@ -2,17 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { FavouriteBook } from '../../../../_models/book';
 import { AccountService } from '../../../../_services/account-service/account.service';
+import { BookSnackbar } from '../../../../components/snackbars/book-snackbar/book-snackbar.component';
 
 @Component({
   selector: 'profile-favourites-tab',
   standalone: true,
   imports: [RouterLink, CommonModule, MatIconModule, MatButtonModule],
   template: `
-    <!-- <div class="c">
+    <div class="c">
       @if(user.data.favourites.length === 0) {
 
       <p style="margin-top:2rem;">No favourites added yet...</p>
@@ -41,13 +42,13 @@ import { AccountService } from '../../../../_services/account-service/account.se
         }
       </div>
       }
-    </div> -->
+    </div>
   `,
   styleUrl: './profile-favourites-tab.component.scss',
 })
 export class ProfileFavouritesTabComponent {
   private accountService = inject(AccountService);
-  private toastr = inject(ToastrService);
+  private snackBar = inject(MatSnackBar);
 
   @Input() user?: any;
 
@@ -57,8 +58,11 @@ export class ProfileFavouritesTabComponent {
     if (favourite.id) {
       this.removeBook.mutate(favourite.id);
     }
-    this.toastr.success(
-      `${favourite.title} has been removed from favourites...`
-    );
+    this.snackBar.openFromComponent(BookSnackbar, {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      data: { book: favourite.title, action: 'removed from favourites' },
+    });
   }
 }

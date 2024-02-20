@@ -6,6 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Post } from '../../../_models/post';
 import { AccountService } from '../../../_services/account-service/account.service';
+import { CartService } from '../../../_services/cart-service/cart.service';
 import { PostService } from '../../../_services/post-service/post-service.service';
 
 @Component({
@@ -65,15 +66,15 @@ import { PostService } from '../../../_services/post-service/post-service.servic
 export class CreatePostDialog {
   private accountService = inject(AccountService);
   private postService = inject(PostService);
+  private cartService = inject(CartService);
 
-  private userId = Number(localStorage.getItem('id'));
   protected user: string = JSON.parse(localStorage.getItem('user') || '');
 
   userDetails = this.accountService.getUserDetails();
   addPosts = this.postService.addPost();
 
   post: Post = {
-    userId: this.userId,
+    userId: this.cartService.userId$.getValue(),
     username: this.user,
     photoUrl: 'https://material.angular.io/assets/img/examples/shiba1.jpg',
     content: '',

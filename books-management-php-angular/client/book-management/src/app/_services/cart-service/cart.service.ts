@@ -10,12 +10,12 @@ import { Book } from '../../_models/book';
 export class CartService {
   private baseURL = environment.apiUrl;
   private http = inject(HttpClient);
-  private userId = localStorage.getItem('id');
 
   public selectedCartItems$ = new BehaviorSubject<Book[]>([]);
   public isChecked$ = new BehaviorSubject<boolean>(false);
   public selectedIds$ = new BehaviorSubject<any[]>([]);
   public currentCartSource = new BehaviorSubject<Book[] | null | undefined>([]);
+  public userId$ = new BehaviorSubject<number>(0);
 
   getItems() {
     const items = localStorage.getItem('cart') || '[]';
@@ -33,8 +33,10 @@ export class CartService {
     bookIds.forEach((element) => {
       this.http
         .patch<any>(
-          `${this.baseURL}/books/${element}?userId=${this.userId}&status=loaned`,
-          this.userId
+          `${
+            this.baseURL
+          }/books/${element}?userId=${this.userId$.getValue()}&status=loaned`,
+          this.userId$.getValue()
         )
         .subscribe(() => console.log('Order confirmed'));
     });
@@ -42,5 +44,9 @@ export class CartService {
 
   setCurrentCart(cart: Book[] | null) {
     this.currentCartSource.next(cart);
+  }
+
+  setCurrentUserId(id: number) {
+    this.userId$.next(id);
   }
 }

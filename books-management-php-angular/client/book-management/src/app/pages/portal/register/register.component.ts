@@ -11,11 +11,12 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Router, RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../_models/user';
 import { AccountService } from '../../../_services/account-service/account.service';
+import { PortalSnackbar } from '../../../components/snackbars/portal-snackbar/portal-snackbar.component';
 
 @Component({
   standalone: true,
@@ -207,7 +208,7 @@ export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
   private accountService = inject(AccountService);
   private router = inject(Router);
-  private toastr = inject(ToastrService);
+  private snackBar = inject(MatSnackBar);
 
   formGroup!: FormGroup;
   constructor(private _formBuilder: FormBuilder) {}
@@ -259,12 +260,18 @@ export class RegisterComponent implements OnInit {
 
     this.accountService.register(mergedFormData).subscribe({
       next: () => {
-        this.toastr.success('Registered successfully!');
+        this.snackBar.openFromComponent(PortalSnackbar, {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+          data: {
+            user: mergedFormData.name,
+            action: 'registered',
+          },
+        });
         this.router.navigateByUrl('/login');
       },
-      error: (error) => {
-        this.toastr.error(error.error);
-      },
+      error: (error) => {},
     });
   }
 }

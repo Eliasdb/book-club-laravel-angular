@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../../../_services/account-service/account.service';
+import { PortalSnackbar } from '../../snackbars/portal-snackbar/portal-snackbar.component';
 
 @Component({
   selector: 'nav-bar',
@@ -27,7 +28,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
             Profile
           </a>
         </li>
-        <li *ngIf="userId === '201'">
+        <li>
           <a
             class="nav-link"
             routerLink="/admin/stats"
@@ -66,7 +67,7 @@ import { AccountService } from '../../../_services/account-service/account.servi
             Profile
           </a>
         </li>
-        <li *ngIf="userId === '201'">
+        <li>
           <a
             class="nav-link"
             routerLink="/admin/stats"
@@ -99,14 +100,22 @@ export class NavBarComponent {
   @Input()
   hideLauncher!: boolean;
 
-  protected userId = localStorage.getItem('id');
   private accountService = inject(AccountService);
-  private toastr = inject(ToastrService);
+  private snackBar = inject(MatSnackBar);
+  userString = localStorage.getItem('user');
 
   logout() {
     this.accountService.logout().subscribe({
       next: () => {
-        this.toastr.success('Successfully logged out. See you soon!');
+        if (this.userString) {
+          const user: string = JSON.parse(this.userString);
+          this.snackBar.openFromComponent(PortalSnackbar, {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+            data: { user: user, action: 'logged out' },
+          });
+        }
       },
       error: (error) => {},
     });

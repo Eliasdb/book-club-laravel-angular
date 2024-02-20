@@ -4,10 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { Book } from '../../../_models/book';
 import { AdminService } from '../../../_services/admin-service/admin.service';
+import { BookSnackbar } from '../../snackbars/book-snackbar/book-snackbar.component';
 
 @Component({
   selector: 'cart-dialog',
@@ -134,7 +135,7 @@ export class EditBookDialog implements OnInit {
   ) {}
 
   private adminService = inject(AdminService);
-  private toastr = inject(ToastrService);
+  private snackBar = inject(MatSnackBar);
 
   editBook = this.adminService.editBook();
 
@@ -145,7 +146,12 @@ export class EditBookDialog implements OnInit {
 
   onEditBook() {
     this.editBook.mutate(this.book);
-    this.toastr.success(`'${this.book.title}' has been edited`);
+    this.snackBar.openFromComponent(BookSnackbar, {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      data: { book: this.book.title, action: 'edited' },
+    });
   }
 
   ngOnInit(): void {

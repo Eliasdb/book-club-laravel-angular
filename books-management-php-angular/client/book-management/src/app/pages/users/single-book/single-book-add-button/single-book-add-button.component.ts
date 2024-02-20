@@ -11,7 +11,7 @@ import { Book } from '../../../../_models/book';
       Add to cart
     </button>
   `,
-  styleUrl: './add-button.component.scss',
+  styleUrl: './single-book-add-button.component.scss',
 })
 export class AddButtonComponent {
   @Input() book?: Book | null;

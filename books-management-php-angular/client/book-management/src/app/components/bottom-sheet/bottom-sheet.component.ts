@@ -3,10 +3,11 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
 import { AdminService } from '../../_services/admin-service/admin.service';
+import { BookSnackbar } from '../snackbars/book-snackbar/book-snackbar.component';
 
 @Component({
   standalone: true,
@@ -50,7 +51,7 @@ import { AdminService } from '../../_services/admin-service/admin.service';
 })
 export class BottomSheetComponent {
   private adminService = inject(AdminService);
-  private toastr = inject(ToastrService);
+  private snackBar = inject(MatSnackBar);
 
   selectedBooks$ = this.adminService.selectedBooks$;
   selection = this.adminService.selection;
@@ -74,7 +75,12 @@ export class BottomSheetComponent {
       this.selection.clear();
       this.adminService.isSheetClosed$.next(true);
       this._bottomSheet.dismiss(BottomSheetComponent);
-      this.toastr.success('Book successfully deleted.');
+      this.snackBar.openFromComponent(BookSnackbar, {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+        data: { book: 'Selection', action: 'deleted' },
+      });
     });
   }
 }

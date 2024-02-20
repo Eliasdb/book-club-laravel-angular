@@ -41,8 +41,9 @@ class AuthController extends Controller
     // Register API (POST, formdata)
     public function store(StoreUserRequest $request)
     {
-        $user =  new UserResource(User::create($request->all()));
 
+        $user =  new UserResource(User::create($request->all()));
+       
         // Response
         return response()->json([
             "message" => "Registered successfully!",

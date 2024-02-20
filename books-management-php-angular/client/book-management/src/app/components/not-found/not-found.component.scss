@@ -1,0 +1,14 @@
+.not-found-page {
+  width: 100%;
+  height: 43vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("https://img.freepik.com/free-vector/stylish-hexagonal-line-pattern-background_1017-19742.jpg");
+  background-repeat: repeat;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+}

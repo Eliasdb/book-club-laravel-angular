@@ -4,18 +4,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { filterSuccessResult } from '@ngneat/query';
-import { ToastrService } from 'ngx-toastr';
 import { distinctUntilChanged, filter, map, switchMap, take } from 'rxjs';
-import { FavouriteBook } from '../../../_models/book';
-import { AccountService } from '../../../_services/account-service/account.service';
-import { BooksService } from '../../../_services/books-service/books.service';
-import { CartService } from '../../../_services/cart-service/cart.service';
-import { BreadcrumbsComponent } from '../../../components/breadcrumbs/breadcrumbs.component';
-import { LoadingStateComponent } from '../../../components/loading-state/loading-state.component';
-import { AddButtonComponent } from './add-button/add-button.component';
-import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
+import { FavouriteBook } from '../../../../_models/book';
+import { AccountService } from '../../../../_services/account-service/account.service';
+import { BooksService } from '../../../../_services/books-service/books.service';
+import { CartService } from '../../../../_services/cart-service/cart.service';
+import { BreadcrumbsComponent } from '../../../../components/breadcrumbs/breadcrumbs.component';
+import { LoadingStateComponent } from '../../../../components/loading-state/loading-state.component';
+import { BookSnackbar } from '../../../../components/snackbars/book-snackbar/book-snackbar.component';
+import { AddButtonComponent } from '../single-book-add-button/single-book-add-button.component';
+import { FavouriteButtonComponent } from '../single-book-favourite-button/single-book-favourite-button.component';
 
 @Component({
   standalone: true,
@@ -138,7 +139,7 @@ export class SingleBookContainer implements OnInit {
   private booksService = inject(BooksService);
   private accountService = inject(AccountService);
   private cartService = inject(CartService);
-  private toastr = inject(ToastrService);
+  private snackBar = inject(MatSnackBar);
   private activatedRoute = inject(ActivatedRoute);
 
   protected centered = false;
@@ -177,7 +178,12 @@ export class SingleBookContainer implements OnInit {
   protected addToCart() {
     this.book$.pipe(take(1)).subscribe((book) => {
       this.cartService.addToCart(book);
-      this.toastr.success(`${book.title} added to cart!`);
+      this.snackBar.openFromComponent(BookSnackbar, {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+        data: { book: book.title, action: 'added to cart' },
+      });
     });
   }
 
@@ -190,7 +196,12 @@ export class SingleBookContainer implements OnInit {
       };
 
       this.favouriteBook.mutate(favouritedBook);
-      this.toastr.success(`${favouritedBook.title} added to favourites!`);
+      this.snackBar.openFromComponent(BookSnackbar, {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+        data: { book: favouritedBook.title, action: 'added to favourites' },
+      });
     });
   }
 

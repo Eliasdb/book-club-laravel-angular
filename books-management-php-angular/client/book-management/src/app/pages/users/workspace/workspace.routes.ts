@@ -5,7 +5,7 @@ import { CheckoutContainer } from '../checkout/checkout-container/checkout.conta
 import { ConfirmationContainer } from '../confirmation/confirmation-container/confirmation.container';
 import { HomeContainer } from '../home/home-container/home.container';
 import { ProfileContainer } from '../profile/profile-container/profile.container';
-import { SingleBookContainer } from '../single-book/single-book.container';
+import { SingleBookContainer } from '../single-book/single-book-container/single-book.container';
 import { WorkspaceContainer } from './workspace.container';
 
 export const WorkspaceRoutes: Routes = [
@@ -29,6 +29,7 @@ export const WorkspaceRoutes: Routes = [
 
       { path: 'checkout', component: CheckoutContainer },
       { path: 'confirmation', component: ConfirmationContainer },
+      // { path: '**', component: NotFoundComponent },
     ],
   },
 ];

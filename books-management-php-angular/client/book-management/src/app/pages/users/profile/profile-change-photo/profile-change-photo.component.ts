@@ -25,7 +25,7 @@ import { MatChipsModule } from '@angular/material/chips';
 
         <div class="change-btn-container">
           <h4 *ngIf="user" class="pt-sm-2 pb-1 mb-0 text-nowrap">
-            {{ user.data.first_name }} {{ user.data.last_name }}
+            {{ user.data.firstName }} {{ user.data.lastName }}
           </h4>
           <button mat-raised-button>
             <i class="fa fa-fw fa-camera"></i>
@@ -44,7 +44,7 @@ import { MatChipsModule } from '@angular/material/chips';
         </mat-chip>
         <div class="text-muted">
           <small *ngIf="user">
-            Joined {{ user.data.created_at | date : 'longDate' }}</small
+            Joined {{ user.data.addedDate | date : 'longDate' }}</small
           >
         </div>
       </div>

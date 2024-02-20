@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\FavouriteController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Resources\V1\User\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,13 +24,23 @@ use Illuminate\Support\Facades\Route;
 
 // AUTHORIZED ROUTES
 Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
-    return $request->user();
+    $includeFavourites = $request->query("includeFavourites");
+
+    $user = User::where('id', $request->user()->id)->first();
+
+    if ($includeFavourites) {
+        $user = $user->loadMissing("favourites");
+    }
+
+    return new UserResource($user);
 });
 
-Route::middleware('auth:sanctum')->patch('/v1/user', function (UpdateUserRequest $request, User $user) {
+Route::middleware('auth:sanctum')->put('/v1/user', function (UpdateUserRequest $request, User $user) {
     $user = $request->user();
+
     $user->update($request->all());
-    return $request->user();
+
+    return new UserResource($user);
 });
 
 // PUBLIC ROUTES

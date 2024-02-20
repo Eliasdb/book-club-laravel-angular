@@ -4,10 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { Book } from '../../../_models/book';
 import { AdminService } from '../../../_services/admin-service/admin.service';
+import { BookSnackbar } from '../../snackbars/book-snackbar/book-snackbar.component';
 
 @Component({
   selector: 'cart-dialog',
@@ -120,8 +121,8 @@ import { AdminService } from '../../../_services/admin-service/admin.service';
   styleUrls: ['./add-book-modal.component.scss'],
 })
 export class AddBookDialog {
+  private snackBar = inject(MatSnackBar);
   private adminService = inject(AdminService);
-  private toastr = inject(ToastrService);
 
   addBook = this.adminService.addBook();
 
@@ -137,6 +138,11 @@ export class AddBookDialog {
 
   onAddBook() {
     this.addBook.mutate(this.book);
-    this.toastr.success(`'${this.book.title}' has been added!`);
+    this.snackBar.openFromComponent(BookSnackbar, {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      data: { book: this.book.title, action: 'added' },
+    });
   }
 }
