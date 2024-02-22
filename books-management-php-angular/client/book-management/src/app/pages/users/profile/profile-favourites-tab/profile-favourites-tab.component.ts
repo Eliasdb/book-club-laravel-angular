@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
 import { FavouriteBook } from '../../../../_models/book';
+import { RawApiDataUser } from '../../../../_models/rawapi';
 import { AccountService } from '../../../../_services/account-service/account.service';
 import { BookSnackbar } from '../../../../components/snackbars/book-snackbar/book-snackbar.component';
 
@@ -14,7 +15,7 @@ import { BookSnackbar } from '../../../../components/snackbars/book-snackbar/boo
   imports: [RouterLink, CommonModule, MatIconModule, MatButtonModule],
   template: `
     <div class="c">
-      @if(user.data.favourites.length === 0) {
+      @if(user) { @if(user.data.favourites.length === 0) {
 
       <p style="margin-top:2rem;">No favourites added yet...</p>
 
@@ -41,16 +42,16 @@ import { BookSnackbar } from '../../../../components/snackbars/book-snackbar/boo
         </div>
         }
       </div>
-      }
+      } }
     </div>
   `,
   styleUrl: './profile-favourites-tab.component.scss',
 })
-export class ProfileFavouritesTabComponent {
+export class ProfileFavouritesTabComponent implements OnInit {
   private accountService = inject(AccountService);
   private snackBar = inject(MatSnackBar);
 
-  @Input() user?: any;
+  @Input() user?: RawApiDataUser;
 
   removeBook = this.accountService.removeFromFavourites();
 
@@ -64,5 +65,9 @@ export class ProfileFavouritesTabComponent {
       verticalPosition: 'bottom',
       data: { book: favourite.title, action: 'removed from favourites' },
     });
+  }
+
+  ngOnInit(): void {
+    // console.log(this.user?.data.favourites);
   }
 }

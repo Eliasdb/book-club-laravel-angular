@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideQueryClientOptions } from '@ngneat/query';
 import { provideQueryDevTools } from '@ngneat/query-devtools';
+import { NgChartsModule } from 'ng2-charts';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { LaravelSanctumTokenInterceptor } from './_interceptors/sanctum-token.interceptor';
 import { SharedModule } from './_modules/shared.module';
@@ -24,6 +25,7 @@ import { WorkspaceModule } from './pages/users/workspace/workspace.module';
     FormsModule,
     WorkspaceModule,
     AdminSpaceModule,
+    NgChartsModule,
   ],
   providers: [
     {

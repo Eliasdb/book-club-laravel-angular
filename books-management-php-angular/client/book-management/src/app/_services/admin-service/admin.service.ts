@@ -4,7 +4,7 @@ import { Injectable, inject } from '@angular/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@ngneat/query';
 import { BehaviorSubject, map } from 'rxjs';
 import { Book } from '../../_models/book';
-import { RawApiDataBooks } from '../../_models/rawapi';
+import { AdminStats, RawApiDataBooks } from '../../_models/rawapi';
 import {
   AUTHORS_QUERY_PARAM,
   BookQueryParams,
@@ -74,6 +74,21 @@ export class AdminService {
             params,
           })
           .pipe(map((response) => response));
+      },
+    });
+  }
+
+  public queryAdminStats() {
+    return this.query({
+      queryKey: ['ADMIN_STATS'],
+      queryFn: () => {
+        return this.http
+          .get<AdminStats>('http://localhost:8000/api/v1/admin-stats')
+          .pipe(
+            map((response) => {
+              return response.data;
+            })
+          );
       },
     });
   }

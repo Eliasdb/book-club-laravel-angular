@@ -1,4 +1,4 @@
-import { Book } from './book';
+import { Book, FavouriteBook } from './book';
 import { Customer } from './customer';
 import { Post } from './post';
 
@@ -16,6 +16,15 @@ export interface RawApiDataBooks {
 }
 export interface RawApiDataBook {
   data: Book;
+}
+
+export interface AdminStats {
+  data: {
+    userCount: number;
+    bookCount: number;
+    booksLoanedOutCount: number;
+    countArray: number[];
+  };
 }
 
 export interface RawApiDataUserFav {
@@ -40,7 +49,7 @@ export interface RawApiDataUser {
     address: string;
     city: string;
     email: string;
-    favourites: Book[];
+    favourites: FavouriteBook[];
     firstName: string;
     lastName: string;
     id: number;

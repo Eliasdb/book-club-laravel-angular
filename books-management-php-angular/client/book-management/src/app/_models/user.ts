@@ -16,3 +16,8 @@ export interface User {
   books?: Book[];
   favourites?: Book[];
 }
+
+export interface FavouriteD {
+  favourited: null | boolean;
+  id: number | undefined;
+}

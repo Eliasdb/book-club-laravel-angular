@@ -23,6 +23,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $city = $this->faker->randomElement(['Antwerpen', 'Leuven', 'Gent', 'Eeklo', 'Brugge', 'Oostende', 'Brussel', 'Mariakerke', 'Sint-Niklaas', 'Lievegem', 'Maldegem']);
+
         return [
             "first_name" =>  $this->faker->firstName(),
             "last_name" => $this->faker->lastName(),
@@ -30,7 +32,7 @@ class UserFactory extends Factory
             "phone_number" => $this->faker->phoneNumber(),
             "address" => $this->faker->streetAddress(),
             "postal_code" => $this->faker->postCode(),
-            "city" => $this->faker->city(),
+            "city" =>  $city,
             'name' => fake()->name(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),

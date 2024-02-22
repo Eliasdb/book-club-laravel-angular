@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AdminController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BookController;
 use App\Http\Controllers\Api\V1\CommentController;
@@ -48,6 +49,7 @@ Route::group(["prefix" => "v1", "namespace" => "App\Http\Controllers\Api\V1"], f
     Route::apiResource("register", AuthController::class);
     Route::post("login", [AuthController::class, "login"]);
     Route::get("logout", [AuthController::class, "logout"]);
+    Route::get("admin-stats", [AdminController::class, "admin_stats"]);
 });
 
 // AUTHENTICATED ROUTES

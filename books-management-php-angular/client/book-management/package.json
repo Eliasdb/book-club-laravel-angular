@@ -26,6 +26,8 @@
     "@tanstack/query-core": "^5.17.19",
     "bootstrap": "^5.3.2",
     "carbon-components-angular": "^5.16.1",
+    "chart.js": "^4.4.1",
+    "ng2-charts": "^5.0.4",
     "ngx-toastr": "^18.0.0",
     "normalize": "^0.3.1",
     "rxjs": "~7.8.0",

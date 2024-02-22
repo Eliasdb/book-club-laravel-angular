@@ -7,7 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { filterSuccessResult } from '@ngneat/query';
-import { distinctUntilChanged, filter, map, switchMap, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  take,
+} from 'rxjs';
 import { FavouriteBook } from '../../../../_models/book';
 import { AccountService } from '../../../../_services/account-service/account.service';
 import { BooksService } from '../../../../_services/books-service/books.service';
@@ -88,11 +95,18 @@ import { FavouriteButtonComponent } from '../single-book-favourite-button/single
               <hr />
 
               <div class="btn-container">
+                @if (user.result$ | async; as user) { @if(user.isSuccess) {
                 <add-button
                   [book]="(book$ | async) || null"
                   (add)="addToCart()"
                 />
-                <favourite-button (favourite)="onFavouriteBook()" />
+
+                <favourite-button
+                  [book]="(book$ | async) || null"
+                  (favourite)="onFavouriteBook()"
+                  (removeFavourite)="onRemoveFromFavouritesBook()"
+                />
+                } }
               </div>
             </div>
             }
@@ -147,8 +161,19 @@ export class SingleBookContainer implements OnInit {
   protected unbounded = false;
 
   private userId = localStorage.getItem('id');
-
+  protected user = this.accountService.getUserDetails();
   private favouriteBook = this.accountService.favouriteBook();
+  removeFromFavourites = this.accountService.removeFromFavourites();
+
+  protected userResultFavourites$ = this.user.result$.pipe(
+    filterSuccessResult(),
+    map((res) => {
+      console.log(res.data);
+      return res.data.favourites;
+    })
+  );
+
+  bool$ = new BehaviorSubject<boolean>(true);
 
   protected bookId$ = this.activatedRoute.params.pipe(
     distinctUntilChanged(),
@@ -186,22 +211,80 @@ export class SingleBookContainer implements OnInit {
       });
     });
   }
+  protected ids$ = new BehaviorSubject<(number | undefined)[]>([]);
+  protected favourites$ = new BehaviorSubject<FavouriteBook[]>([]);
+
+  protected userResultIds$ = this.user.result$.pipe(
+    filterSuccessResult(),
+    map((res) => {
+      return res.data.favourites.map((favourite) => favourite.originalId);
+    })
+  );
+
+  onRemoveFromFavouritesBook() {
+    this.book$.pipe(take(1)).subscribe((book) => {
+      const bookId = book.id;
+      const allFavourites = this.favourites$.getValue();
+      console.log(allFavourites);
+
+      const bookToRemove =
+        allFavourites.find((x) => x.originalId === bookId) || {};
+
+      if (bookToRemove.id) {
+        this.removeFromFavourites.mutate(bookToRemove.id);
+        this.snackBar.openFromComponent(BookSnackbar, {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+          data: { book: book.title, action: 'removed from favourites' },
+        });
+        this.bool$.next(false);
+      }
+    });
+  }
 
   protected onFavouriteBook() {
     this.book$.pipe(take(1)).subscribe((book) => {
-      const favouritedBook: FavouriteBook = {
-        ...book,
-        originalId: book.id,
-        userId: Number(this.userId),
-      };
+      const allIds = [...this.ids$.getValue(), book.id];
+      // this.ids$.next([...new Set(allIds)]);
 
-      this.favouriteBook.mutate(favouritedBook);
-      this.snackBar.openFromComponent(BookSnackbar, {
-        duration: 3000,
-        horizontalPosition: 'right',
-        verticalPosition: 'bottom',
-        data: { book: favouritedBook.title, action: 'added to favourites' },
-      });
+      const hasDuplicates = (
+        arr: (number | (number | undefined)[] | undefined)[]
+      ) => arr.length !== new Set(arr).size;
+
+      // if (hasDuplicates(allIds)) {
+      //   this.snackBar.openFromComponent(AlreadyAddedSnackbar, {
+      //     duration: 3000,
+      //     horizontalPosition: 'right',
+      //     verticalPosition: 'bottom',
+      //     data: {
+      //       book: book.title,
+      //       action: 'favourited',
+      //     },
+      //   });
+      // }
+
+      if (!hasDuplicates(allIds)) {
+        const favouritedBook: FavouriteBook = {
+          ...book,
+          originalId: book.id,
+          userId: Number(this.userId),
+        };
+
+        this.userResultFavourites$.pipe(take(1)).subscribe((res) => {
+          this.favourites$.next(res);
+        });
+
+        this.cartService.addToFavourites(book);
+
+        this.favouriteBook.mutate(favouritedBook);
+        this.snackBar.openFromComponent(BookSnackbar, {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+          data: { book: favouritedBook.title, action: 'added to favourites' },
+        });
+      }
     });
   }
 
@@ -213,5 +296,12 @@ export class SingleBookContainer implements OnInit {
 
   ngOnInit(): void {
     this.loadRelated();
+    this.userResultIds$.pipe(take(1)).subscribe((res) => {
+      this.ids$.next(res);
+    });
+    this.userResultFavourites$.pipe(take(1)).subscribe((res) => {
+      this.favourites$.next(res);
+      console.log('init fav', this.favourites$.getValue());
+    });
   }
 }

@@ -47,7 +47,7 @@ import { BooksSortBarComponent } from '../books-sort-bar/books-sort-bar.componen
               [bookCount]="(totalBooksCount$ | async) || 0"
               [selectedSort]="(sort$ | async) || 'title,asc'"
               (sort)="sortBy($event)"
-              (clickEvent)="toggleShowList()"
+              (clickEvent)="toggleShowList($event)"
             />
 
             @if (booksResults$ | async; as result) { @if (result.isSuccess) {
@@ -122,8 +122,8 @@ export class BooksCollectionContainer {
     map((res) => res.data?.items)
   );
 
-  toggleShowList(): void {
-    this.showList = !this.showList;
+  toggleShowList(state: boolean): void {
+    this.showList = state;
   }
 
   protected onSearch(query: string) {

@@ -19,7 +19,7 @@ import { sortArray, sortValues } from '../../../../_data/data';
         <button
           type="button"
           class="{{ showList === false ? 'grid-btn active' : 'grid-btn' }}"
-          (click)="toggleShow()"
+          (click)="toggleShow(false)"
         >
           <svg
             stroke="currentColor"
@@ -36,7 +36,7 @@ import { sortArray, sortValues } from '../../../../_data/data';
           </svg>
         </button>
         <button
-          (click)="toggleShow()"
+          (click)="toggleShow(true)"
           type="button"
           class="{{ showList === true ? 'list-btn active' : 'list-btn' }}"
         >
@@ -127,11 +127,11 @@ export class BooksSortBarComponent {
     'published-asc',
   ];
 
-  @Output() clickEvent = new EventEmitter<string>();
+  @Output() clickEvent = new EventEmitter<boolean>();
   @Output() sort = new EventEmitter<string>();
 
-  toggleShow() {
-    this.clickEvent.emit();
+  toggleShow(state: boolean) {
+    this.clickEvent.emit(state);
   }
 
   selectSort(event: Event) {
