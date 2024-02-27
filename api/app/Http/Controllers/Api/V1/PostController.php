@@ -20,7 +20,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $offset = $request->offset ?? 0;
-        $limit = $request->limit ?? 10;
+        $limit = $request->limit ?? 100;
 
         $includeComments = $request->query("includeComments");
 

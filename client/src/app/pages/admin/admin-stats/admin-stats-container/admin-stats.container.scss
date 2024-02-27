@@ -1,7 +1,9 @@
 .cards-container {
   display: flex;
-  gap: 0.5rem;
+  justify-content: space-between;
   margin-top: 4rem;
+  margin-bottom: 5rem;
+  min-width: 59rem;
 }
 
 .stats-container {
@@ -15,8 +17,46 @@
     flex-direction: column;
   }
 }
+.donut-chart {
+  height: 500px !important;
+  width: 500px !important;
+}
 
-.chart {
-  height: 500px;
-  width: 500px;
+.polar-chart {
+  height: 500px !important;
+  width: 500px !important;
+}
+
+.mat-mdc-card {
+  background: #424242 !important;
+  min-width: 59rem;
+}
+
+.donut-graph {
+  display: flex;
+  justify-content: center;
+}
+
+.by-genre-title {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: -2rem;
+}
+
+.post-title {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+.graphs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 4rem;
 }

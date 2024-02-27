@@ -1,18 +1,25 @@
 import { Component, Input } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'admin-stats-card',
   standalone: true,
-  imports: [],
-  template: `<article>
-    <header>
-      <span class="count">{{ count }}</span>
-      <span class="icon"
-        ><img src="./assets/add-book.svg" alt="add-books"
-      /></span>
-    </header>
-    <h5 class="title">{{ subText }}</h5>
-  </article>`,
+  imports: [MatCardModule],
+  template: `
+    <mat-card>
+      <mat-card-content>
+        <article>
+          <header>
+            <span class="count">{{ count }}</span>
+            <span class="icon"
+              ><img src="./assets/add-book.svg" alt="add-books"
+            /></span>
+          </header>
+          <h5 class="title">{{ subText }}</h5>
+        </article>
+      </mat-card-content>
+    </mat-card>
+  `,
   styleUrl: './admin-stats-card.component.scss',
 })
 export class AdminStatsCardComponent {

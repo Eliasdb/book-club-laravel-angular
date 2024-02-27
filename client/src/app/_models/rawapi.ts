@@ -22,8 +22,21 @@ export interface AdminStats {
   data: {
     userCount: number;
     bookCount: number;
-    booksLoanedOutCount: number;
-    countArray: number[];
+    loanedBooksCount: number;
+    totalsByGenre: number[];
+    userData: [
+      {
+        user: string;
+        posts: number;
+        comments: number;
+      }
+    ];
+    totalsByCity: [
+      {
+        city: string;
+        count: number;
+      }
+    ];
   };
 }
 
